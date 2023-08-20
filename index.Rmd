@@ -1,0 +1,35 @@
+---
+title:  "Bayesian Multi-Object Response Regression"
+author: "Rene Gutierrez Marquez"
+date:   "2023-08-17"
+output:
+  bookdown::html_document2
+bibliography: references.bib
+link-citations: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#  About
+
+## Package Description
+
+This work documents the package `bmrr` introduced in "Multi-object 
+Data Integration in the Study of Primary Progressive Aphasia". It also presents 
+an usage example in the context of the simulations on the paper for easy
+replication. BMRR stands for Bayesian Multi-Object Response Regression and deals 
+with a scalar variable of interest as a dependent variable and two objects as 
+responses, one a Network object and another an image object or more 
+generally a Voxel object. Both objects are linked through regions of interest. 
+The main purpose of the model is to determine which regions of interest are 
+associated with the variable of interest. The model can incorporate other 
+explanatory variables.
+
+## Package Requierments
+
+The package requires the `mvtnorm` package.
+
+## Document Structure
+
+In section \@ref(modelFramework) we introduce the model and variables

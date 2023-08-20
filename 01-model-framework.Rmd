@@ -1,0 +1,93 @@
+# Model Framework {#modelFramework}
+
+The main function of the package is `bmrr_sampler` which obtains samples 
+according to the method described on the paper in section 3. For every 
+observation $i \in \{1,\ldots,n\}$:
+
+  * $y_i          \in \mathbb{R}$: An scalar variable of interest.
+  * $\mathbf{A}_i \in \mathbb{R}^{P \times P}$ A network object, represented as 
+    a symmetric matrix of $P$ by $P$, where we  disregard the diagonal entries.
+  * $\mathbf{g}_{i,p} \in \mathbb{R}^V_p$ for $p \in {1,\ldots,P}$ voxel 
+    elements referenced by the same $P$ regions as the Network object. Notice 
+    that we allow for the voxel elements to vary in size across the $P$ regions.
+  * $\mathbf{x}_i \in \mathbb{R}^H$ A vector of other covariates that can be 
+    taken into consideration.
+    
+Then we consider the following linear models:
+
+\begin{equation}
+a_{i,(p,p)} = \sum_{h=1}^H \psi^a_{p,h}\psi^a_{p',h} x_{i,h} + \theta_{p,p'}y_i + e_i^{(p,p') \quad p < p'} (\#eq:scalarNetworkEquation)
+\end{equation}
+
+\begin{equation}
+g_{i,(v,p)} = \sum_{h=1}^H \psi^g_{p,h}\psi^a_{p',h} x_{i,h} + \beta_{v,p}y_i + w_i^{(p,p')} \quad {p\in{1<\ldots,P}, \quad v\in{1,\ldots,V_p}} 
+(\#eq:scalarVoxelkEquation)
+\end{equation}
+
+, where 
+$$e_i^{(p,p')} \stackrel{iid}{\sim} N(0, \tau^2_{\theta})$$
+$$w_i^{(v,p)} \stackrel{iid}{\sim} N(0, \tau^2_{\beta})$$
+We can also represent this regression equations in stacked format as follows:
+\begin{equation}
+\mathbf{A}_i = \sum_{h=1}^H \mathbf{\Psi}^a_{p,h} x_{i,h} + \mathbf{\Theta}y_i + E_i (\#eq:stackedNetworkEquation)
+\end{equation}
+\begin{equation}
+\mathbf{g}_{i,p} = \sum_{h=1}^H \mathbf{1}_{V_p} \psi^g_{h,p} x_{i,h} + \mathbf{\beta}_p y_i + \mathbf{w}_{i,p} (\#eq:stackedVoxelEquation)
+\end{equation}
+
+where we have stacked the elements as follows:
+
+$$ \mathbf{A}_i \in \mathbb{R}^{P \times P}, \quad [\mathbf{A}_i]_{p,p'}=[\mathbf{A}_i]_{p',p}=a_{i,(p,p')} \quad \text{for} \quad p < p', \quad  [\mathbf{A}_i]_{p,p} = 0 \quad \text{for} \quad p = p'$$
+$$ \mathbf{\Psi} \in \mathbb{R}^{P \times P}, \quad [\mathbf{\Psi}^a]_{p,p'} = [\mathbf{\Psi}^a]_{p',p} = \psi_{p,h}^a \psi_{p',h}^a, \quad \text{for} \quad p < p', \quad  [\mathbf{\Psi}^a]_{p,p} = 0 \quad \text{for} \quad p = p' $$
+
+$$ \mathbf{\Theta} \in \mathbb{R}^{P \times P}, \quad [\mathbf{\Theta}]_{p,p'} = [\mathbf{\Theta}]_{p',p} = \theta_{p,p'} \quad \text{for} \quad p < p', \quad [\mathbf{\Theta}]_{p,p} = 0 \quad \text{for} \quad p = p' $$
+$$ \mathbf{E}_i \in \mathbb{R}^{P \times P}, \quad [\mathbf{E}_i]_{p,p'}=[\mathbf{E}_i]_{p',p}=a_{i,(p,p')} \quad \text{for} \quad p < p', \quad  [\mathbf{E}_i]_{p,p} = 0 \quad \text{for} \quad p = p' $$
+$$ \mathbf{g}_{i,p} \in \mathbb{R}^{V_p}, \quad \mathbf{g}_{i,p}=(g_{i,1,p},\ldots,g_{i,V_p,p}) \quad \text{for} \quad p \in \{1,\ldots,P\}$$
+$$ \mathbf{1}_{V_p} \in \mathbb{R}^{V_p}, \quad \text{A vector of ones.}$$
+$$ \mathbf{w}_{i,p} \in \mathbb{R}^{V_p}, \quad \mathbf{w}_{i,p}=(w_{i,1,p},\ldots,w_{i,V_p,p}) \quad \text{for} \quad p \in \{1,\ldots,P\}$$
+
+The main focus of analysis are the $\mathbf{A}_i$, $\mathbf{g}_{i,p}$ and $y_i$ elements. Objects $\mathbf{A}_i$ and $\mathbf{g}_{i,p}$ are related through the regions $p$. This connection is developed further in the prior distributions.
+
+The prior for the Network coefficients is set as follows:
+
+\begin{equation}
+\theta_{p,p'}| \lambda_{p,p'},\tau^2_\theta,\sigma_\theta,\xi_p,\xi_{p'} \stackrel{ind.}{\sim} \xi_p \xi_{p'}N(0, \tau^2_\theta \sigma^2_\theta \lambda^2_{p,p'}) + (1-\xi_p \xi_{p'}) \delta_0 \quad p < p')
+(\#eq:networkPrior)
+\end{equation}
+
+while the prior for the Voxel coefficients is:
+
+\begin{equation}
+\mathbf{\beta}_p| \mathbf{\gamma_p} \xi_p = \xi_p \mathbf{\gamma}_p + (1-\xi_p ) \delta_0 \quad p \in\{1,\ldots,P\})
+(\#eq:voxelkPrior)
+\end{equation}
+
+where 
+
+$$\mathbf{\gamma_p} \in \mathbb{R}^{V_p}, \quad \mathbf{\gamma_p} = (\gamma_{1,p},\ldots,\gamma_{V_p,p})',  \quad p \in\{1,\ldots,P\}$$
+
+That is, a region specific Spike and Slab  prior on the Network and Voxel coefficients is applied, that simultaneously determines
+which regions are relevant through the spike indicators $\xi_p$ [@george1997approaches]. The spike component of the the coefficients is given a Horseshoe structure [@carvalho2010horseshoe]. Then the Horseshoe structure for the Network coefficients is set as:
+
+$$\sigma_\theta \sim C^+(0,1) $$
+$$\lambda_{p,p'} \stackrel{iid}{\sim} C^+(0,1) \quad p \in \{1,\ldots,P\} $$
+A horseshoe prior is also applied on the elements of $\mathbf{\gamma_p}$ as follows:
+
+$$\gamma_{v,p}| \phi^2_{v,p},\eta_p^2,\tau^2_\beta \stackrel{ind.}{\sim} N(0, \tau^2_\beta \eta_p^2 \phi^2_{v,p}) \quad p \in\{1,\ldots,P\}) $$
+
+$$\eta^2_p \stackrel{iid}{\sim} C^+(0,1) \quad p \in \{1,\ldots,P\} $$
+
+$$\phi_{v,p} \stackrel{iid}{\sim} C^+(0,1) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\} $$
+
+For the spike indicators, the prior is set as:
+$$  \xi_p \stackrel{iid}{\sim} Ber(\nu) $$
+$$ \nu \sim Beta(a_\nu, b_\nu) $$
+where a Beta prior is assigned to the Bernoulli prior probability to account for multiplicity correction.
+
+Inverse-Gamma priors are assigned to the error variances:
+$$ \tau^2_\theta \sim IG(a_{\tau_\theta}, b_{\tau_\theta}) $$
+$$ \tau^2_\beta \sim IG(a_{\tau_\beta}, b_{\tau_\beta}) $$
+
+Finally, for the other covariate coefficients:
+
+$$ \psi_{p,h}^a,\psi^g_{p,h} \stackrel{iid}{\sim}N(0,1) \quad p \in \{1,\ldots,P\}, \quad h \in \{1,\ldots,H\} $$
