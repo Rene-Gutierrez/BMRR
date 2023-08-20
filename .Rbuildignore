@@ -13,3 +13,4 @@
 ^preamble\.tex$
 ^references\.bib$
 ^style\.css$
+^docs$
