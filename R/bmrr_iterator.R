@@ -147,7 +147,7 @@ bmrr_iterator <- function(y,
     }
     ZZ      <- solve(t(Z) %*% Z)
     DAphat  <- ZZ %*% t(Z) %*% R
-    DA[p, ] <- c(DAphat) + rmvnorm(n = 1, sigma = sT2 * ZZ)
+    DA[p, ] <- c(DAphat) + mvtnorm::rmvnorm(n = 1, sigma = sT2 * ZZ)
   }
   # Samples DG
   for(p in 1:P){
@@ -156,7 +156,7 @@ bmrr_iterator <- function(y,
     R       <- R[!is.na(R)]
     ZZ      <- solve(t(Z) %*% Z)
     DGphat  <- ZZ %*% t(Z) %*% R
-    DG[p, ] <- c(DGphat) + rmvnorm(n = 1, sigma = sB2 * ZZ)
+    DG[p, ] <- c(DGphat) + mvtnorm::rmvnorm(n = 1, sigma = sB2 * ZZ)
   }
   # Creates DT and DB (Legacy)
   DT   <- array(data = 0,   dim = c(M, P, P))

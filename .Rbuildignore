@@ -1,2 +1,15 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^_book/$
+^index.Rmd$
+^index.html$
+^01-model-framework.Rmd$
+^_book$
+^README\.md$
+^02-references\.Rmd$
+^_bookdown\.yml$
+^_output\.yml$
+^book\.bib$
+^preamble\.tex$
+^references\.bib$
+^style\.css$
