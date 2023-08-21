@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Posterior Computation | Bayesian Multi-Object Response Regression</title>
+  <meta name="description" content="Chapter 3 Posterior Computation | Bayesian Multi-Object Response Regression" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Posterior Computation | Bayesian Multi-Object Response Regression" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Posterior Computation | Bayesian Multi-Object Response Regression" />
+  
+  
+  
+
+<meta name="author" content="Rene Gutierrez Marquez" />
+
+
+<meta name="date" content="2023-08-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="modelFramework.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#package-description"><i class="fa fa-check"></i><b>1.1</b> Package Description</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#package-requierments"><i class="fa fa-check"></i><b>1.2</b> Package Requierments</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#package-installation"><i class="fa fa-check"></i><b>1.3</b> Package Installation</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#document-structure"><i class="fa fa-check"></i><b>1.4</b> Document Structure</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="modelFramework.html"><a href="modelFramework.html"><i class="fa fa-check"></i><b>2</b> Model Framework</a></li>
+<li class="chapter" data-level="3" data-path="posteriorComputation.html"><a href="posteriorComputation.html"><i class="fa fa-check"></i><b>3</b> Posterior Computation</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-a_p."><i class="fa fa-check"></i><b>3.1</b> Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span></a></li>
+<li class="chapter" data-level="3.2" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-g_p."><i class="fa fa-check"></i><b>3.2</b> Full conditional for <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span></a></li>
+<li class="chapter" data-level="3.3" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p"><i class="fa fa-check"></i><b>3.3</b> Full conditional for <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span></a></li>
+<li class="chapter" data-level="3.4" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-tau2_theta"><i class="fa fa-check"></i><b>3.4</b> Full Conditional for <span class="math inline">\(\tau^2_\theta\)</span></a></li>
+<li class="chapter" data-level="3.5" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-tau2_beta"><i class="fa fa-check"></i><b>3.5</b> Full Conditional for <span class="math inline">\(\tau^2_\beta\)</span></a></li>
+<li class="chapter" data-level="3.6" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-nu"><i class="fa fa-check"></i><b>3.6</b> Full conditional <span class="math inline">\(\nu\)</span></a></li>
+<li class="chapter" data-level="3.7" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-the-network-coefficients-horseshoe-structure"><i class="fa fa-check"></i><b>3.7</b> Full Conditional for the Network Coefficients Horseshoe Structure</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Bayesian Multi-Object Response Regression</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="posteriorComputation" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Posterior Computation<a href="posteriorComputation.html#posteriorComputation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Bayesian estimation of the model is performed through Gibbs sampling which
+cycles through the following steps:</p>
+<ol style="list-style-type: decimal">
+<li>For each <span class="math inline">\(p\in\{1,...,P\}\)</span> sample from <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span>, from the
+full conditional <span class="math inline">\(p( {\boldsymbol \psi} ^a_{p,.}| {\boldsymbol \psi} ^a_{-p,.}, {\boldsymbol \Theta} ,\sigma^2, {\boldsymbol A} )\)</span>.</li>
+<li>For each <span class="math inline">\(p\in\{1,...,P\}\)</span> sample from <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span>, from the full
+conditional <span class="math inline">\(p( {\boldsymbol \psi} ^g_{p,.}| {\boldsymbol \beta} _p,\sigma^2, {\boldsymbol g} _p)\)</span>.</li>
+<li>For each <span class="math inline">\(p\in\{1,...,P\}\)</span> sample jointly <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span> from:
+<span class="math display">\[\begin{align*}
+     p(\xi_p, {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p &amp;|\nu, \tau^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} ) \\
+     &amp; = p( {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p | {\boldsymbol \xi} , \tau^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} ) \\
+     &amp; \quad \times p(\xi_p|\nu,  {\boldsymbol \xi} _{-p}, \tau^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} )
+\end{align*}\]</span></li>
+<li>Sample <span class="math inline">\(\tau^2_\theta\)</span> from the full conditional
+<span class="math inline">\(p(\tau^2_\theta| {\boldsymbol \xi} , {\boldsymbol \Theta} , \sigma_{\theta}^2,  {\boldsymbol \Lambda} ,  {\boldsymbol A} )\)</span></li>
+<li>Sample <span class="math inline">\(\tau^2_\beta\)</span> from the full conditional:
+<span class="math inline">\(p(\tau^2_\beta| {\boldsymbol \xi} ,  {\boldsymbol \beta} _1,..., {\boldsymbol \beta} _P, \eta_1^2, ...,\eta_P^2, \phi_1^2, ...,\phi_P^2,  {\boldsymbol G} )\)</span></li>
+<li>Sample <span class="math inline">\(\nu\)</span> from the full conditional <span class="math inline">\(p(\nu| {\boldsymbol \xi} )\)</span>.</li>
+<li>Sample the horseshoe parameters using the latent variable approach as in <span class="citation">(<a href="#ref-makalic_simple_2016">Makalic and Schmidt 2016</a>)</span>.</li>
+</ol>
+<div id="full-conditional-for-boldsymbol-psi-a_p." class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-a_p." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><span class="math display">\[ {\boldsymbol \psi} ^a_{p,.}| {\boldsymbol \psi} ^a_{-p,.}, {\boldsymbol \Theta} ,\sigma^2, {\boldsymbol A} \sim N \left( \hat{ {\boldsymbol \psi} }^a_{p,.}, \tau^2 ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1} \right)\]</span> where
+<span class="math display">\[\begin{align*}
+    \hat{ {\boldsymbol \psi} }^a_{p,.} &amp;=  ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1}  {\boldsymbol W} &#39;  {\boldsymbol R} \\
+     {\boldsymbol R} &amp;= [ ( {\boldsymbol R} _1)_{-p,p}&#39;,...,( {\boldsymbol R} _n)_{-p,p}&#39; ]&#39;     \\
+     {\boldsymbol W} &amp;= [  {\boldsymbol W} _1&#39;,..., {\boldsymbol W} _n&#39;]&#39;                                                  \\
+    ( {\boldsymbol R} _i)_{-p,p} &amp;= ( {\boldsymbol A} _i)_{-p,p} -  {\boldsymbol \Theta} _{-p,p}y_i \quad \forall i \in \{1,...,n\} \\
+     {\boldsymbol W} _i &amp;=  {\boldsymbol \psi} ^a_{-p,.} \cdot ({\boldsymbol 1}_P \otimes  {\boldsymbol x} _i&#39;) \quad \forall i \in \{1,...,n\}.              \\
+\end{align*}\]</span></p>
+</div>
+<div id="full-conditional-for-boldsymbol-psi-g_p." class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Full conditional for <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-g_p." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><span class="math display">\[ {\boldsymbol \psi} ^g_{p,.}| {\boldsymbol \beta} _p,\sigma^2, {\boldsymbol g} _p \sim N \left( \hat{ {\boldsymbol \psi} }^g_{p,.}, \tau^2 ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1}  \right)\]</span> where
+<span class="math display">\[\begin{align*}
+    \hat{ {\boldsymbol \psi} }^g_{p,.} &amp;=  ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1}  {\boldsymbol W} &#39;  {\boldsymbol R} \\
+     {\boldsymbol R} &amp;= [ ( {\boldsymbol R} _1)_{-p,p}&#39;,...,( {\boldsymbol R} _n)_{-p,p}&#39; ]&#39;     \\
+     {\boldsymbol W} &amp;= [  {\boldsymbol W} _1&#39;,..., {\boldsymbol W} _n&#39;]&#39;                                                  \\
+    ( {\boldsymbol R} _i)_{-p,p} &amp;=  {\boldsymbol g} _{i,p} -  {\boldsymbol \beta} _p y_i \quad \forall i \in \{1,...,n\} \\
+     {\boldsymbol W} _i &amp;= {\boldsymbol 1}_{V_p} \otimes  {\boldsymbol x} _i&#39; \quad \forall i \in \{1,...,n\}.              \\
+\end{align*}\]</span></p>
+</div>
+<div id="full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Full conditional for <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span><a href="posteriorComputation.html#full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To sample <span class="math inline">\( {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p\)</span> we set them to <span class="math inline">\( {\boldsymbol 0} \)</span> if <span class="math inline">\(\xi_p = 0\)</span>, if <span class="math inline">\(\xi=1\)</span> we sample from
+<span class="math display">\[  {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p | {\boldsymbol \xi} _{-p}, \tau^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} \sim N(\hat{b}, \tau^2 \text{diag}(1/(S_{yy}^2 + 1 /  {\boldsymbol L} )) )\]</span>
+where
+<span class="math display">\[\begin{align*}
+    \hat{b}  &amp;=  {\boldsymbol S} _{xy} / (S_{yy}^2 + 1 /  {\boldsymbol L} )  \\
+     {\boldsymbol S} _{xy} &amp;= [ ( {\boldsymbol S} _{ay})_{p, -p}[ {\boldsymbol \xi} _{-p} = 1]&#39;,  {\boldsymbol S} _{gy,p}&#39;]&#39;         \\
+    S_{yy}^2 &amp;=  {\boldsymbol y} &#39; {\boldsymbol y} \\
+     {\boldsymbol L} &amp;= [\sigma^2_{\theta}  {\boldsymbol \Lambda} _{p, -p}[ {\boldsymbol \xi} _{-p} = 1]&#39;,\eta_p^2 ( {\boldsymbol \phi} _p^2)&#39;]&#39; \\
+    ( {\boldsymbol S} _{ay})_{p,p&#39;} &amp;= \sum_{i=1}^n (R_i^a)_{p,p&#39;}y_i                                          \\
+    ( {\boldsymbol S} _{gy,p})_{v}  &amp;= \sum_{i=1}^n R_{i,v,p}^g y_i \\
+    (R_i^a)_{p,p&#39;} &amp;= ( {\boldsymbol A} _i)_{p,p&#39;} - \sum_{h=1}^H (\psi^a)_{p,h} (\psi^a)_{p&#39;,h} x_{i,h} \\
+    R_{i,v,p}^g &amp;=  {\boldsymbol g} _{i,(v,p)} - \sum_{h=1}^H \psi^g_{p,h} x_{i,h} \\
+\end{align*}\]</span></p>
+<p>We sample <span class="math inline">\(\xi_p\)</span> from
+<span class="math display">\[ \xi_p|\nu,  {\boldsymbol \xi} _{-p}, \tau^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} \sim Bernoulli(\hat{v}_p)\]</span>
+where
+<span class="math display">\[\begin{align*}
+    \hat{v}_p &amp;= o_p / (1 + o_p) \\
+    o_p       &amp;= \exp(\sum_{i=1} c_i) \\
+    c_i       &amp;= -\frac{1}{2} \left(\log( {\boldsymbol L} _i) + \log\left(S_{yy}^2 +\frac{1}{ {\boldsymbol L} _i}\right) \right) + \hat{b}_i \frac{S_{yy}^2 +\frac{1}{ {\boldsymbol L} _i}}{2\tau^2}\\
+\end{align*}\]</span></p>
+<p>where <span class="math inline">\( {\boldsymbol L} _i\)</span> and <span class="math inline">\(\hat{b}\)</span> are as in the sampling of <span class="math inline">\( {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p\)</span>.</p>
+</div>
+<div id="full-conditional-for-tau2_theta" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Full Conditional for <span class="math inline">\(\tau^2_\theta\)</span><a href="posteriorComputation.html#full-conditional-for-tau2_theta" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><span class="math display">\[ \tau^2_\theta| {\boldsymbol \xi} , {\boldsymbol \Theta} , \sigma_{\theta}^2,  {\boldsymbol \Lambda} ,  {\boldsymbol A} \sim IG(\hat{a}_{\tau_\theta}, \hat{b}_{\tau\theta}) \]</span>
+where
+<span class="math display">\[\begin{align*}
+    \hat{b}_{\tau_\theta} &amp; = b_{\tau_\theta} + \frac{\sum_{i=1}^n \sum_{p&lt;p&#39;} (R^a_i)_{p,p&#39;}}{2} \\
+    &amp;+ \frac{\sum_{p&lt;p&#39;}  {\boldsymbol \Theta} _{ {\boldsymbol \xi} = 1,  {\boldsymbol \xi} = 1}^2 /  {\boldsymbol \Lambda} _{ {\boldsymbol \xi} = 1,  {\boldsymbol \xi} = 1} / \sigma^2_{\theta}}{2}  \\
+    \hat{a}_{\tau_\theta} &amp; = a_{\tau_\theta} + \frac{\frac{np(p-1)}{2} + \frac{nq(q-1)}{2}}{2} \\
+    R_i^a                 &amp;=  \left(  {\boldsymbol A} _i - \sum_{h=1}^{H}  {\boldsymbol \psi} _{h}^a ( {\boldsymbol \psi} _{h}^{a})&#39; x_{i,h} -  {\boldsymbol \Theta} \: y_i \right)^2  \\
+\end{align*}\]</span></p>
+</div>
+<div id="full-conditional-for-tau2_beta" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Full Conditional for <span class="math inline">\(\tau^2_\beta\)</span><a href="posteriorComputation.html#full-conditional-for-tau2_beta" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><span class="math display">\[ \tau^2_\beta| {\boldsymbol \xi} ,  {\boldsymbol \beta} _1,..., {\boldsymbol \beta} _P, \eta_1^2, ...,\eta_P^2, \phi_1^2, ...,\phi_P^2,  {\boldsymbol G} \sim IG(\hat{a}_{\tau_\beta}, \hat{b}_{\tau_\beta}) \]</span>
+where
+<span class="math display">\[\begin{align*}
+    \hat{b}_{\tau_\beta} &amp;= b_{\tau_\beta} + \frac{\sum_{i=1}^n \sum_{p=1}^P R^g_{i,p}{2} + \sum_{p=1}^P \xi_p  {\boldsymbol \beta} _p^2 / (\eta_p \phi^2_p)}{2} \\
+    \hat{a}_{\tau_\beta} &amp;= a_{\tau_\beta} + \frac{n \sum_{p=1}^P V_p + n \sum_{p=1}^P V_p \xi_p}{2} \\
+    R_{i,p}^g            &amp;=  \left(  {\boldsymbol g} _{i,p} - \sum_{h=1}^{H} {\boldsymbol 1}_{V_p}\psi_{p,h}^g x_{i,h} -  {\boldsymbol \beta} _{p}\: y_i \right)^2
+\end{align*}\]</span></p>
+</div>
+<div id="full-conditional-nu" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Full conditional <span class="math inline">\(\nu\)</span><a href="posteriorComputation.html#full-conditional-nu" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><span class="math display">\[ \nu|\xi_1,\ldots,\xi_p \sim Beta \left(a_\nu + \sum_{p=1}^P \xi_p, b_{\nu}+P-\sum_{p=1}^P \xi_p \right) \]</span></p>
+</div>
+<div id="full-conditional-for-the-network-coefficients-horseshoe-structure" class="section level2 hasAnchor" number="3.7">
+<h2><span class="header-section-number">3.7</span> Full Conditional for the Network Coefficients Horseshoe Structure<a href="posteriorComputation.html#full-conditional-for-the-network-coefficients-horseshoe-structure" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Following <span class="citation">(<a href="#ref-makalic_simple_2016">Makalic and Schmidt 2016</a>)</span> auxiliary variables are used for the priors of
+the <span class="math inline">\(\lambda_{p,p&#39;}\)</span>’s and <span class="math inline">\(\sigma^2_\theta\)</span>, to have that:</p>
+<p><span class="math display">\[ \lambda_{p,p&#39;} \sim IG(1/2, 1/\kappa_{\lambda_{p,p&#39;}}) \]</span>
+<span class="math display">\[ \sigma^2_\theta \sim IG(1/2, 1/\kappa_{\sigma^2_\theta}) \]</span>
+<span class="math display">\[ \phi_{v,p} \sim IG(1/2, 1/\kappa_{\phi_{v,p}}) \]</span>
+<span class="math display">\[ \eta_p \sim IG(1/2, 1/\kappa_{\eta_p}) \]</span>
+<span class="math display">\[ \kappa_{\lambda_{p,p}}, \kappa_{\sigma_\theta}, \kappa_{\phi_{v,p}}, \kappa_{\eta_p} \stackrel{iid}{\sim} IG(1/2, 1) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\} \]</span>
+Then the full conditionals for the Network Horseshoe parameters (including auxiliary variables) are given by</p>
+<p><span class="math display">\[ \lambda^2_{p,p&#39;}| \sigma^2_\theta, \tau^2_\theta, \theta_{p,p&#39;}, \xi_p, \xi_{p&#39;} \stackrel{ind.}{\sim}
+IG \left(1, \frac{1}{\kappa_{\lambda_{p,p&#39;}}}+I_{\xi_p=1}I_{\xi_{p&#39;}=1}\frac{\theta^2_{p,p&#39;}}{2 \sigma^2_\theta \tau^2_\theta}\right) \quad p&lt;p&#39;\]</span></p>
+<p><span class="math display">\[ \sigma^2_\theta|  {\boldsymbol \Lambda} , \tau^2_\theta,  {\boldsymbol \Theta} , \xi_p \stackrel{ind.}{\sim} IG \left(1, \frac{1}{\kappa_{\sigma^2_\theta}} + \frac{1}{2 \tau^2_\theta} \sum_{\substack{p&lt;p&#39; \\ \xi_p = 1 \\ \xi_{p&#39;}=1}}\frac{\theta_{p,p&#39;}^2}{\tau^2_{\theta}\lambda^2_{p,p&#39;}} \right)   \]</span>
+<span class="math display">\[ \kappa_{\lambda_{p,p&#39;}}|\lambda^2_{p,p&#39;} \sim IG \left(1, 1 + \frac{1}{\lambda^2_{p,p&#39;}}\right) \]</span>
+<span class="math display">\[ \kappa_{\sigma_\theta}|\sigma^2_\theta \sim IG \left(1, 1 + \frac{1}{\sigma^2_\theta}\right) \]</span>
+Then the full conditionals for the Voxel Horseshoe parameters (including auxiliary variables) are given by</p>
+<p><span class="math display">\[ \phi^2_{v,p}| \eta^2_p, \tau^2_\beta, \phi_{v,p}, \xi_p \stackrel{ind.}{\sim} IG \left(1, \frac{1}{\kappa_{\phi_{v,p}}}+I_{\xi_p=1}\frac{ \beta^2_{v,p}}{2 \eta^2_p \tau^2_\beta}\right) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\}  \]</span>
+<span class="math display">\[ \eta^2_p|  {\boldsymbol \Phi} , \tau^2_\beta,  {\boldsymbol B} , \xi_p \stackrel{ind.}{\sim} IG \left(1, \frac{1}{\kappa_{\eta_P}} + \frac{I_{\xi_p = 1}}{2 \tau^2_\beta} \sum_{\substack{v=1}}^{V_p}\frac{\beta_{v,p}^2}{\tau^2_{\theta}\lambda^2_{p,p&#39;}} \right) \quad p \in \{1,\ldots,P\}  \]</span></p>
+<p><span class="math display">\[ \kappa_{\phi_{v,p}}|\phi^2_{v,p} \sim IG \left(1, 1 + \frac{1}{\phi^2_{v,p}}\right) \]</span>
+<span class="math display">\[ \kappa_{\eta_p}|\eta^2_p \sim IG \left(1, 1 + \frac{1}{\eta^2_p}\right) \quad p \in \{1,\ldots,P\} \]</span></p>
+
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-makalic_simple_2016" class="csl-entry">
+Makalic, Enes, and Daniel F. Schmidt. 2016. <span>“A <span>Simple</span> <span>Sampler</span> for the <span>Horseshoe</span> <span>Estimator</span>.”</span> <em>IEEE Signal Processing Letters</em> 23 (1). <a href="https://doi.org/10.1109/LSP.2015.2503725">https://doi.org/10.1109/LSP.2015.2503725</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="modelFramework.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-posterior-computation.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

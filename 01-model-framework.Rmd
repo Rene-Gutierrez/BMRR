@@ -58,22 +58,17 @@ The prior for the Network coefficients is set as follows:
 while the prior for the Voxel coefficients is:
 
 \begin{equation}
-\mathbf{\beta}_p| \mathbf{\gamma_p} \xi_p = \xi_p \mathbf{\gamma}_p + (1-\xi_p ) \delta_0 \quad p \in\{1,\ldots,P\})
+\mathbf{\beta}_{v,p}|\phi^2_{v,p},\eta_p^2,\tau^2_\beta, \xi_p \stackrel{ind.}{\sim} \xi_p N(0, \tau^2_\beta \eta_p^2 \phi^2_{v,p}) \mathbf{\gamma}_p + (1-\xi_p ) \delta_0  \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\}
 (\#eq:voxelkPrior)
 \end{equation}
-
-where 
-
-$$\mathbf{\gamma_p} \in \mathbb{R}^{V_p}, \quad \mathbf{\gamma_p} = (\gamma_{1,p},\ldots,\gamma_{V_p,p})',  \quad p \in\{1,\ldots,P\}$$
 
 That is, a region specific Spike and Slab  prior on the Network and Voxel coefficients is applied, that simultaneously determines
 which regions are relevant through the spike indicators $\xi_p$ [@george1997approaches]. The spike component of the the coefficients is given a Horseshoe structure [@carvalho2010horseshoe]. Then the Horseshoe structure for the Network coefficients is set as:
 
 $$\sigma_\theta \sim C^+(0,1) $$
 $$\lambda_{p,p'} \stackrel{iid}{\sim} C^+(0,1) \quad p \in \{1,\ldots,P\} $$
-A horseshoe prior is also applied on the elements of $\mathbf{\gamma_p}$ as follows:
+The HOrseshoe structure for the Voxel Coefficients is given by:
 
-$$\gamma_{v,p}| \phi^2_{v,p},\eta_p^2,\tau^2_\beta \stackrel{ind.}{\sim} N(0, \tau^2_\beta \eta_p^2 \phi^2_{v,p}) \quad p \in\{1,\ldots,P\}) $$
 
 $$\eta^2_p \stackrel{iid}{\sim} C^+(0,1) \quad p \in \{1,\ldots,P\} $$
 

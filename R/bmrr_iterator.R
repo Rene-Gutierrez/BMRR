@@ -223,7 +223,7 @@ bmrr_iterator <- function(y,
     t2B <- 1 / rgamma(n     = 1,
                       shape = (sum(V[g == 1]) + 1) / 2,
                       rate  = 1 / xiB +
-                        sum(B^2 / (2 * sB2 * l2B), na.rm = TRUE))
+                        sum(B[, g == 1]^2 / (2 * sB2 * l2B[, g == 1]), na.rm = TRUE))
   } else {
     t2B <- 1 / rgamma(n     = 1,
                       shape = 1 / 2,
@@ -265,7 +265,7 @@ bmrr_iterator <- function(y,
     t2T <- 1 / rgamma(n     = 1,
                       shape = (sum(g) * (sum(g) - 1) / 2 + 1) / 2,
                       rate  = 1 / xiT +
-                        sum(Theta[lower.tri(Theta)]^2 / (2 * sT2 * l2T[lower.tri(l2T)])))
+                        sum(Theta[g == 1, g == 1][lower.tri(Theta[g == 1, g == 1])]^2 / (2 * sT2 * l2T[g == 1, g == 1][lower.tri(l2T[g == 1, g == 1])])))
   } else {
     t2T <- 1 / rgamma(n     = 1,
                       shape = 1 / 2,
