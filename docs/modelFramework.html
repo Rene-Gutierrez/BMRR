@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="posteriorComputation.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -102,20 +102,9 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#package-description"><i class="fa fa-check"></i><b>1.1</b> Package Description</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#package-requierments"><i class="fa fa-check"></i><b>1.2</b> Package Requierments</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#package-installation"><i class="fa fa-check"></i><b>1.3</b> Package Installation</a></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#document-structure"><i class="fa fa-check"></i><b>1.4</b> Document Structure</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#document-structure"><i class="fa fa-check"></i><b>1.3</b> Document Structure</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="modelFramework.html"><a href="modelFramework.html"><i class="fa fa-check"></i><b>2</b> Model Framework</a></li>
-<li class="chapter" data-level="3" data-path="posteriorComputation.html"><a href="posteriorComputation.html"><i class="fa fa-check"></i><b>3</b> Posterior Computation</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-a_p."><i class="fa fa-check"></i><b>3.1</b> Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span></a></li>
-<li class="chapter" data-level="3.2" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-g_p."><i class="fa fa-check"></i><b>3.2</b> Full conditional for <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span></a></li>
-<li class="chapter" data-level="3.3" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p"><i class="fa fa-check"></i><b>3.3</b> Full conditional for <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span></a></li>
-<li class="chapter" data-level="3.4" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-tau2_theta"><i class="fa fa-check"></i><b>3.4</b> Full Conditional for <span class="math inline">\(\tau^2_\theta\)</span></a></li>
-<li class="chapter" data-level="3.5" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-tau2_beta"><i class="fa fa-check"></i><b>3.5</b> Full Conditional for <span class="math inline">\(\tau^2_\beta\)</span></a></li>
-<li class="chapter" data-level="3.6" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-nu"><i class="fa fa-check"></i><b>3.6</b> Full conditional <span class="math inline">\(\nu\)</span></a></li>
-<li class="chapter" data-level="3.7" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-the-network-coefficients-horseshoe-structure"><i class="fa fa-check"></i><b>3.7</b> Full Conditional for the Network Coefficients Horseshoe Structure</a></li>
-</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -186,14 +175,17 @@ We can also represent this regression equations in stacked format as follows:
 \end{equation}\]</span></p>
 <p>while the prior for the Voxel coefficients is:</p>
 <p><span class="math display" id="eq:voxelkPrior">\[\begin{equation}
-\mathbf{\beta}_{v,p}|\phi^2_{v,p},\eta_p^2,\tau^2_\beta, \xi_p \stackrel{ind.}{\sim} \xi_p N(0, \tau^2_\beta \eta_p^2 \phi^2_{v,p}) \mathbf{\gamma}_p + (1-\xi_p ) \delta_0  \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\}
+\mathbf{\beta}_p| \mathbf{\gamma_p} \xi_p = \xi_p \mathbf{\gamma}_p + (1-\xi_p ) \delta_0 \quad p \in\{1,\ldots,P\})
 \tag{2.6}
 \end{equation}\]</span></p>
+<p>where</p>
+<p><span class="math display">\[\mathbf{\gamma_p} \in \mathbb{R}^{V_p}, \quad \mathbf{\gamma_p} = (\gamma_{1,p},\ldots,\gamma_{V_p,p})&#39;,  \quad p \in\{1,\ldots,P\}\]</span></p>
 <p>That is, a region specific Spike and Slab prior on the Network and Voxel coefficients is applied, that simultaneously determines
 which regions are relevant through the spike indicators <span class="math inline">\(\xi_p\)</span> <span class="citation">(<a href="#ref-george1997approaches">George and McCulloch 1997</a>)</span>. The spike component of the the coefficients is given a Horseshoe structure <span class="citation">(<a href="#ref-carvalho2010horseshoe">Carvalho, Polson, and Scott 2010</a>)</span>. Then the Horseshoe structure for the Network coefficients is set as:</p>
 <p><span class="math display">\[\sigma_\theta \sim C^+(0,1) \]</span>
 <span class="math display">\[\lambda_{p,p&#39;} \stackrel{iid}{\sim} C^+(0,1) \quad p \in \{1,\ldots,P\} \]</span>
-The HOrseshoe structure for the Voxel Coefficients is given by:</p>
+A horseshoe prior is also applied on the elements of <span class="math inline">\(\mathbf{\gamma_p}\)</span> as follows:</p>
+<p><span class="math display">\[\gamma_{v,p}| \phi^2_{v,p},\eta_p^2,\tau^2_\beta \stackrel{ind.}{\sim} N(0, \tau^2_\beta \eta_p^2 \phi^2_{v,p}) \quad p \in\{1,\ldots,P\}) \]</span></p>
 <p><span class="math display">\[\eta^2_p \stackrel{iid}{\sim} C^+(0,1) \quad p \in \{1,\ldots,P\} \]</span></p>
 <p><span class="math display">\[\phi_{v,p} \stackrel{iid}{\sim} C^+(0,1) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\} \]</span></p>
 <p>For the spike indicators, the prior is set as:
@@ -222,7 +214,7 @@ George, Edward I, and Robert E McCulloch. 1997. <span>“Approaches for <span>B<
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="posteriorComputation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

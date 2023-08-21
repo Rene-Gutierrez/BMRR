@@ -1,0 +1,11 @@
+eq:scalarNetworkEquation
+eq:scalarVoxelkEquation
+eq:stackedNetworkEquation
+eq:stackedVoxelEquation
+eq:networkPrior
+eq:voxelkPrior
+about
+package-description
+package-requierments
+document-structure
+modelFramework

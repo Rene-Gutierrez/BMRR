@@ -7,5 +7,14 @@ eq:voxelkPrior
 about
 package-description
 package-requierments
+package-installation
 document-structure
 modelFramework
+posteriorComputation
+full-conditional-for-boldsymbol-psi-a_p.
+full-conditional-for-boldsymbol-psi-g_p.
+full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p
+full-conditional-for-tau2_theta
+full-conditional-for-tau2_beta
+full-conditional-nu
+full-conditional-for-the-network-coefficients-horseshoe-structure

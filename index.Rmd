@@ -11,6 +11,254 @@ link-citations: true
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+ <!-- Bold Letters -->
+\newcommand{\ba}{ {\boldsymbol a} }
+\newcommand{\bA}{ {\boldsymbol A} }
+\newcommand{\bb}{ {\boldsymbol b} }
+\newcommand{\bB}{ {\boldsymbol B} }
+\newcommand{\bc}{ {\boldsymbol c} }
+\newcommand{\bC}{ {\boldsymbol C} }
+\newcommand{\bd}{ {\boldsymbol d} }
+\newcommand{\bD}{ {\boldsymbol D} }
+\newcommand{\be}{ {\boldsymbol e} }
+\newcommand{\bE}{ {\boldsymbol E} }
+\newcommand{\boldf}{ {\boldsymbol f} }
+\newcommand{\bF}{ {\boldsymbol F} }
+\newcommand{\bg}{ {\boldsymbol g} }
+\newcommand{\bG}{ {\boldsymbol G} }
+\newcommand{\bh}{ {\boldsymbol h} }
+\newcommand{\bH}{ {\boldsymbol H} }
+\newcommand{\bi}{ {\boldsymbol i} }
+\newcommand{\bI}{ {\boldsymbol I} }
+\newcommand{\bj}{ {\boldsymbol j} }
+\newcommand{\bJ}{ {\boldsymbol J} }
+\newcommand{\bk}{ {\boldsymbol k} }
+\newcommand{\bK}{ {\boldsymbol K} }
+\newcommand{\bl}{ {\boldsymbol l} }
+\newcommand{\bL}{ {\boldsymbol L} }
+\newcommand{\bm}{ {\boldsymbol m} }
+\newcommand{\bM}{ {\boldsymbol M} }
+\newcommand{\bn}{ {\boldsymbol n} }
+\newcommand{\bN}{ {\boldsymbol N} }
+\newcommand{\bo}{ {\boldsymbol o} }
+\newcommand{\bO}{ {\boldsymbol O} }
+\newcommand{\bp}{ {\boldsymbol p} }
+\newcommand{\bP}{ {\boldsymbol P} }
+\newcommand{\bq}{ {\boldsymbol q} }
+\newcommand{\bQ}{ {\boldsymbol Q} }
+\newcommand{\br}{ {\boldsymbol r} }
+\newcommand{\bR}{ {\boldsymbol R} }
+\newcommand{\bs}{ {\boldsymbol s} }
+\newcommand{\bS}{ {\boldsymbol S} }
+\newcommand{\bt}{ {\boldsymbol t} }
+\newcommand{\bT}{ {\boldsymbol T} }
+\newcommand{\bu}{ {\boldsymbol u} }
+\newcommand{\bU}{ {\boldsymbol U} }
+\newcommand{\bv}{ {\boldsymbol v} }
+\newcommand{\bV}{ {\boldsymbol V} }
+\newcommand{\bw}{ {\boldsymbol w} }
+\newcommand{\bW}{ {\boldsymbol W} }
+\newcommand{\bx}{ {\boldsymbol x} }
+\newcommand{\bX}{ {\boldsymbol X} }
+\newcommand{\by}{ {\boldsymbol y} }
+\newcommand{\bY}{ {\boldsymbol Y} }
+\newcommand{\bz}{ {\boldsymbol z} }
+\newcommand{\bZ}{ {\boldsymbol Z} }
+<!-- Raj's Bold Greeks -->
+ <!-- Regular Greeks -->
+\newcommand{\balpha}  { {\boldsymbol \alpha} }
+\newcommand{\bbeta}   { {\boldsymbol \beta} }
+\newcommand{\bgamma}  { {\boldsymbol \gamma} }
+\newcommand{\bGamma}  { {\boldsymbol \Gamma} }
+\newcommand{\bdelta}  { {\boldsymbol \delta} }
+\newcommand{\bDelta}  { {\boldsymbol \Delta} }
+\newcommand{\bepsilon}{ {\boldsymbol \epsilon} }
+\newcommand{\bzeta}   { {\boldsymbol \zeta} }
+\newcommand{\bet}     { {\boldsymbol \eta} }
+\newcommand{\btheta}  { {\boldsymbol \theta} }
+\newcommand{\bTheta}  { {\boldsymbol \Theta} }
+\newcommand{\biota}   { {\boldsymbol \iota} }
+\newcommand{\bkappa}  { {\boldsymbol \kappa} }
+\newcommand{\blambda} { {\boldsymbol \lambda} }
+\newcommand{\bLambda} { {\boldsymbol \Lambda} }
+\newcommand{\bmu}     { {\boldsymbol \mu} }
+\newcommand{\bnu}     { {\boldsymbol \nu} }
+\newcommand{\bxi}     { {\boldsymbol \xi} }
+\newcommand{\bXi}     { {\boldsymbol \Xi} }
+\newcommand{\bpi}     { {\boldsymbol \pi} }
+\newcommand{\bPi}     { {\boldsymbol \Pi} }
+\newcommand{\brho}    { {\boldsymbol \rho} }
+\newcommand{\bsigma}  { {\boldsymbol \sigma} }
+\newcommand{\bSigma}  { {\boldsymbol \Sigma} }
+\newcommand{\btau}    { {\boldsymbol \tau}}
+\newcommand{\bupsilon}{ {\boldsymbol \upsilon}}
+\newcommand{\bUpsilon}{ {\boldsymbol \Upsilon}}
+\newcommand{\bphi}    { {\boldsymbol \phi} }
+\newcommand{\bPhi}    { {\boldsymbol \Phi} }
+\newcommand{\bchi}    { {\boldsymbol \chi} }
+\newcommand{\bpsi}    { {\boldsymbol \psi} }
+\newcommand{\bPsi}    { {\boldsymbol \Psi} }
+\newcommand{\bomega}  { {\boldsymbol \omega} }
+\newcommand{\bOmega}  { {\boldsymbol \Omega} }
+<!-- Variant Greeks -->
+\newcommand{\bvarepsilon}{ {\boldsymbol \varepsilon} }
+\newcommand{\bvartheta}  { {\boldsymbol \vartheta} }
+\newcommand{\bvarpi}     { {\boldsymbol \varpi} }
+\newcommand{\bvarrho}    { {\boldsymbol \varrho} }
+\newcommand{\bvarsigma}  { {\boldsymbol \varsigma} }
+\newcommand{\bvarphi}    { {\boldsymbol \varphi} }
+<!-- Pseudo Greeks -->
+\newcommand{\bnabla}  { {\boldsymbol \nabla} }
+<!-- Rene's Bold Greeks -->
+ <!-- Regular Greeks -->
+\newcommand{\bga} { {\boldsymbol \alpha} }
+\newcommand{\bgb} { {\boldsymbol \beta} }
+\newcommand{\bgg} { {\boldsymbol \gamma} }
+\newcommand{\bgG} { {\boldsymbol \Gamma} }
+\newcommand{\bgd} { {\boldsymbol \delta} }
+\newcommand{\bgD} { {\boldsymbol \Delta} }
+\newcommand{\bge} { {\boldsymbol \epsilon} }
+\newcommand{\bgz} { {\boldsymbol \zeta} }
+\newcommand{\bget}{ {\boldsymbol \eta} }
+\newcommand{\bgth}{ {\boldsymbol \theta} }
+\newcommand{\bgTh}{ {\boldsymbol \Theta} }
+\newcommand{\bgi} { {\boldsymbol \iota} }
+\newcommand{\bgk} { {\boldsymbol \kappa} }
+\newcommand{\bgl} { {\boldsymbol \lambda} }
+\newcommand{\bgL} { {\boldsymbol \Lambda} }
+\newcommand{\bgm} { {\boldsymbol \mu} }
+\newcommand{\bgn} { {\boldsymbol \nu} }
+\newcommand{\bgx} { {\boldsymbol \xi} }
+\newcommand{\bgX} { {\boldsymbol \Xi} }
+\newcommand{\bgp} { {\boldsymbol \pi} }
+\newcommand{\bgP} { {\boldsymbol \Pi} }
+\newcommand{\bgr} { {\boldsymbol \rho} }
+\newcommand{\bgs} { {\boldsymbol \sigma} }
+\newcommand{\bgS} { {\boldsymbol \Sigma} }
+\newcommand{\bgt} { {\boldsymbol \tau}}
+\newcommand{\bgu} { {\boldsymbol \upsilon}}
+\newcommand{\bgU} { {\boldsymbol \Upsilon}}
+\newcommand{\bgph}{ {\boldsymbol \phi} }
+\newcommand{\bgPh}{ {\boldsymbol \Phi} }
+\newcommand{\bgj} { {\boldsymbol \chi} }
+\newcommand{\bgps}{ {\boldsymbol \psi} }
+\newcommand{\bgPs}{ {\boldsymbol \Psi} }
+\newcommand{\bgo} { {\boldsymbol \omega} }
+\newcommand{\bgO} { {\boldsymbol \Omega} }
+<!-- Variant Greeks -->
+\newcommand{\bgve} { {\boldsymbol \varepsilon} }
+\newcommand{\bgvth}{ {\boldsymbol \vartheta} }
+\newcommand{\bgvp} { {\boldsymbol \varpi} }
+\newcommand{\bgvr} { {\boldsymbol \varrho} }
+\newcommand{\bgvs} { {\boldsymbol \varsigma} }
+\newcommand{\bgvph}{ {\boldsymbol \varphi} }
+<!-- Calligraphic Letters -->
+\newcommand{\cA}{ {\mathcal{A}} }
+\newcommand{\cB}{ {\mathcal{B}} }
+\newcommand{\cC}{ {\mathcal{C}} }
+\newcommand{\cD}{ {\mathcal{D}} }
+\newcommand{\cE}{ {\mathcal{E}} }
+\newcommand{\cF}{ {\mathcal{F}} }
+\newcommand{\cG}{ {\mathcal{G}} }
+\newcommand{\cH}{ {\mathcal{H}} }
+\newcommand{\cI}{ {\mathcal{I}} }
+\newcommand{\cK}{ {\mathcal{K}} }
+\newcommand{\cL}{ {\mathcal{L}} }
+\newcommand{\cM}{ {\mathcal{M}} }
+\newcommand{\cN}{ {\mathcal{N}} }
+\newcommand{\cO}{ {\mathcal{O}} }
+\newcommand{\cP}{ {\mathcal{P}} }
+\newcommand{\cQ}{ {\mathcal{Q}} }
+\newcommand{\cR}{ {\mathcal{R}} }
+\newcommand{\cS}{ {\mathcal{S}} }
+\newcommand{\cT}{ {\mathcal{T}} }
+\newcommand{\cU}{ {\mathcal{U}} }
+\newcommand{\cV}{ {\mathcal{V}} }
+\newcommand{\cW}{ {\mathcal{W}} }
+\newcommand{\cX}{ {\mathcal{X}} }
+\newcommand{\cY}{ {\mathcal{Y}} }
+\newcommand{\cZ}{ {\mathcal{Z}} }
+<!-- Double Letters  -->
+\newcommand{\dA}{ {\mathbb{A}} }
+\newcommand{\dB}{ {\mathbb{B}} }
+\newcommand{\dC}{ {\mathbb{C}} }
+\newcommand{\dD}{ {\mathbb{D}} }
+\newcommand{\dE}{ {\mathbb{E}} }
+\newcommand{\dF}{ {\mathbb{F}} }
+\newcommand{\dG}{ {\mathbb{G}} }
+\newcommand{\dH}{ {\mathbb{H}} }
+\newcommand{\dI}{ {\mathbb{I}} }
+\newcommand{\dK}{ {\mathbb{K}} }
+\newcommand{\dL}{ {\mathbb{L}} }
+\newcommand{\dM}{ {\mathbb{M}} }
+\newcommand{\dN}{ {\mathbb{N}} }
+\newcommand{\dO}{ {\mathbb{O}} }
+\newcommand{\dP}{ {\mathbb{P}} }
+\newcommand{\dQ}{ {\mathbb{Q}} }
+\newcommand{\dR}{ {\mathbb{R}} }
+\newcommand{\dS}{ {\mathbb{S}} }
+\newcommand{\dT}{ {\mathbb{T}} }
+\newcommand{\dU}{ {\mathbb{U}} }
+\newcommand{\dV}{ {\mathbb{V}} }
+\newcommand{\dW}{ {\mathbb{W}} }
+\newcommand{\dX}{ {\mathbb{X}} }
+\newcommand{\dY}{ {\mathbb{Y}} }
+\newcommand{\dZ}{ {\mathbb{Z}} }
+<!-- Tilde Letters -->
+\newcommand{\ta}{ {\tilde{a}} }
+\newcommand{\tA}{ {\tilde{A}} }
+\newcommand{\tb}{ {\tilde{b}} }
+\newcommand{\tB}{ {\tilde{B}} }
+\newcommand{\tc}{ {\tilde{c}} }
+\newcommand{\tC}{ {\tilde{C}} }
+\newcommand{\td}{ {\tilde{d}} }
+\newcommand{\tD}{ {\tilde{D}} }
+\newcommand{\te}{ {\tilde{e}} }
+\newcommand{\tE}{ {\tilde{E}} }
+\newcommand{\tf}{ {\tilde{f}} }
+\newcommand{\tF}{ {\tilde{F}} }
+\newcommand{\tg}{ {\tilde{g}} }
+\newcommand{\tG}{ {\tilde{G}} }
+\newcommand{\thh}{ {\tilde{h}} }
+\newcommand{\tH}{ {\tilde{H}} }
+\newcommand{\ti}{ {\tilde{i}} }
+\newcommand{\tI}{ {\tilde{I}} }
+\newcommand{\tk}{ {\tilde{k}} }
+\newcommand{\tK}{ {\tilde{K}} }
+\newcommand{\tl}{ {\tilde{l}} }
+\newcommand{\tL}{ {\tilde{L}} }
+\newcommand{\tm}{ {\tilde{m}} }
+\newcommand{\tM}{ {\tilde{M}} }
+\newcommand{\tn}{ {\tilde{n}} }
+\newcommand{\tN}{ {\tilde{N}} }
+\newcommand{\too}{ {\tilde{o}} }
+\newcommand{\tO}{ {\tilde{O}} }
+\newcommand{\tp}{ {\tilde{p}} }
+\newcommand{\tP}{ {\tilde{P}} }
+\newcommand{\tq}{ {\tilde{q}} }
+\newcommand{\tQ}{ {\tilde{Q}} }
+\newcommand{\tr}{ {\tilde{r}} }
+\newcommand{\tR}{ {\tilde{R}} }
+\newcommand{\ts}{ {\tilde{s}} }
+\newcommand{\tS}{ {\tilde{S}} }
+\newcommand{\ttt}{ {\tilde{t}} }
+\newcommand{\tT}{ {\tilde{T}} }
+\newcommand{\tu}{ {\tilde{u}} }
+\newcommand{\tU}{ {\tilde{U}} }
+\newcommand{\tv}{ {\tilde{v}} }
+\newcommand{\tV}{ {\tilde{W}} }
+\newcommand{\tx}{ {\tilde{x}} }
+\newcommand{\tX}{ {\tilde{X}} }
+\newcommand{\ty}{ {\tilde{y}} }
+\newcommand{\tY}{ {\tilde{Y}} }
+\newcommand{\tz}{ {\tilde{z}} }
+\newcommand{\tZ}{ {\tilde{Z}} }
+<!-- Bold Numbers -->
+\newcommand{\bzero}{ {\boldsymbol 0} }
+\newcommand{\bones}{ {\boldsymbol 1} }
+
+
 #  About
 
 ## Package Description
@@ -28,7 +276,16 @@ explanatory variables.
 
 ## Package Requierments
 
-The package requires the `mvtnorm` package.
+The package requires the `mvtnorm` [@mvtnorm; @genz] package.
+
+## Package Installation
+
+To install the package enter:
+
+```
+library(devtools)
+install_github("Rene-Gutierrez/bmrr")
+``` 
 
 ## Document Structure
 
