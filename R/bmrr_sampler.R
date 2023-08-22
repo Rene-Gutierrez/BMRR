@@ -1,9 +1,8 @@
 #' BMRR Sampler
 #'
-#' @description Sampler for the Bayesian Multi-Object Response Regression
-#'              Method introduced in the paper "Multi-Object Data Integration in
-#'              the Study of Primary Progressive Aphasia." For details in the
-#'              sampling procedure computation see [bmrr_iterator()].
+#' @description Sampler for the Bayesian Multi-Object Response Regression Method
+#' introduced in the paper "Multi-Object Data Integration in the Study of
+#' Primary Progressive Aphasia."
 #'
 #' @param y         Main univariate variable of interest. Enter as a vector of
 #'                  size `N` where `N` is the sample size.
@@ -35,20 +34,28 @@
 #'                  the MCMC from a previous output or initialize the MCMC
 #'                  chain. By default the algorithm doesn't require the
 #'                  parameter list, and will initialize the method by itself.
+#' @param a_nu      Shape 1 of the hyper_prior parameter for `nu`.
+#' @param b_nu      Shape 2 of the hyper_prior parameter for `nu`.
+#' @param a_sT      Shape of the hyper_prior parameter for `sT`.
+#' @param b_sT      Scale of the hyper_prior parameter for `sT`.
+#' @param a_sB      Shape of the hyper_prior parameter for `sB`.
+#' @param b_sB      Scale of the hyper_prior parameter for `sB`.
 #'
 #' @return A list containing two elements:
 #' \itemize{
 #'  \item{`sam`}{ A sample of the parameters, if `small_out = TRUE`:
 #'  \itemize{
 #'    \item{`g`}{ A binary matrix of size `nmcmc` rows and `P` columns.}
+#'    \item{`nu`}{An vector of length `nmcmc` for the probability of the
+#'    Bernoulli prior on `g`.}
 #'    \item{`B`}{ A matrix of size `nmcmc` rows and `P * (P - 1) / P + mV`
 #'    columns , where `mV` is the number of voxels on the Voxel object,
 #'    corresponding to the samples of the coefficients. The order of the
-#'    coefficients is
-#'    obtained by stacking the coefficients of the network object and then the
-#'    coefficients for the voxel object. The coefficients of the network object
-#'    are ordered by [upper.tri()] and the coefficients of the voxel object are
-#'    ordered by stacking the columns of the array disregarding `NA`'s.}
+#'    coefficients is obtained by stacking the coefficients of the network
+#'    object and then the coefficients for the voxel object. The coefficients of
+#'    the network object are ordered by [upper.tri()] and the coefficients of
+#'    the voxel object are ordered by stacking the columns of the array
+#'    disregarding `NA`'s.}
 #'    \item{`DA`}{ An array of size `nmcmc` by `P` by `H` corresponding to the
 #'    samples of coefficients of the covariates in the Network equations.}
 #'    \item{`DG`}{ An array of size `nmcmc` by `P` by `H` corresponding to the
@@ -96,9 +103,8 @@
 #'    Voxel coefficients prior.}
 #'  }
 #'  \item{`state`}{ The last state of the parameters of the MCMC chain. Can be
-#'  used to initialize another call to [bmrr_sample()].}
+#'  used to initialize another call to [bmrr_sampler()].}
 #' }
-#'
 #'
 #' @export
 
@@ -106,6 +112,12 @@ bmrr_sampler <- function(y,
                          X,
                          G,
                          A,
+                         a_nu       = 1,
+                         b_nu       = 1,
+                         a_sT       = 1,
+                         b_sT       = 1,
+                         a_sB       = 1,
+                         b_sB       = 1,
                          nmcmc      = 1000,
                          burnin     = 0,
                          thining    = 1,
@@ -137,6 +149,7 @@ bmrr_sampler <- function(y,
     ssB2   <- numeric(length = nmcmc)
   } else {
     sg     <- matrix(data    = NA, nrow =   nmcmc, ncol = P)
+    snu    <- numeric(length = nmcmc)
     sTheta <- array(data     = NA, dim  = c(nmcmc, P, P))
     sB     <- array(data     = NA, dim  = c(nmcmc, mV, P))
     sDA    <- array(data     = NA, dim  = c(nmcmc, P, M))
@@ -172,6 +185,7 @@ bmrr_sampler <- function(y,
     sT2    <- state$sT2
     sB2    <- state$sB2
     g      <- state$g
+    nu     <- state$nu
   } else {
     Theta  <- matrix(data = 0,  nrow = P,  ncol = P)
     B      <- matrix(data = NA, nrow = mV, ncol = P)
@@ -194,6 +208,7 @@ bmrr_sampler <- function(y,
     sT2    <- 1
     sB2    <- 1
     g      <- rep(1, P)
+    nu     <- 0.5
   }
 
   # Progress Bar
@@ -225,7 +240,14 @@ bmrr_sampler <- function(y,
                        xiB   = xiB,
                        sT2   = sT2,
                        sB2   = sB2,
-                       g     = g)
+                       g     = g,
+                       nu    = nu,
+                       a_nu  = a_nu,
+                       b_nu  = b_nu,
+                       a_sT  = a_sT,
+                       b_sT  = b_sT,
+                       a_sB  = a_sB,
+                       b_sB  = b_sB)
 
   # Sampling
   for(s in 1:(burnin + nmcmc)){
@@ -251,7 +273,14 @@ bmrr_sampler <- function(y,
                          xiB   = out$xiB,
                          sT2   = out$sT2,
                          sB2   = out$sB2,
-                         g     = out$g)
+                         g     = out$g,
+                         nu    = out$nu,
+                         a_nu  = a_nu,
+                         b_nu  = b_nu,
+                         a_sT  = a_sT,
+                         b_sT  = b_sT,
+                         a_sB  = a_sB,
+                         b_sB  = b_sB)
     # Saves Samples
     if(s > burnin){
       if(((s - burnin) %% thining == 0)){
@@ -265,6 +294,7 @@ bmrr_sampler <- function(y,
           ssB2[temp]     <- out$sB2
         }else {
           sg[temp,]      <- out$g
+          snu[temp]      <- out$nu
           sTheta[temp,,] <- out$Theta
           sB[temp,,]     <- out$B
           sDA[temp,,]    <- out$DA
@@ -298,6 +328,7 @@ bmrr_sampler <- function(y,
                 sB2 = ssB2)
   } else {
     sam <- list(g     = sg,
+                nu    = snu,
                 Theta = sTheta,
                 B     = sB,
                 DA    = sDA,
@@ -329,7 +360,8 @@ bmrr_sampler <- function(y,
                vB    = out$vB,
                sT2   = out$sT2,
                sB2   = out$sB2,
-               g     = out$g)
+               g     = out$g,
+               nu    = out$nu)
 
   # Returns Values
   return(list(sam   = sam,

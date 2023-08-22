@@ -21,6 +21,7 @@
 #'              `P * (P - 1) / P + mV` columns equal to the number of
 #'              coefficients in both the Network object and the Voxel object.
 #' @param g     A binary vector of size `P`.
+#' @param nu    An scalar for the probability of the Bernoulli prior on `g`.
 #' @param Theta A matrix of size `P` by `P` corresponding to the
 #'              state in the MCMC of the Network coefficients.
 #' @param B     A matrix of size `mV` rows by `P` columns corresponding to the
@@ -58,11 +59,18 @@
 #' @param vB    A matrix of size `mV` rows by `P` columns corresponding to the
 #'              state in the MCMC of the auxiliary variable of the local
 #'              shrinking parameter of the Voxel coefficients prior.
+#' @param a_nu  Shape 1 of the hyper_prior parameter for `nu`.
+#' @param b_nu  Shape 2 of the hyper_prior parameter for `nu`.
+#' @param a_sT  Shape of the hyper_prior parameter for `sT`.
+#' @param b_sT  Scale of the hyper_prior parameter for `sT`.
+#' @param a_sB  Shape of the hyper_prior parameter for `sB`.
+#' @param b_sB  Scale of the hyper_prior parameter for `sB`.
 #'
 #' @return A list containing all the updated parameters after one iteration of
 #'         the MCMC. That is, a list containing:
 #'         \itemize{
 #'           \item{`g`}{ A binary vector of size `P`.}
+#'           \item{`nu`}{An scalar for the probability of the Bernoulli prior on `g`.}
 #'           \item{`Theta`}{ A matrix of size `P` by `P` corresponding to the
 #'                           state in the MCMC of the Network coefficients.}
 #'           \item{`B`}{ A matrix of size `mV` rows by `P` columns corresponding to the
@@ -117,7 +125,14 @@ bmrr_iterator <- function(y,
                           xiB,
                           sT2,
                           sB2,
-                          g){
+                          nu,
+                          g,
+                          a_nu,
+                          b_nu,
+                          a_sT,
+                          b_sT,
+                          a_sB,
+                          b_sB){
   # Problem dimensions
   N  <- length(y)            # Number of Observations
   mV <- dim(B)[1]            # Maximum Voxel Size
@@ -185,6 +200,7 @@ bmrr_iterator <- function(y,
                           sT2 = sT2,
                           sB2 = sB2,
                           g   = g,
+                          nu  = nu,
                           p   = p)
     # Updates gp
     gp[p] <- res$pr
@@ -203,6 +219,11 @@ bmrr_iterator <- function(y,
       B[C[, p], p] <- res$b
     }
   }
+
+  # Updates nu
+  anu <- a_nu + sum(g)
+  bnu <- b_nu - sum(g) + P
+  nu  <- rbeta(n = 1, shape1 = anu, shape2 = bnu)
 
   # Horseshoe Structure for B
   # Samples l2B
@@ -292,20 +313,20 @@ bmrr_iterator <- function(y,
   RA  <- R[ ,1:(P * (P - 1) / 2)]
   bs2 <- 2 + sum(RA^2)
   bs2 <- bs2 + sum(Theta[g == 1, g == 1]^2 / l2T[g == 1, g == 1], na.rm = TRUE) / 2 / t2T
-  bs2 <- bs2 / 2
+  bs2 <- bs2 / 2 + b_sT
   as2 <- 2 + N * P * (P - 1) / 2
   as2 <- as2 + Q * (Q - 1) / 2
-  as2 <- as2 / 2
+  as2 <- as2 / 2 + b_sT
   sT2 <- 1 / rgamma(n = 1, shape = as2, rate = bs2)
 
   # Samples sB2
   RG  <- R[ ,(P * (P - 1) / 2 + 1):(P * (P - 1) / 2 + sum(C))]
   bs2 <- 2 + sum(RG^2)
   bs2 <- bs2 + sum(B[, g == 1]^2 / l2B[, g == 1], na.rm = NA) / t2B
-  bs2 <- bs2 / 2
+  bs2 <- bs2 / 2 + b_sB
   as2 <- 2 + N * sum(C)
   as2 <- as2 + sum(C[, g == 1])
-  as2 <- as2 / 2
+  as2 <- as2 / 2 + a_sB
   sB2 <- 1 / rgamma(n = 1, shape = as2, rate = bs2)
 
   # Returns Values
@@ -314,6 +335,7 @@ bmrr_iterator <- function(y,
               DA    = DA,
               DG    = DG,
               g     = g,
+              nu    = nu,
               sT2   = sT2,
               sB2   = sB2,
               l2T   = l2T,

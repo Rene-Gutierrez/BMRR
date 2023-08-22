@@ -26,7 +26,14 @@ bmrr_iterator(
   xiB,
   sT2,
   sB2,
-  g
+  nu,
+  g,
+  a_nu,
+  b_nu,
+  a_sT,
+  b_sT,
+  a_sB,
+  b_sB
 )
 }
 \arguments{
@@ -99,7 +106,21 @@ of the error in the Network equations.}
 \item{sB2}{A scalar corresponding to the state in the MCMC of the variance
 of the error in the Voxel equations.}
 
+\item{nu}{An scalar for the probability of the Bernoulli prior on \code{g}.}
+
 \item{g}{A binary vector of size \code{P}.}
+
+\item{a_nu}{Shape 1 of the hyper_prior parameter for \code{nu}.}
+
+\item{b_nu}{Shape 2 of the hyper_prior parameter for \code{nu}.}
+
+\item{a_sT}{Shape of the hyper_prior parameter for \code{sT}.}
+
+\item{b_sT}{Scale of the hyper_prior parameter for \code{sT}.}
+
+\item{a_sB}{Shape of the hyper_prior parameter for \code{sB}.}
+
+\item{b_sB}{Scale of the hyper_prior parameter for \code{sB}.}
 
 \item{ZV}{A matrization of the arrays \code{A} and \code{G} with \code{N} rows and
 \code{P * (P - 1) / P + mV} columns equal to the number of
@@ -110,6 +131,7 @@ A list containing all the updated parameters after one iteration of
 the MCMC. That is, a list containing:
 \itemize{
 \item{\code{g}}{ A binary vector of size \code{P}.}
+\item{\code{nu}}{An scalar for the probability of the Bernoulli prior on \code{g}.}
 \item{\code{Theta}}{ A matrix of size \code{P} by \code{P} corresponding to the
 state in the MCMC of the Network coefficients.}
 \item{\code{B}}{ A matrix of size \code{mV} rows by \code{P} columns corresponding to the

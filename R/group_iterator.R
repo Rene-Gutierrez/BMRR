@@ -29,6 +29,7 @@ group_iterator <- function(Say,
                            sT2,
                            sB2,
                            g,
+                           nu,
                            p){
   # Checks if there are elements in the Symmetric Network
   if(!prod(!(g == 1)[-p])){
@@ -49,7 +50,7 @@ group_iterator <- function(Say,
   lo <- -(1 / 2) * (log(L) + log(Syy + 1 / L)) + bh^2 * (Syy + 1 / L) / (2 * c(rep(sT2, nT), rep(sB2, nB)))
 
   # Computes the Probability
-  od <- exp(sum(lo, na.rm = TRUE))
+  od <- exp(sum(lo, na.rm = TRUE)  + log(nu) - log(1 - nu))
   if(is.infinite(od)){
     pr <- 1
   } else {

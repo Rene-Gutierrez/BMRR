@@ -14,3 +14,6 @@
 ^references\.bib$
 ^style\.css$
 ^docs$
+^docs02-posterior-computation\.Rmd$
+^references\.Rmd$
+^\.RData$

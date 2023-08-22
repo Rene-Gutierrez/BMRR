@@ -9,6 +9,12 @@ bmrr_sampler(
   X,
   G,
   A,
+  a_nu = 1,
+  b_nu = 1,
+  a_sT = 1,
+  b_sT = 1,
+  a_sB = 1,
+  b_sB = 1,
   nmcmc = 1000,
   burnin = 0,
   thining = 1,
@@ -32,6 +38,18 @@ irregular, don't use \code{0}.}
 \item{A}{Network Object. Enter as an array of size (\code{N}, \code{P}, \code{P}).
 Notice that the method doesn't take into consideration the
 diagonal entries.}
+
+\item{a_nu}{Shape 1 of the hyper_prior parameter for \code{nu}.}
+
+\item{b_nu}{Shape 2 of the hyper_prior parameter for \code{nu}.}
+
+\item{a_sT}{Shape of the hyper_prior parameter for \code{sT}.}
+
+\item{b_sT}{Scale of the hyper_prior parameter for \code{sT}.}
+
+\item{a_sB}{Shape of the hyper_prior parameter for \code{sB}.}
+
+\item{b_sB}{Scale of the hyper_prior parameter for \code{sB}.}
 
 \item{nmcmc}{Number of MCMC samples. Default is \code{1000}.}
 
@@ -62,14 +80,16 @@ A list containing two elements:
 \item{\code{sam}}{ A sample of the parameters, if \code{small_out = TRUE}:
 \itemize{
 \item{\code{g}}{ A binary matrix of size \code{nmcmc} rows and \code{P} columns.}
+\item{\code{nu}}{An vector of length \code{nmcmc} for the probability of the
+Bernoulli prior on \code{g}.}
 \item{\code{B}}{ A matrix of size \code{nmcmc} rows and \code{P * (P - 1) / P + mV}
 columns , where \code{mV} is the number of voxels on the Voxel object,
 corresponding to the samples of the coefficients. The order of the
-coefficients is
-obtained by stacking the coefficients of the network object and then the
-coefficients for the voxel object. The coefficients of the network object
-are ordered by \code{\link[=upper.tri]{upper.tri()}} and the coefficients of the voxel object are
-ordered by stacking the columns of the array disregarding \code{NA}'s.}
+coefficients is obtained by stacking the coefficients of the network
+object and then the coefficients for the voxel object. The coefficients of
+the network object are ordered by \code{\link[=upper.tri]{upper.tri()}} and the coefficients of
+the voxel object are ordered by stacking the columns of the array
+disregarding \code{NA}'s.}
 \item{\code{DA}}{ An array of size \code{nmcmc} by \code{P} by \code{H} corresponding to the
 samples of coefficients of the covariates in the Network equations.}
 \item{\code{DG}}{ An array of size \code{nmcmc} by \code{P} by \code{H} corresponding to the
@@ -117,12 +137,12 @@ samples of the auxiliary variable of the local shrinking parameter of the
 Voxel coefficients prior.}
 }
 \item{\code{state}}{ The last state of the parameters of the MCMC chain. Can be
-used to initialize another call to \code{\link[=bmrr_sample]{bmrr_sample()}}.}
+used to initialize another call to \code{\link[=bmrr_sampler]{bmrr_sampler()}}.}
 }
 }
 \description{
-Sampler for the Bayesian Multi-Object Response Regression
-Method introduced in the paper "Multi-Object Data Integration in
-the Study of Primary Progressive Aphasia." For details in the
-sampling procedure computation see \code{\link[=bmrr_iterator]{bmrr_iterator()}}.
+Sampler for the Bayesian Multi-Object Response Regression Method
+introduced in the paper "Multi-Object Data Integration in the Study of
+Primary Progressive Aphasia." For details in the sampling procedure
+computation see.
 }

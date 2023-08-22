@@ -4,7 +4,7 @@
 \alias{group_iterator}
 \title{BMRR Iterator}
 \usage{
-group_iterator(Say, Sgy, Syy, C, LT, LB, sT2, sB2, g, p)
+group_iterator(Say, Sgy, Syy, C, LT, LB, sT2, sB2, g, nu, p)
 }
 \arguments{
 \item{Say}{The sum (over observations) of the product of the main variable
