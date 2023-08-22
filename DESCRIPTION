@@ -1,7 +1,7 @@
 Package: bmrr
 Type: Package
 Title: Bayesian Multi-Object Response Regression
-Version: 0.1.0
+Version: 0.2.0
 Author: Rene Gutierrez
 Maintainer: Rene Gutierrez <renegutierrez@tamu.edu>
 Description: Package to perform Bayesian Multi-Object Response Regression 
