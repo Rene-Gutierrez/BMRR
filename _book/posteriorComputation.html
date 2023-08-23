@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="modelFramework.html"/>
-<link rel="next" href="references.html"/>
+<link rel="next" href="variableRelations.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -116,6 +116,7 @@ div.csl-indent {
 <li class="chapter" data-level="3.6" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-nu"><i class="fa fa-check"></i><b>3.6</b> Full conditional <span class="math inline">\(\nu\)</span></a></li>
 <li class="chapter" data-level="3.7" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-the-network-coefficients-horseshoe-structure"><i class="fa fa-check"></i><b>3.7</b> Full Conditional for the Network Coefficients Horseshoe Structure</a></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="variableRelations.html"><a href="variableRelations.html"><i class="fa fa-check"></i><b>4</b> Variable Relations</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -143,14 +144,14 @@ div.csl-indent {
 cycles through the following steps:</p>
 <ol style="list-style-type: decimal">
 <li>For each <span class="math inline">\(p\in\{1,...,P\}\)</span> sample from <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span>, from the
-full conditional <span class="math inline">\(p( {\boldsymbol \psi} ^a_{p,.}| {\boldsymbol \psi} ^a_{-p,.}, {\boldsymbol \Theta} ,\sigma^2, {\boldsymbol A} )\)</span>.</li>
+full conditional <span class="math inline">\(p( {\boldsymbol \psi} ^a_{p,.}| {\boldsymbol \psi} ^a_{-p,.}, {\boldsymbol \Theta} ,\tau_\theta^2, {\boldsymbol A} )\)</span>.</li>
 <li>For each <span class="math inline">\(p\in\{1,...,P\}\)</span> sample from <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span>, from the full
-conditional <span class="math inline">\(p( {\boldsymbol \psi} ^g_{p,.}| {\boldsymbol \beta} _p,\sigma^2, {\boldsymbol g} _p)\)</span>.</li>
+conditional <span class="math inline">\(p( {\boldsymbol \psi} ^g_{p,.}| {\boldsymbol \beta} _p,\tau^2_\beta, {\boldsymbol g} _p)\)</span>.</li>
 <li>For each <span class="math inline">\(p\in\{1,...,P\}\)</span> sample jointly <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span> from:
 <span class="math display">\[\begin{align*}
-     p(\xi_p, {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p &amp;|\nu, \tau^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} ) \\
-     &amp; = p( {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p | {\boldsymbol \xi} , \tau^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} ) \\
-     &amp; \quad \times p(\xi_p|\nu,  {\boldsymbol \xi} _{-p}, \tau^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} )
+     p(\xi_p, {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p &amp;|\nu,  \tau_\theta^2, \tau_\beta^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} ) \\
+       &amp; = p( {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p | {\boldsymbol \xi} ,  \tau_\theta^2, \tau_\beta^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} ) \\
+       &amp; \quad \times p(\xi_p|\nu,  {\boldsymbol \xi} _{-p}, \tau_\theta^2, \tau_\beta^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} )
 \end{align*}\]</span></li>
 <li>Sample <span class="math inline">\(\tau^2_\theta\)</span> from the full conditional
 <span class="math inline">\(p(\tau^2_\theta| {\boldsymbol \xi} , {\boldsymbol \Theta} , \sigma_{\theta}^2,  {\boldsymbol \Lambda} ,  {\boldsymbol A} )\)</span></li>
@@ -161,7 +162,7 @@ conditional <span class="math inline">\(p( {\boldsymbol \psi} ^g_{p,.}| {\boldsy
 </ol>
 <div id="full-conditional-for-boldsymbol-psi-a_p." class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-a_p." class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><span class="math display">\[ {\boldsymbol \psi} ^a_{p,.}| {\boldsymbol \psi} ^a_{-p,.}, {\boldsymbol \Theta} ,\sigma^2, {\boldsymbol A} \sim N \left( \hat{ {\boldsymbol \psi} }^a_{p,.}, \tau^2 ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1} \right)\]</span> where
+<p><span class="math display">\[ {\boldsymbol \psi} ^a_{p,.}| {\boldsymbol \psi} ^a_{-p,.}, {\boldsymbol \Theta} ,\sigma^2, {\boldsymbol A} \sim N \left( \hat{ {\boldsymbol \psi} }^a_{p,.}, \tau_\theta^2 ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1} \right)\]</span> where
 <span class="math display">\[\begin{align*}
     \hat{ {\boldsymbol \psi} }^a_{p,.} &amp;=  ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1}  {\boldsymbol W} &#39;  {\boldsymbol R} \\
      {\boldsymbol R} &amp;= [ ( {\boldsymbol R} _1)_{-p,p}&#39;,...,( {\boldsymbol R} _n)_{-p,p}&#39; ]&#39;     \\
@@ -172,7 +173,8 @@ conditional <span class="math inline">\(p( {\boldsymbol \psi} ^g_{p,.}| {\boldsy
 </div>
 <div id="full-conditional-for-boldsymbol-psi-g_p." class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Full conditional for <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-g_p." class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><span class="math display">\[ {\boldsymbol \psi} ^g_{p,.}| {\boldsymbol \beta} _p,\sigma^2, {\boldsymbol g} _p \sim N \left( \hat{ {\boldsymbol \psi} }^g_{p,.}, \tau^2 ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1}  \right)\]</span> where
+<p><span class="math display">\[ {\boldsymbol \psi} ^g_{p,.}| {\boldsymbol \beta} _p,\sigma^2, {\boldsymbol g} _p \sim N \left( \hat{ {\boldsymbol \psi} }^g_{p,.}, \tau_\beta^2 ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1}  \right)\]</span>
+where
 <span class="math display">\[\begin{align*}
     \hat{ {\boldsymbol \psi} }^g_{p,.} &amp;=  ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1}  {\boldsymbol W} &#39;  {\boldsymbol R} \\
      {\boldsymbol R} &amp;= [ ( {\boldsymbol R} _1)_{-p,p}&#39;,...,( {\boldsymbol R} _n)_{-p,p}&#39; ]&#39;     \\
@@ -183,28 +185,51 @@ conditional <span class="math inline">\(p( {\boldsymbol \psi} ^g_{p,.}| {\boldsy
 </div>
 <div id="full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Full conditional for <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span><a href="posteriorComputation.html#full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>To sample <span class="math inline">\( {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p\)</span> we set them to <span class="math inline">\( {\boldsymbol 0} \)</span> if <span class="math inline">\(\xi_p = 0\)</span>, if <span class="math inline">\(\xi=1\)</span> we sample from
-<span class="math display">\[  {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p | {\boldsymbol \xi} _{-p}, \tau^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} \sim N(\hat{b}, \tau^2 \text{diag}(1/(S_{yy}^2 + 1 /  {\boldsymbol L} )) )\]</span>
+<p>To sample <span class="math inline">\( {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p\)</span> set them to <span class="math inline">\( {\boldsymbol 0} \)</span> if <span class="math inline">\(\xi_p = 0\)</span>, if
+<span class="math inline">\(\xi=1\)</span> then there are 2 cases.</p>
+<p>If <span class="math inline">\(\xi_{p&#39;} = 0 \quad \forall p&#39;\)</span> then set <span class="math inline">\( {\boldsymbol \Theta} _{-p,p} =  {\boldsymbol 0} \)</span> and sample <span class="math inline">\( {\boldsymbol \beta} _p\)</span> from:</p>
+<p><span class="math display">\[  {\boldsymbol \beta} _p |\tau_\beta^2, \eta_p^2,  {\boldsymbol \phi} _p^2,  {\boldsymbol G} \sim N(\hat{b}, \tau_\beta^2 \text{diag}(1/(S_{yy}^2 + 1 /  {\boldsymbol L} )) )\]</span>
 where
 <span class="math display">\[\begin{align*}
-    \hat{b}  &amp;=  {\boldsymbol S} _{xy} / (S_{yy}^2 + 1 /  {\boldsymbol L} )  \\
-     {\boldsymbol S} _{xy} &amp;= [ ( {\boldsymbol S} _{ay})_{p, -p}[ {\boldsymbol \xi} _{-p} = 1]&#39;,  {\boldsymbol S} _{gy,p}&#39;]&#39;         \\
-    S_{yy}^2 &amp;=  {\boldsymbol y} &#39; {\boldsymbol y} \\
-     {\boldsymbol L} &amp;= [\sigma^2_{\theta}  {\boldsymbol \Lambda} _{p, -p}[ {\boldsymbol \xi} _{-p} = 1]&#39;,\eta_p^2 ( {\boldsymbol \phi} _p^2)&#39;]&#39; \\
-    ( {\boldsymbol S} _{ay})_{p,p&#39;} &amp;= \sum_{i=1}^n (R_i^a)_{p,p&#39;}y_i                                          \\
-    ( {\boldsymbol S} _{gy,p})_{v}  &amp;= \sum_{i=1}^n R_{i,v,p}^g y_i \\
-    (R_i^a)_{p,p&#39;} &amp;= ( {\boldsymbol A} _i)_{p,p&#39;} - \sum_{h=1}^H (\psi^a)_{p,h} (\psi^a)_{p&#39;,h} x_{i,h} \\
-    R_{i,v,p}^g &amp;=  {\boldsymbol g} _{i,(v,p)} - \sum_{h=1}^H \psi^g_{p,h} x_{i,h} \\
+    \hat{b}           &amp;=  {\boldsymbol S} _{xy} / (S_{yy}^2 + 1 /  {\boldsymbol L} )                   \\
+     {\boldsymbol S} _{xy}          &amp;=  {\boldsymbol S} _{gy,p}                                        \\
+    S_{yy}^2          &amp;=  {\boldsymbol y} &#39; {\boldsymbol y} \\
+     {\boldsymbol L} &amp;= \eta_p^2 ( {\boldsymbol \phi} _p^2)                              \\
+    ( {\boldsymbol S} _{gy,p})_{v}  &amp;= \sum_{i=1}^n R_{i,v,p}^g y_i                      \\
+    R_{i,v,p}^g       &amp;=  {\boldsymbol g} _{i,(v,p)} - \sum_{h=1}^H \psi^g_{p,h} x_{i,h} \\
 \end{align*}\]</span></p>
-<p>We sample <span class="math inline">\(\xi_p\)</span> from
-<span class="math display">\[ \xi_p|\nu,  {\boldsymbol \xi} _{-p}, \tau^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} \sim Bernoulli(\hat{v}_p)\]</span>
+<p>And sample <span class="math inline">\(\xi_p\)</span> from
+<span class="math display">\[ \xi_p|\nu, \tau_\beta^2, \eta_p^2,  {\boldsymbol \phi} _p^2, {\boldsymbol G} \sim Bernoulli(\hat{v}_p)\]</span>
 where
 <span class="math display">\[\begin{align*}
     \hat{v}_p &amp;= o_p / (1 + o_p) \\
-    o_p       &amp;= \exp(\sum_{i=1} c_i) \\
+    o_p       &amp;= \exp(\sum_{i=1} c_i) \frac{\nu}{1-\nu}\\
+    c_i       &amp;= -\frac{1}{2} \left(\log( {\boldsymbol L} _i) + \log\left(S_{yy}^2 +\frac{1}{ {\boldsymbol L} _i}\right) \right) + \hat{b}^2_i \frac{S_{yy}^2 +\frac{1}{ {\boldsymbol L} _i}}{2\tau_\beta^2}\\
+\end{align*}\]</span></p>
+<p>where <span class="math inline">\( {\boldsymbol L} _i\)</span> and <span class="math inline">\(\hat{b}\)</span> are as in the sampling of <span class="math inline">\( {\boldsymbol \beta} _p\)</span>.</p>
+<p>If <span class="math inline">\(\exists p&#39; \ni \xi_p \neq0\)</span>, then sample <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span> from:</p>
+<p><span class="math display">\[  {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p | {\boldsymbol \xi} _{-p}, \tau_\beta^2, \tau_\theta^2 \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} \sim N(\hat{b}, \text{diag}(\tau/(S_{yy}^2 + 1 /  {\boldsymbol L} ) ) )\]</span>
+where
+<span class="math display">\[\begin{align*}
+    \hat{b}           &amp;=  {\boldsymbol S} _{xy} / (S_{yy}^2 + 1 /  {\boldsymbol L} ) \\
+     {\boldsymbol S} _{xy}          &amp;= [ ( {\boldsymbol S} _{ay})_{p, -p}[ {\boldsymbol \xi} _{-p} = 1]&#39;,  {\boldsymbol S} _{gy,p}&#39;]&#39; \\
+    S_{yy}^2          &amp;=  {\boldsymbol y} &#39; {\boldsymbol y} \\
+    \tau              &amp;= (\tau_\theta^2  {\boldsymbol 1} _P[ {\boldsymbol \xi} _{-p} = 1]&#39;, \tau_\beta^2  {\boldsymbol 1} _{V_p}&#39;)&#39; \\
+     {\boldsymbol L} &amp;= [\sigma^2_{\theta}  {\boldsymbol \Lambda} _{p, -p}[ {\boldsymbol \xi} _{-p} = 1]&#39;,\eta_p^2 ( {\boldsymbol \phi} _p^2)&#39;]&#39; \\
+    ( {\boldsymbol S} _{ay})_{p,p&#39;} &amp;= \sum_{i=1}^n (R_i^a)_{p,p&#39;}y_i \\
+    ( {\boldsymbol S} _{gy,p})_{v}  &amp;= \sum_{i=1}^n R_{i,v,p}^g y_i \\
+    (R_i^a)_{p,p&#39;}    &amp;= ( {\boldsymbol A} _i)_{p,p&#39;} - \sum_{h=1}^H (\psi^a)_{p,h} (\psi^a)_{p&#39;,h} x_{i,h} \\
+    R_{i,v,p}^g       &amp;=  {\boldsymbol g} _{i,(v,p)} - \sum_{h=1}^H \psi^g_{p,h} x_{i,h} \\
+\end{align*}\]</span></p>
+<p>We sample <span class="math inline">\(\xi_p\)</span> from
+<span class="math display">\[ \xi_p|\nu,  {\boldsymbol \xi} _{-p}, \tau_\theta^2, \tau_\beta^2, \sigma_{\theta}^2, \eta_p^2,  {\boldsymbol \Lambda} _{-p,p}, \phi_p^2,  {\boldsymbol A} , {\boldsymbol G} \sim Bernoulli(\hat{v}_p)\]</span>
+where
+<span class="math display">\[\begin{align*}
+    \hat{v}_p &amp;= o_p / (1 + o_p) \\
+    o_p       &amp;= \exp(\sum_{i=1} c_i) \frac{\nu}{1-\nu}\\
     c_i       &amp;= -\frac{1}{2} \left(\log( {\boldsymbol L} _i) + \log\left(S_{yy}^2 +\frac{1}{ {\boldsymbol L} _i}\right) \right) + \hat{b}_i \frac{S_{yy}^2 +\frac{1}{ {\boldsymbol L} _i}}{2\tau^2}\\
 \end{align*}\]</span></p>
-<p>where <span class="math inline">\( {\boldsymbol L} _i\)</span> and <span class="math inline">\(\hat{b}\)</span> are as in the sampling of <span class="math inline">\( {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p\)</span>.</p>
+<p>where <span class="math inline">\( {\boldsymbol L} _i\)</span> and <span class="math inline">\(\hat{b}\)</span> and <span class="math inline">\(\tau\)</span> are as in the sampling of <span class="math inline">\( {\boldsymbol \Theta} _{-p,p},  {\boldsymbol \beta} _p\)</span>.</p>
 </div>
 <div id="full-conditional-for-tau2_theta" class="section level2 hasAnchor" number="3.4">
 <h2><span class="header-section-number">3.4</span> Full Conditional for <span class="math inline">\(\tau^2_\theta\)</span><a href="posteriorComputation.html#full-conditional-for-tau2_theta" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -222,7 +247,7 @@ where
 <p><span class="math display">\[ \tau^2_\beta| {\boldsymbol \xi} ,  {\boldsymbol \beta} _1,..., {\boldsymbol \beta} _P, \eta_1^2, ...,\eta_P^2, \phi_1^2, ...,\phi_P^2,  {\boldsymbol G} \sim IG(\hat{a}_{\tau_\beta}, \hat{b}_{\tau_\beta}) \]</span>
 where
 <span class="math display">\[\begin{align*}
-    \hat{b}_{\tau_\beta} &amp;= b_{\tau_\beta} + \frac{\sum_{i=1}^n \sum_{p=1}^P R^g_{i,p}{2} + \sum_{p=1}^P \xi_p  {\boldsymbol \beta} _p^2 / (\eta_p \phi^2_p)}{2} \\
+    \hat{b}_{\tau_\beta} &amp;= b_{\tau_\beta} + \frac{\sum_{i=1}^n \sum_{p=1}^P R^g_{i,p} + \sum_{p=1}^P \xi_p  {\boldsymbol \beta} _p^2 / (\eta_p \phi^2_p)}{2} \\
     \hat{a}_{\tau_\beta} &amp;= a_{\tau_\beta} + \frac{n \sum_{p=1}^P V_p + n \sum_{p=1}^P V_p \xi_p}{2} \\
     R_{i,p}^g            &amp;=  \left(  {\boldsymbol g} _{i,p} - \sum_{h=1}^{H} {\boldsymbol 1}_{V_p}\psi_{p,h}^g x_{i,h} -  {\boldsymbol \beta} _{p}\: y_i \right)^2
 \end{align*}\]</span></p>
@@ -266,7 +291,7 @@ Makalic, Enes, and Daniel F. Schmidt. 2016. <span>“A <span>Simple</span> <span
         </div>
       </div>
 <a href="modelFramework.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="variableRelations.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

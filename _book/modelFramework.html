@@ -116,6 +116,7 @@ div.csl-indent {
 <li class="chapter" data-level="3.6" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-nu"><i class="fa fa-check"></i><b>3.6</b> Full conditional <span class="math inline">\(\nu\)</span></a></li>
 <li class="chapter" data-level="3.7" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-the-network-coefficients-horseshoe-structure"><i class="fa fa-check"></i><b>3.7</b> Full Conditional for the Network Coefficients Horseshoe Structure</a></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="variableRelations.html"><a href="variableRelations.html"><i class="fa fa-check"></i><b>4</b> Variable Relations</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -157,7 +158,7 @@ taken into consideration.</li>
 a_{i,(p,p)} = \sum_{h=1}^H \psi^a_{p,h}\psi^a_{p&#39;,h} x_{i,h} + \theta_{p,p&#39;}y_i + e_i^{(p,p&#39;) \quad p &lt; p&#39;} \tag{2.1}
 \end{equation}\]</span></p>
 <p><span class="math display" id="eq:scalarVoxelkEquation">\[\begin{equation}
-g_{i,(v,p)} = \sum_{h=1}^H \psi^g_{p,h}\psi^a_{p&#39;,h} x_{i,h} + \beta_{v,p}y_i + w_i^{(p,p&#39;)} \quad {p\in{1&lt;\ldots,P}, \quad v\in{1,\ldots,V_p}}
+g_{i,(v,p)} = \sum_{h=1}^H \psi^g_{p,h} x_{i,h} + \beta_{v,p}y_i + w_i^{(p,p&#39;)} \quad {p\in{1&lt;\ldots,P}, \quad v\in{1,\ldots,V_p}}
 \tag{2.2}
 \end{equation}\]</span></p>
 <p>, where

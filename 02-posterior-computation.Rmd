@@ -4,14 +4,14 @@ Bayesian estimation of the model is performed through Gibbs sampling which
 cycles through the following steps:
 
 1. For each $p\in\{1,...,P\}$ sample from $\bpsi^a_{p,.}$, from the 
-full conditional $p(\bpsi^a_{p,.}|\bpsi^a_{-p,.},\bTheta,\sigma^2,\bA)$.
+full conditional $p(\bpsi^a_{p,.}|\bpsi^a_{-p,.},\bTheta,\tau_\theta^2,\bA)$.
 2. For each $p\in\{1,...,P\}$ sample from $\bpsi^g_{p,.}$, from the full 
-conditional $p(\bpsi^g_{p,.}|\bbeta_p,\sigma^2,\bg_p)$.
+conditional $p(\bpsi^g_{p,.}|\bbeta_p,\tau^2_\beta,\bg_p)$.
 3. For each $p\in\{1,...,P\}$ sample jointly $\xi_p$, $\bTheta_{-p,p}$ and $\bbeta_p$ from:
     \begin{align*}
-        p(\xi_p,\bTheta_{-p,p}, \bbeta_p &|\nu, \tau^2, \sigma_{\theta}^2, \eta_p^2, \bLambda_{-p,p}, \phi_p^2, \bA,\bG) \\
-        & = p(\bTheta_{-p,p}, \bbeta_p |\bxi, \tau^2, \sigma_{\theta}^2, \eta_p^2, \bLambda_{-p,p}, \phi_p^2, \bA,\bG) \\
-        & \quad \times p(\xi_p|\nu, \bxi_{-p}, \tau^2, \sigma_{\theta}^2, \eta_p^2, \bLambda_{-p,p}, \phi_p^2, \bA,\bG)
+        p(\xi_p,\bTheta_{-p,p}, \bbeta_p &|\nu,  \tau_\theta^2, \tau_\beta^2, \sigma_{\theta}^2, \eta_p^2, \bLambda_{-p,p}, \phi_p^2, \bA,\bG) \\
+          & = p(\bTheta_{-p,p}, \bbeta_p |\bxi,  \tau_\theta^2, \tau_\beta^2, \sigma_{\theta}^2, \eta_p^2, \bLambda_{-p,p}, \phi_p^2, \bA,\bG) \\
+          & \quad \times p(\xi_p|\nu, \bxi_{-p}, \tau_\theta^2, \tau_\beta^2, \sigma_{\theta}^2, \eta_p^2, \bLambda_{-p,p}, \phi_p^2, \bA,\bG)
     \end{align*}
 4. Sample $\tau^2_\theta$ from the full conditional 
    $p(\tau^2_\theta|\bxi,\bTheta, \sigma_{\theta}^2, \bLambda, \bA)$
@@ -22,7 +22,7 @@ conditional $p(\bpsi^g_{p,.}|\bbeta_p,\sigma^2,\bg_p)$.
 
 ## Full Conditional for $\bpsi^a_{p,.}$
 
-$$\bpsi^a_{p,.}|\bpsi^a_{-p,.},\bTheta,\sigma^2,\bA \sim N \left( \hat{\bpsi}^a_{p,.}, \tau^2 (\bW'\bW)^{-1} \right)$$ where
+$$\bpsi^a_{p,.}|\bpsi^a_{-p,.},\bTheta,\sigma^2,\bA \sim N \left( \hat{\bpsi}^a_{p,.}, \tau_\theta^2 (\bW'\bW)^{-1} \right)$$ where
 \begin{align*}
     \hat{\bpsi}^a_{p,.} &=  (\bW'\bW)^{-1} \bW' \bR \\
     \bR &= [ (\bR_1)_{-p,p}',...,(\bR_n)_{-p,p}' ]'     \\
@@ -33,7 +33,8 @@ $$\bpsi^a_{p,.}|\bpsi^a_{-p,.},\bTheta,\sigma^2,\bA \sim N \left( \hat{\bpsi}^a_
 
 ## Full conditional for $\bpsi^g_{p,.}$
 
-$$\bpsi^g_{p,.}|\bbeta_p,\sigma^2,\bg_p \sim N \left( \hat{\bpsi}^g_{p,.}, \tau^2 (\bW'\bW)^{-1}  \right)$$ where
+$$\bpsi^g_{p,.}|\bbeta_p,\sigma^2,\bg_p \sim N \left( \hat{\bpsi}^g_{p,.}, \tau_\beta^2 (\bW'\bW)^{-1}  \right)$$
+where
 \begin{align*}
     \hat{\bpsi}^g_{p,.} &=  (\bW'\bW)^{-1} \bW' \bR \\
     \bR &= [ (\bR_1)_{-p,p}',...,(\bR_n)_{-p,p}' ]'     \\
@@ -44,30 +45,59 @@ $$\bpsi^g_{p,.}|\bbeta_p,\sigma^2,\bg_p \sim N \left( \hat{\bpsi}^g_{p,.}, \tau^
 
 ## Full conditional for $\xi_p$, $\bTheta_{-p,p}$ and $\bbeta_p$
 
-To sample $\bTheta_{-p,p}, \bbeta_p$ we set them to $\bzero$ if $\xi_p = 0$, if $\xi=1$ we sample from
-$$ \bTheta_{-p,p}, \bbeta_p |\bxi_{-p}, \tau^2, \sigma_{\theta}^2, \eta_p^2, \bLambda_{-p,p}, \phi_p^2, \bA,\bG \sim N(\hat{b}, \tau^2 \text{diag}(1/(S_{yy}^2 + 1 / \bL)) )$$
+To sample $\bTheta_{-p,p}, \bbeta_p$ set them to $\bzero$ if $\xi_p = 0$, if 
+$\xi=1$ then there are 2 cases. 
+
+If $\xi_{p'} = 0 \quad \forall p'$ then set $\bgTh_{-p,p} = \bzero$ and sample $\bgb_p$ from:
+
+$$ \bbeta_p |\tau_\beta^2, \eta_p^2, \bgph_p^2, \bG \sim N(\hat{b}, \tau_\beta^2 \text{diag}(1/(S_{yy}^2 + 1 / \bL)) )$$
 where
 \begin{align*}
-    \hat{b}  &= \bS_{xy} / (S_{yy}^2 + 1 / \bL)  \\
-    \bS_{xy} &= [ (\bS_{ay})_{p, -p}[\bxi_{-p} = 1]', \bS_{gy,p}']'         \\
-    S_{yy}^2 &= \by'\by                          \\
-    \bL      &= [\sigma^2_{\theta} \bLambda_{p, -p}[\bxi_{-p} = 1]',\eta_p^2 (\bphi_p^2)']' \\
-    (\bS_{ay})_{p,p'} &= \sum_{i=1}^n (R_i^a)_{p,p'}y_i                                          \\
-    (\bS_{gy,p})_{v}  &= \sum_{i=1}^n R_{i,v,p}^g y_i \\
-    (R_i^a)_{p,p'} &= (\bA_i)_{p,p'} - \sum_{h=1}^H (\psi^a)_{p,h} (\psi^a)_{p',h} x_{i,h} \\
-    R_{i,v,p}^g &= \bg_{i,(v,p)} - \sum_{h=1}^H \psi^g_{p,h} x_{i,h} \\
+    \hat{b}           &= \bS_{xy} / (S_{yy}^2 + 1 / \bL)                   \\
+    \bS_{xy}          &= \bS_{gy,p}                                        \\
+    S_{yy}^2          &= \by'\by                                           \\
+    \bL               &= \eta_p^2 (\bphi_p^2)                              \\
+    (\bS_{gy,p})_{v}  &= \sum_{i=1}^n R_{i,v,p}^g y_i                      \\
+    R_{i,v,p}^g       &= \bg_{i,(v,p)} - \sum_{h=1}^H \psi^g_{p,h} x_{i,h} \\
 \end{align*}
 
-We sample $\xi_p$ from
-$$ \xi_p|\nu, \bxi_{-p}, \tau^2, \sigma_{\theta}^2, \eta_p^2, \bLambda_{-p,p}, \phi_p^2, \bA,\bG \sim Bernoulli(\hat{v}_p)$$
+And sample $\xi_p$ from
+$$ \xi_p|\nu, \tau_\beta^2, \eta_p^2, \bgph_p^2,\bG \sim Bernoulli(\hat{v}_p)$$
 where
 \begin{align*}
     \hat{v}_p &= o_p / (1 + o_p) \\
-    o_p       &= \exp(\sum_{i=1} c_i) \\
+    o_p       &= \exp(\sum_{i=1} c_i) \frac{\nu}{1-\nu}\\
+    c_i       &= -\frac{1}{2} \left(\log(\bL_i) + \log\left(S_{yy}^2 +\frac{1}{\bL_i}\right) \right) + \hat{b}^2_i \frac{S_{yy}^2 +\frac{1}{\bL_i}}{2\tau_\beta^2}\\
+\end{align*}
+
+where $\bL_i$ and $\hat{b}$ are as in the sampling of $\bbeta_p$.
+
+If $\exists p' \ni \xi_p \neq0$, then sample $\bgTh_{-p,p}$ and $\bgb_p$ from:
+
+$$ \bTheta_{-p,p}, \bbeta_p |\bxi_{-p}, \tau_\beta^2, \tau_\theta^2 \sigma_{\theta}^2, \eta_p^2, \bLambda_{-p,p}, \phi_p^2, \bA,\bG \sim N(\hat{b}, \text{diag}(\tau/(S_{yy}^2 + 1 / \bL) ) )$$
+where
+\begin{align*}
+    \hat{b}           &= \bS_{xy} / (S_{yy}^2 + 1 / \bL) \\
+    \bS_{xy}          &= [ (\bS_{ay})_{p, -p}[\bxi_{-p} = 1]', \bS_{gy,p}']' \\
+    S_{yy}^2          &= \by'\by \\
+    \tau              &= (\tau_\theta^2 \bones_P[\bxi_{-p} = 1]', \tau_\beta^2 \bones_{V_p}')' \\ 
+    \bL               &= [\sigma^2_{\theta} \bLambda_{p, -p}[\bxi_{-p} = 1]',\eta_p^2 (\bphi_p^2)']' \\
+    (\bS_{ay})_{p,p'} &= \sum_{i=1}^n (R_i^a)_{p,p'}y_i \\
+    (\bS_{gy,p})_{v}  &= \sum_{i=1}^n R_{i,v,p}^g y_i \\
+    (R_i^a)_{p,p'}    &= (\bA_i)_{p,p'} - \sum_{h=1}^H (\psi^a)_{p,h} (\psi^a)_{p',h} x_{i,h} \\
+    R_{i,v,p}^g       &= \bg_{i,(v,p)} - \sum_{h=1}^H \psi^g_{p,h} x_{i,h} \\
+\end{align*}
+
+We sample $\xi_p$ from
+$$ \xi_p|\nu, \bxi_{-p}, \tau_\theta^2, \tau_\beta^2, \sigma_{\theta}^2, \eta_p^2, \bLambda_{-p,p}, \phi_p^2, \bA,\bG \sim Bernoulli(\hat{v}_p)$$
+where
+\begin{align*}
+    \hat{v}_p &= o_p / (1 + o_p) \\
+    o_p       &= \exp(\sum_{i=1} c_i) \frac{\nu}{1-\nu}\\
     c_i       &= -\frac{1}{2} \left(\log(\bL_i) + \log\left(S_{yy}^2 +\frac{1}{\bL_i}\right) \right) + \hat{b}_i \frac{S_{yy}^2 +\frac{1}{\bL_i}}{2\tau^2}\\
 \end{align*}
 
-where $\bL_i$ and $\hat{b}$ are as in the sampling of $\bTheta_{-p,p}, \bbeta_p$.
+where $\bL_i$ and $\hat{b}$ and $\tau$ are as in the sampling of $\bTheta_{-p,p}, \bbeta_p$.
 
 ## Full Conditional for  $\tau^2_\theta$
 
@@ -86,7 +116,7 @@ where
 $$ \tau^2_\beta|\bxi, \bbeta_1,...,\bbeta_P, \eta_1^2, ...,\eta_P^2, \phi_1^2, ...,\phi_P^2, \bG \sim IG(\hat{a}_{\tau_\beta}, \hat{b}_{\tau_\beta}) $$
 where
 \begin{align*}
-    \hat{b}_{\tau_\beta} &= b_{\tau_\beta} + \frac{\sum_{i=1}^n \sum_{p=1}^P R^g_{i,p}{2} + \sum_{p=1}^P \xi_p \bbeta_p^2 / (\eta_p \phi^2_p)}{2} \\ 
+    \hat{b}_{\tau_\beta} &= b_{\tau_\beta} + \frac{\sum_{i=1}^n \sum_{p=1}^P R^g_{i,p} + \sum_{p=1}^P \xi_p \bbeta_p^2 / (\eta_p \phi^2_p)}{2} \\ 
     \hat{a}_{\tau_\beta} &= a_{\tau_\beta} + \frac{n \sum_{p=1}^P V_p + n \sum_{p=1}^P V_p \xi_p}{2} \\
     R_{i,p}^g            &=  \left( \bg_{i,p} - \sum_{h=1}^{H} {\boldsymbol 1}_{V_p}\psi_{p,h}^g x_{i,h} - \bbeta_{p}\: y_i \right)^2
 \end{align*}

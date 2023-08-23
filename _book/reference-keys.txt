@@ -18,3 +18,4 @@ full-conditional-for-tau2_theta
 full-conditional-for-tau2_beta
 full-conditional-nu
 full-conditional-for-the-network-coefficients-horseshoe-structure
+variableRelations

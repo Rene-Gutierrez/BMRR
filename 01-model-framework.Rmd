@@ -20,7 +20,7 @@ a_{i,(p,p)} = \sum_{h=1}^H \psi^a_{p,h}\psi^a_{p',h} x_{i,h} + \theta_{p,p'}y_i 
 \end{equation}
 
 \begin{equation}
-g_{i,(v,p)} = \sum_{h=1}^H \psi^g_{p,h}\psi^a_{p',h} x_{i,h} + \beta_{v,p}y_i + w_i^{(p,p')} \quad {p\in{1<\ldots,P}, \quad v\in{1,\ldots,V_p}} 
+g_{i,(v,p)} = \sum_{h=1}^H \psi^g_{p,h} x_{i,h} + \beta_{v,p}y_i + w_i^{(p,p')} \quad {p\in{1<\ldots,P}, \quad v\in{1,\ldots,V_p}} 
 (\#eq:scalarVoxelkEquation)
 \end{equation}
 
