@@ -125,10 +125,11 @@ where
 
 $$ \nu|\xi_1,\ldots,\xi_p \sim Beta \left(a_\nu + \sum_{p=1}^P \xi_p, b_{\nu}+P-\sum_{p=1}^P \xi_p \right) $$
 
-## Full Conditional for the Network Coefficients Horseshoe Structure
+## Full Conditional for the Horseshoe Structure
 
 Following [@makalic_simple_2016] auxiliary variables are used for the priors of
-the $\lambda_{p,p'}$'s and $\sigma^2_\theta$, to have that:
+the $\lambda_{p,p'}$'s, $\sigma^2_\theta$, $\phi_{v.p}$'2 and $\eta_p$'s as
+follows:
 
 $$ \lambda_{p,p'} \sim IG(1/2, 1/\kappa_{\lambda_{p,p'}}) $$
 $$ \sigma^2_\theta \sim IG(1/2, 1/\kappa_{\sigma^2_\theta}) $$

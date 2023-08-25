@@ -17,9 +17,9 @@ bmrr_sampler(
   b_sB = 1,
   nmcmc = 1000,
   burnin = 0,
-  thining = 1,
-  small_out = TRUE,
-  state = list()
+  thinning = 1,
+  state = list(),
+  small_out = TRUE
 )
 }
 \arguments{
@@ -56,9 +56,14 @@ diagonal entries.}
 \item{burnin}{Number of samples to burn-in. By default there is no
 burn-in, that is the parameter is set to \code{0}.}
 
-\item{thining}{Natural number indicating how many iterations of the MCMC
-have to be performed to obtain a sample. BY default there is
+\item{thinning}{Natural number indicating how many iterations of the MCMC
+have to be performed to obtain a sample. By default there is
 no thinning, that is the parameter is set to \code{1}.}
+
+\item{state}{A list with all the parameters. It can be used to continue
+the MCMC from a previous output or initialize the MCMC
+chain. By default the algorithm doesn't require the
+parameter list, and will initialize the method by itself.}
 
 \item{small_out}{Parameter indicating if an output of small size is required.
 Given the nature of problems to analyze, as in the paper,
@@ -68,11 +73,6 @@ for every iteration. Furthermore, the function doesn't
 return second order parameters of method, that is only the
 parameters at main regression functions and the region
 indicators are returned.}
-
-\item{state}{A list with all the parameters. It can be used to continue
-the MCMC from a previous output or initialize the MCMC
-chain. By default the algorithm doesn't require the
-parameter list, and will initialize the method by itself.}
 }
 \value{
 A list containing two elements:
@@ -80,8 +80,6 @@ A list containing two elements:
 \item{\code{sam}}{ A sample of the parameters, if \code{small_out = TRUE}:
 \itemize{
 \item{\code{g}}{ A binary matrix of size \code{nmcmc} rows and \code{P} columns.}
-\item{\code{nu}}{An vector of length \code{nmcmc} for the probability of the
-Bernoulli prior on \code{g}.}
 \item{\code{B}}{ A matrix of size \code{nmcmc} rows and \code{P * (P - 1) / P + mV}
 columns , where \code{mV} is the number of voxels on the Voxel object,
 corresponding to the samples of the coefficients. The order of the
@@ -102,6 +100,8 @@ the variance of the error in the Voxel equations.}
 If \code{small_out = FALSE}:
 \itemize{
 \item{\code{g}}{ A binary matrix of size \code{nmcmc} rows and \code{P} columns.}
+\item{\code{nu}}{An vector of length \code{nmcmc} for the probability of the
+Bernoulli prior on \code{g}.}
 \item{\code{Theta}}{ An array of size \code{nmcmc} by \code{P} by \code{P} corresponding to the
 samples of the Network coefficients.}
 \item{\code{B}}{ An array of size \code{nmcmc} by \code{mV} by \code{P}  corresponding to the
@@ -143,6 +143,5 @@ used to initialize another call to \code{\link[=bmrr_sampler]{bmrr_sampler()}}.}
 \description{
 Sampler for the Bayesian Multi-Object Response Regression Method
 introduced in the paper "Multi-Object Data Integration in the Study of
-Primary Progressive Aphasia." For details in the sampling procedure
-computation see.
+Primary Progressive Aphasia."
 }

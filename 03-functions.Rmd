@@ -1,0 +1,282 @@
+# Functions {#functions}
+
+In this section the package functions are explained (including those that are 
+not available to use to the user).
+
+In this section variable names in the code are written in code mode while the 
+variables described in [Model Framework] are written in math mode, for example
+in the code the main variable is `y` while in model the main 
+variable is written $y$. Unfortunately, the name of the variables in the code
+and the model framework are not always a close match as in the case of `y` and 
+$y$. The corresponding relations will be indicated when each variable is
+introduced in the code.
+
+## `bmrr_sampler`
+
+### Desription
+
+The main function of the package is `bmrr_sampler`. It is in charge of receiving
+the data and model set-up and returns samples for all the model parameters, as
+well as the last state of the variables. The first part of the function deals
+with the set-up, while the second part loops through the function `bmrr_iterator`
+to obtain and save the samples. The actual computation of the full conditionals
+is done by `bmrr_iterator`.
+
+### Inputs
+
+`bmrr_sampler` receives three types of inputs, data, hyper-parameters and set-up
+inputs.
+
+The data inputs required by the function. They are as follows:
+
++---:+:-------------------:+:-------------------------------------------------------------------+
+|Code| Model               | Description                                                        |
++----+---------------------+--------------------------------------------------------------------+
+|`y` | $\by$               | This is the variable of interest. It should be inputted as a       |
+|    |                     | vector of size $n$, the number of observations.                    |
++----+---------------------+--------------------------------------------------------------------+
+|`A` | $\bA$               | The Network object. It should be inputted as an array of           |
+|    |                     | size $(n \times P \times P)$. For each observation $i$,            |
+|    |                     | `A[i,,]` must be symmetric with `NA` as diagonal elements.         |
++----+---------------------+--------------------------------------------------------------------+
+|`G` | $\{\bg_p\}_{p=1}^P$ | The voxel object. It should be inputted as an array                |
+|    |                     | of size $(n \times V \times P)$, where $V= \max(\{V_p\}_{p=1}^P)$. |
+|    |                     | If the regions are not the same size (i.e. there is a $p$ for      |
+|    |                     | which $V_p < V$), then pad the entry `G[i,p,]` with `NA`'s, do not |
+|    |                     | use `0` or any other numeric value.                                |
++----+---------------------+--------------------------------------------------------------------+
+|`X` |$\bX$                | Other covariates to take in consideration. It should be inputted as|
+|    |                     | a matrix of size $(n \times H)$. Each column `X[,h]` represents one| 
+|    |                     | covariate.                                                         |
++----+---------------------+--------------------------------------------------------------------+
+
+The hyper-parameter inputs are not required, if they are not specified the 
+default values are used. They are as follows:
+
++-----:+:-------------------:+:-------------------------------------------------------------------+
+|Code  | Model               | Description                                                        |
++------+---------------------+--------------------------------------------------------------------+
+|`a_sT`| $a_{\tau_\theta}$   | Shape hyper-parameter of the Inverse-gamma prior for               |
+|      |                     | $\tau_\theta^2$. An scalar. By default, `a_sT = 1`.                |
++------+---------------------+--------------------------------------------------------------------+
+|`b_sT`| $b_{\tau_\theta}$   | Scale hyper-parameter of the Inverse-gamma prior for               |
+|      |                     | $\tau_\theta^2$. An scalar. By default, `b_sT = 1`.                |
++------+---------------------+--------------------------------------------------------------------+
+|`a_sB`| $a_{\tau_\beta}$    | Shape hyper-parameter of the Inverse-gamma prior for               |
+|      |                     | $\tau_\beta^2$. An scalar. By default, `a_sB = 1`.                 |
++------+---------------------+--------------------------------------------------------------------+
+|`b_sB`| $b_{\tau_\beta}$    | Scale hyper-parameter of the Inverse-gamma prior for               |
+|      |                     | $\tau_\beta^2$. An scalar. By default, `b_sB = 1`.                 |
++------+---------------------+--------------------------------------------------------------------+
+|`a_nu`| $a_{\nu}$           | Shape 1 hyper-parameter of the Beta prior for                      |
+|      |                     | $\nu$. An scalar. By default, `a_sB = 1`.                          |
++------+---------------------+--------------------------------------------------------------------+
+|`b_nu`| $b_{\nu}$           | Shape 2 hyper-parameter of the Beta prior for                      |
+|      |                     | $\nu$. An scalar. By default, `b_sB = 1`.                          |
++------+---------------------+--------------------------------------------------------------------+
+
+The set-up inputs also have set defaults, however, unlike the hyper-parameter 
+inputs, the set-up inputs are might require more attention from the user as 
+they deal with the characteristics of the MCMC samples. As set-up inputs, 
+they do not have a model equivalent.
+
+They are as follows:
+
++----------:+:-----------------------------------------------------------------------------------------+
+|Code       | Description                                                                              |
++-----------+------------------------------------------------------------------------------------------+
+|`nmcmc`    | Number of MCMC samples of the output. Default is 1000. Notice this number, does          |
+|           | not include the samples that are lost due to burn-in and thinning.                       |
++-----------+------------------------------------------------------------------------------------------+
+|`burnin`   | Number of initial iterations of the MCMC to discard. Default is 0, that is there         |
+|           | is no burn-in.                                                                           |
++-----------+------------------------------------------------------------------------------------------+
+|`thinning` | Number of iterations of the MCMC chain to obtain one output sample.                      |
++-----------+------------------------------------------------------------------------------------------+
+|`state`    | A list of containing all the model parameters. It can be used in two ways. The first     |
+|           | one is to initialize the MCMC at a selected starting point. The second one is to         |
+|           | continue a MCMC sample chain. It is also an output of the function, so it is readily     |
+|           | available in case the function is used sequentially.                                     |
++-----------+------------------------------------------------------------------------------------------+
+|`small_out`| A Boolean that indicates if a small set of the parameters of the model                   |
+|           | is required for memory purposes. By default `small_out = FALSE`, which returns all the   |
+|           | model parameters. If `small_out = TRUE`, then only the first order parameters in the     |
+|           | hierarchy  and the indicators are returned, that is the parameters that appear on        |
+|           | equations \@ref(eq:scalarNetworkEquation), \@ref(eq:scalarVoxelEquation),                |
+|           | \@ref(eq:networkNoise), \@ref(eq:voxelNoise) and $\bxi$. Further more the network and    |
+|           | voxel coeeficients are returned in a single object.                                      |
++-----------+------------------------------------------------------------------------------------------+
+
+### Output
+
+The function returns a list with two elements. The first one, and most
+important is a list called `sam` that contains `nmcmc` samples of the model 
+parameters after discarding burn-in iterations according to `burnin`
+and skipping iterations according to `thinning`. 
+
+For example, if:
+
+* `nmcmc = 100`
+* `burnin = 10`
+* `thinning = 3`
+
+the function will perform `10 + 100 * 3 = 310` MCMC iterations to return `100`
+samples for each parameter, as specified by `small_out`.
+
+The second output of the function is `state` a list all the variables on the 
+last iteration of the MCMC.
+
+If `small_out = FALSE` (by default) samples for every model parameter and 
+auxiliary variables are returned.
+
++------:+:---------------------------------:+:------------------------------------------------------------------------------------------------------------------------------+
+|Code   | Model                             | Description                                                                                                                   |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`g`    | $\bxi$                            | Samples for the region indicator variables. It is returned as a binary                                                        |
+|       |                                   | matrix of size `nmcmc` rows by $P$. For sample $s$, `g[s,p]` $={\xi_p^s}'$.                                                   |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`nu`   | $\nu$                             | Samples of the probability parameter of the Bernoulli prior of the indicators $\xi_p$. It is as vector of size `nmcmc`. For   |
+|       |                                   | sample $s$, `nu[s]`$=\nu^s$.                                                                                                  |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`Theta`| $\bgTh$                           | Samples for the Network coefficients. It is an array of size (`nmcmc`$\times P \times P$). For sample $s$,                    |
+|       |                                   | `Theta[s,p,q]`$=(\bgTh^s)_{p,q}=\theta_{p,q}^s$ for $p\neq q$ and `Theta[s,p,p]=NA`.                                          |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`B`    | $\{\bg_p\}_{p=1}^P$               | Samples for the Voxel coefficients. It is an array of size (`nmcmc`$\times V \times P$), where $V=\max\{V_p\}_{p=1}^P$.       |
+|       |                                   | For sample $s$, `B[s,v,p]`$=\beta_{v,p}$ for $v \leq V_p$, and `B[s,v,p]=NA` for $v > V_p$.                                   |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`DA`   |$\{\bgps_{p,h}^a\}_{p=1,h=1}^{P,H}$| Samples of the bilinear structure of the Network equation coefficients of the covariates $X$. It is an array of size          |
+|       |                                   | (`nmcmc` $\times P \times H$).  For sample $s$, `DA[s,p,h]`$= {\psi_{p,h}^{a,s}}'$.                                           |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`DG`   |$\{\bgps_{p,h}^g\}_{p=1,h=1}^{P,H}$| Samples of the structure of the Voxel equation coefficients of the covariates $X$. It is an array of size                     |
+|       |                                   | (`nmcmc` $\times P \times H$).  For sample $s$, `DA[s,p,h]`$= {\psi_{p,h}^{g,s}}'$.                                           |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`sT2`  |$\tau^2_\theta$                    | Samples of the variance of the error of the Network equation. It is a vector of size `nmcmc`. For sample $s$, `sT2[s]`        |
+|       |                                   | $= {\tau^2_\theta}^s$.                                                                                                        |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`sB2`  |$\tau^2_\beta$                     | Samples of the variance of the error of the Voxel equation. It is a vector of size `nmcmc`. For sample $s$, `sB2[s]`          |
+|       |                                   | $= {\tau^2_\beta}^s$.                                                                                                         |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`t2T`  |$\sigma_\theta^2$                  | Samples of the global shrinking parameter for the Horseshoe structure of the Network coefficients. It is a vector of size     |
+|       |                                   | `nmcmc`. For sample $s$, `t2T[s]`$={\sigma^2_\theta}^s$.                                                                      |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`l2T`  |$\bgL$                             | Samples of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is an array of size      |
+|       |                                   | `nmcmc`$\times P \times P$. For sample $s$, `l2T[s,p,q]`$=(\bgL)_{p,q}^s = \lambda_{p,q}^s$ for $p \neq q$ and                |
+|       |                                   | `l2T[s,p,p]=NA`.                                                                                                              |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`xiT`  |$\kappa_{\sigma_\theta^2}$         | Samples of the auxiliary variable of the global shrinking parameter for the Horseshoe structure of the Network coefficients.  |
+|       |                                   | It is a vector of size `nmcmc`. For sample $s$, `xiT[s]`$=\kappa^s_{\sigma^2_\theta}$.                                        |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`vT`   |$\kappa_{\lambda_{p,p'}}$          | Samples of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network coefficients.  |
+|       |                                   | It is an array of size `nmcmc`$\times P \times P$. For sample $s$, `vT[s,p,q]`$=(\bgL)_{p,q}^s = \kappa_{\lambda_{p,q}}^s$ for|
+|       |                                   | $p \neq q$ and `l2T[s,p,p] = NA`.                                                                                             |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`t2B`  |$\{\eta_p\}_{p=1}^P$               | Samples of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a matrix of size      |
+|       |                                   | `nmcmc`$\times P$. For sample $s$, `t2B[s,p]`$={\eta_p}^s$.                                                                   |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`l2B`  |$\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}$ | Samples of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is an array of size      |
+|       |                                   | `nmcmc`$\times V \times P$. For sample $s$, `l2B[s,v,p]`$=\phi_{v,p}^s = \phi_{v,p}^s$ for $v \leq V_p$ and                   |
+|       |                                   | `l2B[s,v,p]=NA` for $v>V_p$.                                                                                                  |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`xiB`  |$\kappa_{\eta_p}$                  | Samples of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel coefficients.   |
+|       |                                   | It is a matrix of size `nmcmc`$\times P$. For sample $s$, `xiT[s,p]`$=\kappa^s_{\eta_p}$.                                     |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`vB`   |$\kappa_{\phi_{v,p}}$              | Samples of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients.    |
+|       |                                   | It is an array of size `nmcmc`$\times V \times P$. For sample $s$, `vB[s,v,p]`$=\kappa_{\phi_{v,p}}^s$ for                    |
+|       |                                   | $v \leq V_p$ and `vB[s,v,p] = NA` for $v> V_p$.                                                                               |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+
+If `small_out = TRUE` only the samples for the following parameters are
+returned:
+
++-----:+:---------------------------------:+:------------------------------------------------------------------------------------------------------------------------------+
+|Code  | Model                             | Description                                                                                                                   |
++------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`g`   | $\bxi$                            | Samples for the region indicator variables. It is returned as a binary                                                        |
+|      |                                   | matrix of size `nmcmc` rows by $P$. For sample $s$, `g[s,p]` $={\xi_p^s}'$.                                                   |
++------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`B`   | $\bgTh$                           | Samples for the network and voxel coefficients. A matrix of size                                                              |
+|      | and                               | (`nmcmc` $\times P(P - 1) / P + V$). The order of the coefficients                                                            |
+|      | $\{\bg_p\}_{p=1}^P$               | is obtained by stacking the coefficients of the network object and                                                            |
+|      |                                   | then the coefficients for the voxel object. The coefficients of                                                               |
+|      |                                   | the network object are ordered by `upper.tri` applied to $\bgTh$                                                              |
+|      |                                   | and the coefficients of the voxel object are ordered by stacking                                                              |
+|      |                                   | the $\{\bgb_p\}_{p = 1}^P$ objects. That is each row of `B` is a                                                              |
+|      |                                   | sample $s$, such that `B[s,] =`                                                                                               |
+|      |                                   |$(\theta_{1,2}^s,\theta_{1,3}^s,\theta_{2,3}^s,\ldots,\theta_{1,P}^s,\ldots,\theta_{P-1,P}^s,{\bgb_1^s}',\ldots,{\bgb_P^s}')$. |
++------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`DA`  |$\{\bgps_{p,h}^a\}_{p=1,h=1}^{P,H}$| Samples of the bilinear structure of the Network equation coefficients of the covariates $X$. It is an array of size          |
+|      |                                   | (`nmcmc` $\times P \times H$).  For sample $s$, `DA[s,p,h]`$= {\psi_{p,h}^{a,s}}'$.                                           |
++------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`DG`  |$\{\bgps_{p,h}^g\}_{p=1,h=1}^{P,H}$| Samples of the structure of the Voxel equation coefficients of the covariates $X$. It is an array of size                     |
+|      |                                   | (`nmcmc` $\times P \times H$).  For sample $s$, `DA[s,p,h]`$= {\psi_{p,h}^{g,s}}'$.                                           |
++------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`sT2` |$\tau^2_\theta$                    | Samples of the variance of the error of the Network equation. It is a vector of size `nmcmc`. For sample $s$, `sT2[s]`        |
+|      |                                   | $= {\tau^2_\theta}^s$.                                                                                                        |
++------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`sB2` |$\tau^2_\beta$                     | Samples of the variance of the error of the Voxel equation. It is a vector of size `nmcmc`. For sample $s$, `sB2[s]`          |
+|      |                                   | $= {\tau^2_\beta}^s$.                                                                                                         |
++------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+
+The `state` output is a list containing all the model variables 
+(including auxiliaries).
+
+
+### Walkthrough
+
+#### Problem Dimensions
+
+Obtains the sample size and dimensions of the objects.
+
+* `N`$=n$. The number of observations.
+* `mV`$V=\max\{V_p\}_{p=1}^P$. The maximum number of voxels per region.
+* `P`$=P$. The number of regions.
+* `H`$=H$. Number of other covariates (other than the main variable).
+
+#### Creates Auxiliary Variables
+
+This variables are used on every iteration of the MCMC `bmrr_iterator`.
+
+* `C`. Is a Boolean matrix of size $V \times P$ that indicates which entries of
+  the voxel data are valid entries.
+* `Zv` It is a transformation of the Network and Voxel data objects into one 
+  matrix. Each row is an observation of the Network object followed by the 
+  voxel object. Sometimes is convenient to work with the original data objects
+  and sometimes is more convenient to work with the stacked object.
+* `XG`. A replication of the covariates $V$ times, stacked one over the other
+  it is used for the computation of $\{\psi_{v,p}^g\}_{v=1,p=1}^{V_p,P}$.
+  
+#### Sample Holders
+
+Creates the holders of the samples according to `small_out`.
+
+#### Initialization
+
+Initializes the MCMC, if `state` is provided, then it is used as the initial 
+value otherwise default values are used.
+
+#### Progress Bar
+
+Creates the progress bar to show the progress of the MCMC.
+
+#### First Run
+
+Computes the first sample of the MCMC (it is discarded in every case).
+
+#### Sampling
+
+Goes through the MCMC by calling `bmrr_iterator`, saves the samples after
+considering `thinning` and `burnin` as well as `small_out` and updates the 
+progress bar.
+
+#### Saves the Samples
+
+Saves the samples on a list according to `small_out`.
+
+#### Saves the State
+
+Saves the last iteration of the MCMC in a list.
+
+#### Returns Values
+
+Returns the two outputs, the MCMC samples (`sam`) and the last iteration of the 
+MCMC (`state`).

@@ -17,3 +17,5 @@
 ^docs02-posterior-computation\.Rmd$
 ^references\.Rmd$
 ^\.RData$
+^02-posterior-computation\.Rmd$
+^03-functions\.Rmd$

@@ -7,7 +7,7 @@ observation $i \in \{1,\ldots,n\}$:
   * $y_i          \in \mathbb{R}$: An scalar variable of interest.
   * $\mathbf{A}_i \in \mathbb{R}^{P \times P}$ A network object, represented as 
     a symmetric matrix of $P$ by $P$, where we  disregard the diagonal entries.
-  * $\mathbf{g}_{i,p} \in \mathbb{R}^V_p$ for $p \in {1,\ldots,P}$ voxel 
+  * $\mathbf{g}_{i,p} \in \mathbb{R}^{V_p}$ for $p \in {1,\ldots,P}$ voxel 
     elements referenced by the same $P$ regions as the Network object. Notice 
     that we allow for the voxel elements to vary in size across the $P$ regions.
   * $\mathbf{x}_i \in \mathbb{R}^H$ A vector of other covariates that can be 
@@ -21,12 +21,18 @@ a_{i,(p,p)} = \sum_{h=1}^H \psi^a_{p,h}\psi^a_{p',h} x_{i,h} + \theta_{p,p'}y_i 
 
 \begin{equation}
 g_{i,(v,p)} = \sum_{h=1}^H \psi^g_{p,h} x_{i,h} + \beta_{v,p}y_i + w_i^{(p,p')} \quad {p\in{1<\ldots,P}, \quad v\in{1,\ldots,V_p}} 
-(\#eq:scalarVoxelkEquation)
+(\#eq:scalarVoxelEquation)
 \end{equation}
 
-, where 
-$$e_i^{(p,p')} \stackrel{iid}{\sim} N(0, \tau^2_{\theta})$$
-$$w_i^{(v,p)} \stackrel{iid}{\sim} N(0, \tau^2_{\beta})$$
+, where
+\begin{equation}
+e_i^{(p,p')} \stackrel{iid}{\sim} N(0, \tau^2_{\theta}) (\#eq:networkNoise)
+\end{equation}
+
+\begin{equation}
+w_i^{(v,p)} \stackrel{iid}{\sim} N(0, \tau^2_{\beta}) (\#eq:voxelNoise)
+\end{equation}
+
 We can also represent this regression equations in stacked format as follows:
 \begin{equation}
 \mathbf{A}_i = \sum_{h=1}^H \mathbf{\Psi}^a_{p,h} x_{i,h} + \mathbf{\Theta}y_i + E_i (\#eq:stackedNetworkEquation)
@@ -67,7 +73,7 @@ which regions are relevant through the spike indicators $\xi_p$ [@george1997appr
 
 $$\sigma_\theta \sim C^+(0,1) $$
 $$\lambda_{p,p'} \stackrel{iid}{\sim} C^+(0,1) \quad p \in \{1,\ldots,P\} $$
-The HOrseshoe structure for the Voxel Coefficients is given by:
+The Horseshoe structure for the Voxel Coefficients is given by:
 
 
 $$\eta^2_p \stackrel{iid}{\sim} C^+(0,1) \quad p \in \{1,\ldots,P\} $$
