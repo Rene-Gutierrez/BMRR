@@ -17,7 +17,7 @@
 #'              Notice that the method doesn't take into consideration the
 #'              diagonal entries.
 #' @param XG    A replication of X into a matrix of `mV * N` rows by `H` columns.
-#' @param ZV    A matrization of the arrays `A` and `G` with `N` rows and
+#' @param Zv    A matrization of the arrays `A` and `G` with `N` rows and
 #'              `P * (P - 1) / P + mV` columns equal to the number of
 #'              coefficients in both the Network object and the Voxel object.
 #' @param g     A binary vector of size `P`.
@@ -139,45 +139,36 @@ bmrr_iterator <- function(y,
   V  <- colSums(C)           # Number of Voxels per Region
   P  <- dim(B)[2]            # Number of ROI's
   Q  <- sum(g)               # Number of Active Regions
-  M  <- ncol(X)              # Number of Covariates
+  H  <- ncol(X)              # Number of Covariates
   gp <- numeric(length = P)
 
-  # Creates DT and DB (Legacy)
-  DT   <- array(data = 0,   dim = c(M, P, P))
-  DB   <- array(data = NA,  dim = c(M, mV, P))
-  D    <- matrix(data = NA, nrow = M, ncol = (P * (P - 1) / 2 + sum(C)))
-  for(m in 1:M){
-    DT[m, , ]       <- DA[, m] %*% t(DA[, m])
-    diag(DT[m, , ]) <- NA
-    DB[m, , ][C]    <- kronecker(X = t(DG[, m]), Y = rep(1, mV))[C]
-    D[m, ]          <- c(DT[m,,][upper.tri(DT[m,,])], DB[m,,][C])
+  # Samples DT
+  for(p in 1:P){
+    W       <- matrix(data = NA, nrow = 0, ncol = H)
+    for(pp in (1:P)[-p]){
+      W <- rbind(W, t(t(X) * DA[pp, ]))
+    }
+    R       <- c(A[,-p, p]) - kronecker(X = Theta[-p, p], y)
+    WW      <- solve(t(W) %*% W)
+    DAphat  <- WW %*% t(W) %*% R
+    DA[p, ] <- c(DAphat) + mvtnorm::rmvnorm(n = 1, sigma = sT2 * WW)
   }
 
-  # Samples DA
-  for(p in 1:P){
-    Z <- matrix(data = NA, nrow = 0, ncol = M)
-    R <- c(A[,-p, p]) - kronecker(X = Theta[-p, p], y)
-    for(pp in (1:P)[-p]){
-      Z <- rbind(Z, t(t(X) * DA[pp, ]))
-    }
-    ZZ      <- solve(t(Z) %*% Z)
-    DAphat  <- ZZ %*% t(Z) %*% R
-    DA[p, ] <- c(DAphat) + mvtnorm::rmvnorm(n = 1, sigma = sT2 * ZZ)
-  }
   # Samples DG
   for(p in 1:P){
     R       <- c(G[,,p]) - kronecker(X = B[, p], Y = y)
-    Z       <- XG[!is.na(R), ]
+    W       <- XG[!is.na(R),]
     R       <- R[!is.na(R)]
-    ZZ      <- solve(t(Z) %*% Z)
-    DGphat  <- ZZ %*% t(Z) %*% R
-    DG[p, ] <- c(DGphat) + mvtnorm::rmvnorm(n = 1, sigma = sB2 * ZZ)
+    WW      <- solve(t(W) %*% W)
+    DGphat  <- WW %*% t(W) %*% R
+    DG[p, ] <- c(DGphat) + mvtnorm::rmvnorm(n = 1, sigma = sB2 * WW)
   }
-  # Creates DT and DB (Legacy)
-  DT   <- array(data = 0,   dim = c(M, P, P))
-  DB   <- array(data = NA,  dim = c(M, mV, P))
-  D    <- matrix(data = NA, nrow = M, ncol = (P * (P - 1) / 2 + sum(C)))
-  for(m in 1:M){
+
+  # Creates DT, DB and D
+  DT <- array(data = 0,   dim = c(H, P, P))
+  DB <- array(data = NA,  dim = c(H, mV, P))
+  D  <- matrix(data = NA, nrow = H, ncol = (P * (P - 1) / 2 + sum(C)))
+  for(m in 1:H){
     DT[m, , ]       <- DA[, m] %*% t(DA[, m])
     diag(DT[m, , ]) <- NA
     DB[m, , ][C]    <- kronecker(X = t(DG[, m]), Y = rep(1, mV))[C]
@@ -185,8 +176,8 @@ bmrr_iterator <- function(y,
   }
 
   # Samples g, Theta and B
-  AP <- A - apply(DT, c(2, 3), function(x) X %*% x)
-  GP <- G - apply(DB, c(2, 3), function(x) X %*% x)
+  AP  <- A - apply(DT, c(2, 3), function(x) X %*% x)
+  GP  <- G - apply(DB, c(2, 3), function(x) X %*% x)
   Say <- apply(X = (AP * y), MARGIN = c(2, 3), sum)
   Sgy <- apply(X = (GP * y), MARGIN = c(2, 3), sum)
   Syy <- sum(y^2)
@@ -194,13 +185,13 @@ bmrr_iterator <- function(y,
     res <- group_iterator(Say = Say,
                           Sgy = Sgy,
                           Syy = Syy,
-                          C   = C,
-                          LT  = t2T * l2T,
-                          LB  = t2B * l2B,
                           sT2 = sT2,
                           sB2 = sB2,
+                          LT  = t2T * l2T,
+                          LB  = t2B * l2B,
                           g   = g,
                           nu  = nu,
+                          C   = C,
                           p   = p)
     # Updates gp
     gp[p] <- res$pr
@@ -211,6 +202,8 @@ bmrr_iterator <- function(y,
     if(Q > 0){
       Theta[-p, p][g[-p] == 1] <- res$b[1:Q]
       Theta[p, -p][g[-p] == 1] <- Theta[-p, p][g[-p] == 1]
+    } else {
+
     }
     # Updates B
     if(Q > 0){
@@ -225,44 +218,6 @@ bmrr_iterator <- function(y,
   bnu <- b_nu - sum(g) + P
   nu  <- rbeta(n = 1, shape1 = anu, shape2 = bnu)
 
-  # Horseshoe Structure for B
-  # Samples l2B
-  for(p in 1:P){
-    if(g[p] == 1){
-      l2B[1:V[p], p] <- 1 / rgamma(n     = V[p],
-                                   shape = 1,
-                                   rate  = 1 / vB[, p] + B[, p]^2 / (2 * sB2 * t2B))
-    } else {
-      l2B[1:V[p], p] <- 1 / rgamma(n     = V[p],
-                                   shape = 1 / 2,
-                                   rate  = 1 / vB[, p])
-    }
-  }
-
-  # Samples t2B
-  if(sum(g) > 0){
-    t2B <- 1 / rgamma(n     = 1,
-                      shape = (sum(V[g == 1]) + 1) / 2,
-                      rate  = 1 / xiB +
-                        sum(B[, g == 1]^2 / (2 * sB2 * l2B[, g == 1]), na.rm = TRUE))
-  } else {
-    t2B <- 1 / rgamma(n     = 1,
-                      shape = 1 / 2,
-                      rate  = 1 / xiB)
-  }
-
-  # Samples vB
-  for(p in 1:P){
-    vB[1:V[p], p]<- 1 / rgamma(n     = V[p],
-                               shape = 1,
-                               rate  = 1 + 1 / l2B[V[p], p])
-  }
-
-  # Samples xiB
-  xiB <- 1 / rgamma(n     = 1,
-                    shape = 1,
-                    rate  = 1 + 1 / t2B)
-
   # Horseshoe Structure for Theta
   # Samples l2T
   for(p in 2:P){
@@ -270,7 +225,8 @@ bmrr_iterator <- function(y,
       if(g[p] * g[pp] == 1){
         l2T[p, pp] <- 1 / rgamma(n     = 1,
                                  shape = 1,
-                                 rate  = 1 / vT[p, pp] + Theta[p, pp]^2 / (2 * sT2 * t2T))
+                                 rate  = 1 / vT[p, pp] +
+                                 Theta[p, pp]^2 / (2 * sT2 * t2T))
         l2T[pp, p] <- l2T[p, pp]
       } else {
         l2T[p, pp] <- 1 / rgamma(n     = 1,
@@ -286,7 +242,7 @@ bmrr_iterator <- function(y,
     t2T <- 1 / rgamma(n     = 1,
                       shape = (sum(g) * (sum(g) - 1) / 2 + 1) / 2,
                       rate  = 1 / xiT +
-                        sum(Theta[g == 1, g == 1][lower.tri(Theta[g == 1, g == 1])]^2 / (2 * sT2 * l2T[g == 1, g == 1][lower.tri(l2T[g == 1, g == 1])])))
+                        sum(Theta[g == 1, g == 1][lower.tri(Theta[g == 1, g == 1])]^2 / (2 * sT2 * l2T[g == 1, g == 1][lower.tri(l2T[g == 1, g == 1])]))) # nolint
   } else {
     t2T <- 1 / rgamma(n     = 1,
                       shape = 1 / 2,
@@ -306,17 +262,60 @@ bmrr_iterator <- function(y,
                     shape = 1,
                     rate  = 1 + 1 / t2T)
 
-  # Samples sT2
-  Q   <- sum(g == 1)
+  # Horseshoe Structure for B
+  # Samples l2B
+  for(p in 1:P){
+    if(g[p] == 1){
+      l2B[1:V[p], p] <- 1 / rgamma(n     = V[p],
+                                   shape = 1,
+                                   rate  = 1 / vB[, p] + 
+                                    B[, p]^2 / (2 * sB2 * t2B)) # nolint
+    } else {
+      l2B[1:V[p], p] <- 1 / rgamma(n     = V[p],
+                                   shape = 1 / 2,
+                                   rate  = 1 / vB[, p])
+    }
+  }
+
+  # Samples t2B
+  if(sum(g) > 0){
+    t2B <- 1 / rgamma(n     = 1,
+                      shape = (sum(V[g == 1]) + 1) / 2,
+                      rate  = 1 / xiB +
+                        sum(B[, g == 1]^2 / (2 * sB2 * l2B[, g == 1]), na.rm = TRUE)) # nolint
+  } else {
+    t2B <- 1 / rgamma(n     = 1,
+                      shape = 1 / 2,
+                      rate  = 1 / xiB)
+  }
+
+  # Samples vB
+  for(p in 1:P){
+    vB[1:V[p], p]<- 1 / rgamma(n     = V[p],
+                               shape = 1,
+                               rate  = 1 + 1 / l2B[V[p], p])
+  }
+
+  # Samples xiB
+  xiB <- 1 / rgamma(n     = 1,
+                    shape = 1,
+                    rate  = 1 + 1 / t2B)
+
+
+  # Samples sT2 and sB2
+  Q    <- sum(g == 1)
   Beta <- c(Theta[upper.tri(Theta)], B[C])
-  R   <- Zv - X %*% D - y %*% t(Beta)
+  R    <- Zv - X %*% D - y %*% t(Beta)
+
+  # Samples sT2
   RA  <- R[ ,1:(P * (P - 1) / 2)]
-  bs2 <- 2 + sum(RA^2)
-  bs2 <- bs2 + sum(Theta[g == 1, g == 1]^2 / l2T[g == 1, g == 1], na.rm = TRUE) / 2 / t2T
+  bs2 <- sum(RA^2)
+  bs2 <- bs2 +
+    sum(Theta[g == 1, g == 1]^2 / l2T[g == 1, g == 1], na.rm = TRUE) / 2 / t2T
   bs2 <- bs2 / 2 + b_sT
-  as2 <- 2 + N * P * (P - 1) / 2
+  as2 <- N * P * (P - 1) / 2
   as2 <- as2 + Q * (Q - 1) / 2
-  as2 <- as2 / 2 + b_sT
+  as2 <- as2 / 2 + a_sT
   sT2 <- 1 / rgamma(n = 1, shape = as2, rate = bs2)
 
   # Samples sB2

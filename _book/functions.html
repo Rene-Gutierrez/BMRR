@@ -108,8 +108,8 @@ div.csl-indent {
 <li class="chapter" data-level="2" data-path="modelFramework.html"><a href="modelFramework.html"><i class="fa fa-check"></i><b>2</b> Model Framework</a></li>
 <li class="chapter" data-level="3" data-path="posteriorComputation.html"><a href="posteriorComputation.html"><i class="fa fa-check"></i><b>3</b> Posterior Computation</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-a_p."><i class="fa fa-check"></i><b>3.1</b> Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span></a></li>
-<li class="chapter" data-level="3.2" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-g_p."><i class="fa fa-check"></i><b>3.2</b> Full conditional for <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span></a></li>
+<li class="chapter" data-level="3.1" data-path="posteriorComputation.html"><a href="posteriorComputation.html#fullConditionalPsiA"><i class="fa fa-check"></i><b>3.1</b> Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span></a></li>
+<li class="chapter" data-level="3.2" data-path="posteriorComputation.html"><a href="posteriorComputation.html#fullConditionalPsiG"><i class="fa fa-check"></i><b>3.2</b> Full conditional for <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span></a></li>
 <li class="chapter" data-level="3.3" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p"><i class="fa fa-check"></i><b>3.3</b> Full conditional for <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span></a></li>
 <li class="chapter" data-level="3.4" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-tau2_theta"><i class="fa fa-check"></i><b>3.4</b> Full Conditional for <span class="math inline">\(\tau^2_\theta\)</span></a></li>
 <li class="chapter" data-level="3.5" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-tau2_beta"><i class="fa fa-check"></i><b>3.5</b> Full Conditional for <span class="math inline">\(\tau^2_\beta\)</span></a></li>
@@ -124,6 +124,20 @@ div.csl-indent {
 <li class="chapter" data-level="4.1.2" data-path="functions.html"><a href="functions.html#inputs"><i class="fa fa-check"></i><b>4.1.2</b> Inputs</a></li>
 <li class="chapter" data-level="4.1.3" data-path="functions.html"><a href="functions.html#output"><i class="fa fa-check"></i><b>4.1.3</b> Output</a></li>
 <li class="chapter" data-level="4.1.4" data-path="functions.html"><a href="functions.html#walkthrough"><i class="fa fa-check"></i><b>4.1.4</b> Walkthrough</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="functions.html"><a href="functions.html#bmrr_iterator"><i class="fa fa-check"></i><b>4.2</b> <code>bmrr_iterator</code></a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="functions.html"><a href="functions.html#description"><i class="fa fa-check"></i><b>4.2.1</b> Description</a></li>
+<li class="chapter" data-level="4.2.2" data-path="functions.html"><a href="functions.html#inputs-1"><i class="fa fa-check"></i><b>4.2.2</b> Inputs</a></li>
+<li class="chapter" data-level="4.2.3" data-path="functions.html"><a href="functions.html#output-1"><i class="fa fa-check"></i><b>4.2.3</b> Output</a></li>
+<li class="chapter" data-level="4.2.4" data-path="functions.html"><a href="functions.html#walkthrough-1"><i class="fa fa-check"></i><b>4.2.4</b> Walkthrough</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="functions.html"><a href="functions.html#group_iterator"><i class="fa fa-check"></i><b>4.3</b> <code>group_iterator</code></a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="functions.html"><a href="functions.html#description-1"><i class="fa fa-check"></i><b>4.3.1</b> Description</a></li>
+<li class="chapter" data-level="4.3.2" data-path="functions.html"><a href="functions.html#inputs-2"><i class="fa fa-check"></i><b>4.3.2</b> Inputs</a></li>
+<li class="chapter" data-level="4.3.3" data-path="functions.html"><a href="functions.html#output-2"><i class="fa fa-check"></i><b>4.3.3</b> Output</a></li>
+<li class="chapter" data-level="4.3.4" data-path="functions.html"><a href="functions.html#walktrhough"><i class="fa fa-check"></i><b>4.3.4</b> Walktrhough</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -431,7 +445,7 @@ It is an array of size <code>nmcmc</code><span class="math inline">\(\times P \t
 <tr class="odd">
 <td align="right"><code>l2B</code></td>
 <td align="center"><span class="math inline">\(\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}\)</span></td>
-<td align="left">Samples of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is an array of size
+<td align="left">Samples of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is an array of size
 <code>nmcmc</code><span class="math inline">\(\times V \times P\)</span>. For sample <span class="math inline">\(s\)</span>, <code>l2B[s,v,p]</code><span class="math inline">\(=\phi_{v,p}^s = \phi_{v,p}^s\)</span> for <span class="math inline">\(v \leq V_p\)</span> and
 <code>l2B[s,v,p]=NA</code> for <span class="math inline">\(v&gt;V_p\)</span>.</td>
 </tr>
@@ -489,13 +503,13 @@ sample <span class="math inline">\(s\)</span>, such that <code>B[s,] =</code>
 <td align="right"><code>DA</code></td>
 <td align="center"><span class="math inline">\(\{ {\boldsymbol \psi} _{p,h}^a\}_{p=1,h=1}^{P,H}\)</span></td>
 <td align="left">Samples of the bilinear structure of the Network equation coefficients of the covariates <span class="math inline">\(X\)</span>. It is an array of size
-(<code>nmcmc</code> <span class="math inline">\(\times P \times H\)</span>). For sample <span class="math inline">\(s\)</span>, <code>DA[s,p,h]</code><span class="math inline">\(= {\psi_{p,h}^{a,s}}&#39;\)</span>.</td>
+(<code>nmcmc</code> <span class="math inline">\(\times P \times H\)</span>). For sample <span class="math inline">\(s\)</span>, <code>DA[s,p,h]</code><span class="math inline">\(= {\psi_{p,h}^{a,s}}\)</span>.</td>
 </tr>
 <tr class="odd">
 <td align="right"><code>DG</code></td>
 <td align="center"><span class="math inline">\(\{ {\boldsymbol \psi} _{p,h}^g\}_{p=1,h=1}^{P,H}\)</span></td>
 <td align="left">Samples of the structure of the Voxel equation coefficients of the covariates <span class="math inline">\(X\)</span>. It is an array of size
-(<code>nmcmc</code> <span class="math inline">\(\times P \times H\)</span>). For sample <span class="math inline">\(s\)</span>, <code>DA[s,p,h]</code><span class="math inline">\(= {\psi_{p,h}^{g,s}}&#39;\)</span>.</td>
+(<code>nmcmc</code> <span class="math inline">\(\times P \times H\)</span>). For sample <span class="math inline">\(s\)</span>, <code>DA[s,p,h]</code><span class="math inline">\(= {\psi_{p,h}^{g,s}}\)</span>.</td>
 </tr>
 <tr class="even">
 <td align="right"><code>sT2</code></td>
@@ -512,7 +526,111 @@ sample <span class="math inline">\(s\)</span>, such that <code>B[s,] =</code>
 </tbody>
 </table>
 <p>The <code>state</code> output is a list containing all the model variables
-(including auxiliaries).</p>
+(including auxiliaries). Here are the elements of the list:</p>
+<table style="width:99%;">
+<colgroup>
+<col width="4%" />
+<col width="20%" />
+<col width="73%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Code</td>
+<td>Model</td>
+<td>Description</td>
+</tr>
+<tr class="even">
+<td><code>g</code></td>
+<td><span class="math inline">\( {\boldsymbol \xi} \)</span></td>
+<td>Last MCMC iteration of the region indicator variables. It is returned as a binary
+vector of size <span class="math inline">\(P\)</span>. <code>g[p]</code> <span class="math inline">\(={\xi_p}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>nu</code></td>
+<td><span class="math inline">\(\nu\)</span></td>
+<td>Last MCMC iteration of the probability parameter of the Bernoulli prior of the indicators <span class="math inline">\(\xi_p\)</span>. It is a scalar.
+<code>nu</code><span class="math inline">\(=\nu\)</span>.</td>
+</tr>
+<tr class="even">
+<td><code>Theta</code></td>
+<td><span class="math inline">\( {\boldsymbol \Theta} \)</span></td>
+<td>Last MCMC iteration of the Network coefficients. It is a matrix of size (<span class="math inline">\(\times P \times P\)</span>).
+<code>Theta[p,q]</code><span class="math inline">\(=( {\boldsymbol \Theta} )_{p,q}=\theta_{p,q}\)</span> for <span class="math inline">\(p\neq q\)</span> and <code>Theta[p,p]=NA</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>B</code></td>
+<td><span class="math inline">\(\{ {\boldsymbol g} _p\}_{p=1}^P\)</span></td>
+<td>Last MCMC iteration of the Voxel coefficients. It is a matrix of size (<span class="math inline">\(\times V \times P\)</span>), where <span class="math inline">\(V=\max\{V_p\}_{p=1}^P\)</span>.
+<code>B[v,p]</code><span class="math inline">\(=\beta_{v,p}\)</span> for <span class="math inline">\(v \leq V_p\)</span>, and <code>B[v,p]=NA</code> for <span class="math inline">\(v &gt; V_p\)</span>.</td>
+</tr>
+<tr class="even">
+<td><code>DA</code></td>
+<td><span class="math inline">\(\{ {\boldsymbol \psi} _{p,h}^a\}_{p=1,h=1}^{P,H}\)</span></td>
+<td>Last MCMC iteration of the bilinear structure of the Network equation coefficients of the covariates <span class="math inline">\(X\)</span>. It is a matrix of
+size (<span class="math inline">\(\times P \times H\)</span>). <code>DA[p,h]</code><span class="math inline">\(= {\psi_{p,h}^{a}}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>DG</code></td>
+<td><span class="math inline">\(\{ {\boldsymbol \psi} _{p,h}^g\}_{p=1,h=1}^{P,H}\)</span></td>
+<td>Last MCMC iteration of the structure of the Voxel equation coefficients of the covariates <span class="math inline">\(X\)</span>. It is a matrix of size
+(<span class="math inline">\(\times P \times H\)</span>). <code>DA[p,h]</code><span class="math inline">\(= {\psi_{p,h}^{g}}\)</span>.</td>
+</tr>
+<tr class="even">
+<td><code>sT2</code></td>
+<td><span class="math inline">\(\tau^2_\theta\)</span></td>
+<td>Last MCMC iteration of the variance of the error of the Network equation. It is a scalar. <code>sT2[s]</code><span class="math inline">\(= {\tau^2_\theta}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>sB2</code></td>
+<td><span class="math inline">\(\tau^2_\beta\)</span></td>
+<td>Last MCMC iteration of the variance of the error of the Voxel equation. It is a scalar. <code>sB2[s]</code><span class="math inline">\(= {\tau^2_\beta}\)</span>.</td>
+</tr>
+<tr class="even">
+<td><code>t2T</code></td>
+<td><span class="math inline">\(\sigma_\theta^2\)</span></td>
+<td>Last MCMC iteration of the global shrinking parameter for the Horseshoe structure of the Network coefficients. It is a scalar.
+<code>t2T</code><span class="math inline">\(={\sigma^2_\theta}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>l2T</code></td>
+<td><span class="math inline">\( {\boldsymbol \Lambda} \)</span></td>
+<td>Last MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is a matrix</td>
+</tr>
+<tr class="even">
+<td><code>xiT</code></td>
+<td><span class="math inline">\(\kappa_{\sigma_\theta^2}\)</span></td>
+<td>Last MCMC iteration of the auxiliary variable of the global shrinking parameter for the Horseshoe structure of the Network
+coefficients. It is a scalar. <code>xiT</code><span class="math inline">\(=\kappa_{\sigma^2_\theta}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>vT</code></td>
+<td><span class="math inline">\(\kappa_{\lambda_{p,p&#39;}}\)</span></td>
+<td>Last MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network
+<span class="math inline">\(p \neq q\)</span> and <code>l2T[p,p] = NA</code>.</td>
+</tr>
+<tr class="even">
+<td><code>t2B</code></td>
+<td><span class="math inline">\(\{\eta_p\}_{p=1}^P\)</span></td>
+<td>Last MCMC iteration of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a vector</td>
+</tr>
+<tr class="odd">
+<td><code>l2B</code></td>
+<td><span class="math inline">\(\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}\)</span></td>
+<td>Last MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is a matrix of</td>
+</tr>
+<tr class="even">
+<td><code>xiB</code></td>
+<td><span class="math inline">\(\kappa_{\eta_p}\)</span></td>
+<td>Last MCMC iteration of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel</td>
+</tr>
+<tr class="odd">
+<td><code>vB</code></td>
+<td><span class="math inline">\(\kappa_{\phi_{v,p}}\)</span></td>
+<td>Last MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel
+<span class="math inline">\(v \leq V_p\)</span> and <code>vB[v,p] = NA</code> for <span class="math inline">\(v&gt; V_p\)</span>.</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="walkthrough" class="section level3 hasAnchor" number="4.1.4">
 <h3><span class="header-section-number">4.1.4</span> Walkthrough<a href="functions.html#walkthrough" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -531,11 +649,13 @@ sample <span class="math inline">\(s\)</span>, such that <code>B[s,] =</code>
 <p>This variables are used on every iteration of the MCMC <code>bmrr_iterator</code>.</p>
 <ul>
 <li><code>C</code>. Is a Boolean matrix of size <span class="math inline">\(V \times P\)</span> that indicates which entries of
-the voxel data are valid entries.</li>
+the voxel data are valid entries. For every observation <code>i</code>, <code>G[i,,][C]</code>
+<span class="math inline">\(= {\boldsymbol g} _{i,1}&#39;,\ldots, {\boldsymbol g} _{i,P}&#39;\)</span>.</li>
 <li><code>Zv</code> It is a transformation of the Network and Voxel data objects into one
 matrix. Each row is an observation of the Network object followed by the
 voxel object. Sometimes is convenient to work with the original data objects
-and sometimes is more convenient to work with the stacked object.</li>
+and sometimes is more convenient to work with the stacked object.
+<code>Zv[i,]</code><span class="math inline">\(=(a_{i,(1,2)}, a_{i,(1, 3)}, a_{i, (2, 3)},\ldots,a_{i,(1,P)},\ldots,a_{i,(P-1,P)}, {\boldsymbol g} _{i,1}&#39;,\ldots, {\boldsymbol g} _{i,P}&#39;)\)</span>.</li>
 <li><code>XG</code>. A replication of the covariates <span class="math inline">\(V\)</span> times, stacked one over the other
 it is used for the computation of <span class="math inline">\(\{\psi_{v,p}^g\}_{v=1,p=1}^{V_p,P}\)</span>.</li>
 </ul>
@@ -575,6 +695,700 @@ progress bar.</p>
 <h4><span class="header-section-number">4.1.4.10</span> Returns Values<a href="functions.html#returns-values" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Returns the two outputs, the MCMC samples (<code>sam</code>) and the last iteration of the
 MCMC (<code>state</code>).</p>
+</div>
+</div>
+</div>
+<div id="bmrr_iterator" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> <code>bmrr_iterator</code><a href="functions.html#bmrr_iterator" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="description" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Description<a href="functions.html#description" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This is the function that actually samples at each of the iterations of the
+MCMC. It receives as inputs the data (with the auxiliary data transformations of
+it), the hyper-parameters of the hyper-priors and the current state of the MCMC.
+It performs the sampling of all the model parameters except for the Network and
+Voxel coefficients, and region indicators. For theses parameters it relies on
+the <code>group_iterator</code> function.</p>
+</div>
+<div id="inputs-1" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Inputs<a href="functions.html#inputs-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The data inputs are directly pass through the <code>bmrr_sampler</code> function with the
+addition of two useful transformations. The data inputs are as follows:</p>
+<table style="width:99%;">
+<colgroup>
+<col width="5%" />
+<col width="22%" />
+<col width="71%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="right">Code</td>
+<td align="center">Model</td>
+<td align="left">Description</td>
+</tr>
+<tr class="even">
+<td align="right"><code>y</code></td>
+<td align="center"><span class="math inline">\( {\boldsymbol y} \)</span></td>
+<td align="left">This is the variable of interest. It should be inputted as a
+vector of size <span class="math inline">\(n\)</span>, the number of observations.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>A</code></td>
+<td align="center"><span class="math inline">\( {\boldsymbol A} \)</span></td>
+<td align="left">The Network object. It should be inputted as an array of
+size <span class="math inline">\((n \times P \times P)\)</span>. For each observation <span class="math inline">\(i\)</span>,
+<code>A[i,,]</code> must be symmetric with <code>NA</code> as diagonal elements.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>G</code></td>
+<td align="center"><span class="math inline">\(\{ {\boldsymbol g} _p\}_{p=1}^P\)</span></td>
+<td align="left">The voxel object. It should be inputted as an array
+of size <span class="math inline">\((n \times V \times P)\)</span>, where <span class="math inline">\(V= \max(\{V_p\}_{p=1}^P)\)</span>.
+If the regions are not the same size (i.e. there is a <span class="math inline">\(p\)</span> for
+which <span class="math inline">\(V_p &lt; V\)</span>), then pad the entry <code>G[i,p,]</code> with <code>NA</code>’s, do not
+use <code>0</code> or any other numeric value.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>X</code></td>
+<td align="center"><span class="math inline">\( {\boldsymbol X} \)</span></td>
+<td align="left">Other covariates to take in consideration. It should be inputted as
+a matrix of size <span class="math inline">\((n \times H)\)</span>. Each column <code>X[,h]</code> represents one
+covariate.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>Zv</code></td>
+<td align="center"></td>
+<td align="left">It is a transformation of the Network and Voxel data objects into
+one matrix. Each row is an observation of the Network object
+followed by the voxel object. <code>Zv[i,]</code><span class="math inline">\(=(a_{i,(1,2)}, a_{i,(1, 3)}, a_{i, (2, 3)},\ldots,a_{i,(1,P)},\ldots,a_{i,(P-1,P)}, {\boldsymbol g} _{i,1}&#39;,\ldots, {\boldsymbol g} _{i,P}&#39;)\)</span>.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>XG</code></td>
+<td align="center"></td>
+<td align="left">A replication of the covariates <span class="math inline">\(V\)</span> times, stacked one over the
+other it is used for the computation of
+<span class="math inline">\(\{\psi_{v,p}^g\}_{v=1,p=1}^{V_p,P}\)</span>.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>C</code></td>
+<td align="center"></td>
+<td align="left">Is a Boolean matrix of size <span class="math inline">\(V \times P\)</span> that indicates which
+entries of the voxel data are valid entries. For every observation
+<code>i</code>, <code>G[i,,][C]</code><span class="math inline">\(= {\boldsymbol g} _{i,1}&#39;,\ldots, {\boldsymbol g} _{i,P}&#39;\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<p>The MCMC current state variables are:</p>
+<table style="width:99%;">
+<colgroup>
+<col width="4%" />
+<col width="20%" />
+<col width="73%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Code</td>
+<td>Model</td>
+<td>Description</td>
+</tr>
+<tr class="even">
+<td><code>g</code></td>
+<td><span class="math inline">\( {\boldsymbol \xi} \)</span></td>
+<td>Current MCMC iteration of the region indicator variables. It is a binary
+vector of size <span class="math inline">\(P\)</span>. <code>g[p]</code> <span class="math inline">\(={\xi_p}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>nu</code></td>
+<td><span class="math inline">\(\nu\)</span></td>
+<td>Current MCMC iteration of the probability parameter of the Bernoulli prior of the indicators <span class="math inline">\(\xi_p\)</span>. It is a scalar.
+<code>nu</code><span class="math inline">\(=\nu\)</span>.</td>
+</tr>
+<tr class="even">
+<td><code>Theta</code></td>
+<td><span class="math inline">\( {\boldsymbol \Theta} \)</span></td>
+<td>Current MCMC iteration of the Network coefficients. It is a matrix of size (<span class="math inline">\(\times P \times P\)</span>).
+<code>Theta[p,q]</code><span class="math inline">\(=( {\boldsymbol \Theta} )_{p,q}=\theta_{p,q}\)</span> for <span class="math inline">\(p\neq q\)</span> and <code>Theta[p,p]=NA</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>B</code></td>
+<td><span class="math inline">\(\{ {\boldsymbol g} _p\}_{p=1}^P\)</span></td>
+<td>Current MCMC iteration of the Voxel coefficients. It is a matrix of size (<span class="math inline">\(\times V \times P\)</span>), where <span class="math inline">\(V=\max\{V_p\}_{p=1}^P\)</span>.
+<code>B[v,p]</code><span class="math inline">\(=\beta_{v,p}\)</span> for <span class="math inline">\(v \leq V_p\)</span>, and <code>B[v,p]=NA</code> for <span class="math inline">\(v &gt; V_p\)</span>.</td>
+</tr>
+<tr class="even">
+<td><code>DA</code></td>
+<td><span class="math inline">\(\{ {\boldsymbol \psi} _{p,h}^a\}_{p=1,h=1}^{P,H}\)</span></td>
+<td>Current MCMC iteration of the bilinear structure of the Network equation coefficients of the covariates <span class="math inline">\(X\)</span>. It is a matrix of
+size (<span class="math inline">\(\times P \times H\)</span>). <code>DA[p,h]</code><span class="math inline">\(= {\psi_{p,h}^{a}}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>DG</code></td>
+<td><span class="math inline">\(\{ {\boldsymbol \psi} _{p,h}^g\}_{p=1,h=1}^{P,H}\)</span></td>
+<td>Current MCMC iteration of the structure of the Voxel equation coefficients of the covariates <span class="math inline">\(X\)</span>. It is a matrix of size
+(<span class="math inline">\(\times P \times H\)</span>). <code>DA[p,h]</code><span class="math inline">\(= {\psi_{p,h}^{g}}\)</span>.</td>
+</tr>
+<tr class="even">
+<td><code>sT2</code></td>
+<td><span class="math inline">\(\tau^2_\theta\)</span></td>
+<td>Current MCMC iteration of the variance of the error of the Network equation. It is a scalar. <code>sT2[s]</code><span class="math inline">\(= {\tau^2_\theta}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>sB2</code></td>
+<td><span class="math inline">\(\tau^2_\beta\)</span></td>
+<td>Current MCMC iteration of the variance of the error of the Voxel equation. It is a scalar. <code>sB2[s]</code><span class="math inline">\(= {\tau^2_\beta}\)</span>.</td>
+</tr>
+<tr class="even">
+<td><code>t2T</code></td>
+<td><span class="math inline">\(\sigma_\theta^2\)</span></td>
+<td>Current MCMC iteration of the global shrinking parameter for the Horseshoe structure of the Network coefficients. It is a
+scalar. <code>t2T</code><span class="math inline">\(={\sigma^2_\theta}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>l2T</code></td>
+<td><span class="math inline">\( {\boldsymbol \Lambda} \)</span></td>
+<td>Current MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is a</td>
+</tr>
+<tr class="even">
+<td><code>xiT</code></td>
+<td><span class="math inline">\(\kappa_{\sigma_\theta^2}\)</span></td>
+<td>Current MCMC iteration of the auxiliary variable of the global shrinking parameter for the Horseshoe structure of the Network
+coefficients. It is a scalar. <code>xiT</code><span class="math inline">\(=\kappa_{\sigma^2_\theta}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>vT</code></td>
+<td><span class="math inline">\(\kappa_{\lambda_{p,p&#39;}}\)</span></td>
+<td>Current MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network
+<span class="math inline">\(p \neq q\)</span> and <code>l2T[p,p] = NA</code>.</td>
+</tr>
+<tr class="even">
+<td><code>t2B</code></td>
+<td><span class="math inline">\(\{\eta_p\}_{p=1}^P\)</span></td>
+<td>Current MCMC iteration of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a</td>
+</tr>
+<tr class="odd">
+<td><code>l2B</code></td>
+<td><span class="math inline">\(\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}\)</span></td>
+<td>Current MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is a matrix</td>
+</tr>
+<tr class="even">
+<td><code>xiB</code></td>
+<td><span class="math inline">\(\kappa_{\eta_p}\)</span></td>
+<td>Current MCMC iteration of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel</td>
+</tr>
+<tr class="odd">
+<td><code>vB</code></td>
+<td><span class="math inline">\(\kappa_{\phi_{v,p}}\)</span></td>
+<td>Current MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel
+<span class="math inline">\(v \leq V_p\)</span> and <code>vB[v,p] = NA</code> for <span class="math inline">\(v&gt; V_p\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<p>Finally the hyper-parameter values of the hyper-priors are passed through from
+<code>bmrr_sampler</code>.</p>
+<table style="width:99%;">
+<colgroup>
+<col width="7%" />
+<col width="22%" />
+<col width="69%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="right">Code</td>
+<td align="center">Model</td>
+<td align="left">Description</td>
+</tr>
+<tr class="even">
+<td align="right"><code>a_sT</code></td>
+<td align="center"><span class="math inline">\(a_{\tau_\theta}\)</span></td>
+<td align="left">Shape hyper-parameter of the Inverse-gamma prior for
+<span class="math inline">\(\tau_\theta^2\)</span>. An scalar. By default, <code>a_sT = 1</code>.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>b_sT</code></td>
+<td align="center"><span class="math inline">\(b_{\tau_\theta}\)</span></td>
+<td align="left">Scale hyper-parameter of the Inverse-gamma prior for
+<span class="math inline">\(\tau_\theta^2\)</span>. An scalar. By default, <code>b_sT = 1</code>.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>a_sB</code></td>
+<td align="center"><span class="math inline">\(a_{\tau_\beta}\)</span></td>
+<td align="left">Shape hyper-parameter of the Inverse-gamma prior for
+<span class="math inline">\(\tau_\beta^2\)</span>. An scalar. By default, <code>a_sB = 1</code>.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>b_sB</code></td>
+<td align="center"><span class="math inline">\(b_{\tau_\beta}\)</span></td>
+<td align="left">Scale hyper-parameter of the Inverse-gamma prior for
+<span class="math inline">\(\tau_\beta^2\)</span>. An scalar. By default, <code>b_sB = 1</code>.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>a_nu</code></td>
+<td align="center"><span class="math inline">\(a_{\nu}\)</span></td>
+<td align="left">Shape 1 hyper-parameter of the Beta prior for
+<span class="math inline">\(\nu\)</span>. An scalar. By default, <code>a_sB = 1</code>.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>b_nu</code></td>
+<td align="center"><span class="math inline">\(b_{\nu}\)</span></td>
+<td align="left">Shape 2 hyper-parameter of the Beta prior for
+<span class="math inline">\(\nu\)</span>. An scalar. By default, <code>b_sB = 1</code>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="output-1" class="section level3 hasAnchor" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Output<a href="functions.html#output-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The function returns the update of the state of all the variables in the MCMC.</p>
+<table style="width:99%;">
+<colgroup>
+<col width="4%" />
+<col width="20%" />
+<col width="73%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Code</td>
+<td>Model</td>
+<td>Description</td>
+</tr>
+<tr class="even">
+<td><code>g</code></td>
+<td><span class="math inline">\( {\boldsymbol \xi} \)</span></td>
+<td>Updated MCMC iteration of the region indicator variables. It is a binary
+vector of size <span class="math inline">\(P\)</span>. <code>g[p]</code> <span class="math inline">\(={\xi_p}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>nu</code></td>
+<td><span class="math inline">\(\nu\)</span></td>
+<td>Updated MCMC iteration of the probability parameter of the Bernoulli prior of the indicators <span class="math inline">\(\xi_p\)</span>. It is a scalar.
+<code>nu</code><span class="math inline">\(=\nu\)</span>.</td>
+</tr>
+<tr class="even">
+<td><code>Theta</code></td>
+<td><span class="math inline">\( {\boldsymbol \Theta} \)</span></td>
+<td>Updated MCMC iteration of the Network coefficients. It is a matrix of size (<span class="math inline">\(\times P \times P\)</span>).
+<code>Theta[p,q]</code><span class="math inline">\(=( {\boldsymbol \Theta} )_{p,q}=\theta_{p,q}\)</span> for <span class="math inline">\(p\neq q\)</span> and <code>Theta[p,p]=NA</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>B</code></td>
+<td><span class="math inline">\(\{ {\boldsymbol g} _p\}_{p=1}^P\)</span></td>
+<td>Updated MCMC iteration of the Voxel coefficients. It is a matrix of size (<span class="math inline">\(\times V \times P\)</span>), where <span class="math inline">\(V=\max\{V_p\}_{p=1}^P\)</span>.
+<code>B[v,p]</code><span class="math inline">\(=\beta_{v,p}\)</span> for <span class="math inline">\(v \leq V_p\)</span>, and <code>B[v,p]=NA</code> for <span class="math inline">\(v &gt; V_p\)</span>.</td>
+</tr>
+<tr class="even">
+<td><code>DA</code></td>
+<td><span class="math inline">\(\{ {\boldsymbol \psi} _{p,h}^a\}_{p=1,h=1}^{P,H}\)</span></td>
+<td>Updated MCMC iteration of the bilinear structure of the Network equation coefficients of the covariates <span class="math inline">\(X\)</span>. It is a matrix of
+size (<span class="math inline">\(\times P \times H\)</span>). <code>DA[p,h]</code><span class="math inline">\(= {\psi_{p,h}^{a}}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>DG</code></td>
+<td><span class="math inline">\(\{ {\boldsymbol \psi} _{p,h}^g\}_{p=1,h=1}^{P,H}\)</span></td>
+<td>Updated MCMC iteration of the structure of the Voxel equation coefficients of the covariates <span class="math inline">\(X\)</span>. It is a matrix of size
+(<span class="math inline">\(\times P \times H\)</span>). <code>DA[p,h]</code><span class="math inline">\(= {\psi_{p,h}^{g}}\)</span>.</td>
+</tr>
+<tr class="even">
+<td><code>sT2</code></td>
+<td><span class="math inline">\(\tau^2_\theta\)</span></td>
+<td>Updated MCMC iteration of the variance of the error of the Network equation. It is a scalar. <code>sT2[s]</code><span class="math inline">\(= {\tau^2_\theta}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>sB2</code></td>
+<td><span class="math inline">\(\tau^2_\beta\)</span></td>
+<td>Updated MCMC iteration of the variance of the error of the Voxel equation. It is a scalar. <code>sB2[s]</code><span class="math inline">\(= {\tau^2_\beta}\)</span>.</td>
+</tr>
+<tr class="even">
+<td><code>t2T</code></td>
+<td><span class="math inline">\(\sigma_\theta^2\)</span></td>
+<td>Updated MCMC iteration of the global shrinking parameter for the Horseshoe structure of the Network coefficients. It is a
+scalar. <code>t2T</code><span class="math inline">\(={\sigma^2_\theta}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>l2T</code></td>
+<td><span class="math inline">\( {\boldsymbol \Lambda} \)</span></td>
+<td>Updated MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is a</td>
+</tr>
+<tr class="even">
+<td><code>xiT</code></td>
+<td><span class="math inline">\(\kappa_{\sigma_\theta^2}\)</span></td>
+<td>Updated MCMC iteration of the auxiliary variable of the global shrinking parameter for the Horseshoe structure of the Network
+coefficients. It is a scalar. <code>xiT</code><span class="math inline">\(=\kappa_{\sigma^2_\theta}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><code>vT</code></td>
+<td><span class="math inline">\(\kappa_{\lambda_{p,p&#39;}}\)</span></td>
+<td>Updated MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network
+<span class="math inline">\(p \neq q\)</span> and <code>l2T[p,p] = NA</code>.</td>
+</tr>
+<tr class="even">
+<td><code>t2B</code></td>
+<td><span class="math inline">\(\{\eta_p\}_{p=1}^P\)</span></td>
+<td>Updated MCMC iteration of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a</td>
+</tr>
+<tr class="odd">
+<td><code>l2B</code></td>
+<td><span class="math inline">\(\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}\)</span></td>
+<td>Updated MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is a matrix</td>
+</tr>
+<tr class="even">
+<td><code>xiB</code></td>
+<td><span class="math inline">\(\kappa_{\eta_p}\)</span></td>
+<td>Updated MCMC iteration of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel</td>
+</tr>
+<tr class="odd">
+<td><code>vB</code></td>
+<td><span class="math inline">\(\kappa_{\phi_{v,p}}\)</span></td>
+<td>Updated MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel
+<span class="math inline">\(v \leq V_p\)</span> and <code>vB[v,p] = NA</code> for <span class="math inline">\(v&gt; V_p\)</span>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="walkthrough-1" class="section level3 hasAnchor" number="4.2.4">
+<h3><span class="header-section-number">4.2.4</span> Walkthrough<a href="functions.html#walkthrough-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="problem-dimensions-1" class="section level4 hasAnchor" number="4.2.4.1">
+<h4><span class="header-section-number">4.2.4.1</span> Problem Dimensions<a href="functions.html#problem-dimensions-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Obtains the relevant dimensions of the data:</p>
+<ul>
+<li><code>N</code>. Number of samples.</li>
+<li><code>mV</code>. <span class="math inline">\(\max \{V_p\}_{p=1}^P\)</span>.</li>
+<li><code>V</code><span class="math inline">\(=(V_1,\ldots,V_p)&#39;.\)</span></li>
+<li><code>P</code>. Number of regions.</li>
+<li><code>Q</code>. Number of relevant regions.</li>
+<li><code>H</code>. Number of covariates.</li>
+</ul>
+</div>
+<div id="samples-dt" class="section level4 hasAnchor" number="4.2.4.2">
+<h4><span class="header-section-number">4.2.4.2</span> Samples DT<a href="functions.html#samples-dt" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Loops through every region <span class="math inline">\(p\)</span> and samples according to
+<a href="posteriorComputation.html#fullConditionalPsiA">Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span></a> as follows:</p>
+<ul>
+<li>Computes <span class="math inline">\(W\)</span>.</li>
+<li>Computes <span class="math inline">\(R\)</span>.</li>
+<li>Computes <span class="math inline">\(W&#39;W\)</span>.</li>
+<li>Computes <span class="math inline">\(\hat{\psi}_{p,.}^a\)</span>.</li>
+<li>Samples <span class="math inline">\(\psi_{p,.}^a\)</span>.</li>
+</ul>
+</div>
+<div id="samples-dt-1" class="section level4 hasAnchor" number="4.2.4.3">
+<h4><span class="header-section-number">4.2.4.3</span> Samples DT<a href="functions.html#samples-dt-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Loops through every region <span class="math inline">\(p\)</span> and samples according to
+<a href="posteriorComputation.html#fullConditionalPsiA">Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span></a> as follows:</p>
+<ul>
+<li>Computes <span class="math inline">\(W\)</span>.</li>
+<li>Computes <span class="math inline">\(R\)</span>.</li>
+<li>Computes <span class="math inline">\(W&#39;W\)</span>.</li>
+<li>Computes <span class="math inline">\(\hat{\psi}_{p,.}^g\)</span>.</li>
+<li>Samples <span class="math inline">\(\psi_{p,.}^g\)</span>.</li>
+</ul>
+</div>
+<div id="creates-dt-db-and-d" class="section level4 hasAnchor" number="4.2.4.4">
+<h4><span class="header-section-number">4.2.4.4</span> Creates DT, DB and D<a href="functions.html#creates-dt-db-and-d" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Creates auxiliary variables:</p>
+<ul>
+<li><code>DT</code>. An auxiliary variable to compute <span class="math inline">\( {\boldsymbol \Theta} \)</span>, <span class="math inline">\(\{ {\boldsymbol \beta} _p\}_{p=1}^P\)</span> and
+<span class="math inline">\( {\boldsymbol \xi} \)</span>. It is an array of size <span class="math inline">\(H \times P \times P\)</span>.
+<code>DT[h,q,p]</code><span class="math inline">\(=\psi^a_{q,h} \psi^a_{p,h}\)</span> for <span class="math inline">\(p \neq q\)</span> and <code>DT[h,q,p]=NA</code>
+elsewhere.</li>
+<li><code>DB</code>. An auxiliary variable to compute <span class="math inline">\( {\boldsymbol \Theta} \)</span>, <span class="math inline">\(\{ {\boldsymbol \beta} _p\}_{p=1}^P\)</span> and
+<span class="math inline">\( {\boldsymbol \xi} \)</span>. It is an array of size <span class="math inline">\(H \times V \times P\)</span>.
+<code>DB[h,v,p]</code><span class="math inline">\(=\psi^g_{p,h}\)</span> for <span class="math inline">\(v,\leq V_p\)</span> and <code>DB[h,v,p]=NA</code> elsewhere.</li>
+<li><code>D</code>. An auxiliary variable to compute <span class="math inline">\(\tau^2_\theta\)</span> and <span class="math inline">\(\tau^2_\beta\)</span>.
+It is a matrix of size <span class="math inline">\(H \times P(P-1)/2 + \sum_{p=1}^P V_p\)</span>.</li>
+</ul>
+</div>
+<div id="samples-g-theta-and-b" class="section level4 hasAnchor" number="4.2.4.5">
+<h4><span class="header-section-number">4.2.4.5</span> Samples g, Theta and B<a href="functions.html#samples-g-theta-and-b" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Samples the variables that are the main focus of the analysis. To do so it
+loops through every <span class="math inline">\(p\)</span> to sample jointly <span class="math inline">\( {\boldsymbol \theta} _{-p,p}\)</span>, <span class="math inline">\( {\boldsymbol \beta} _p\)</span> and <span class="math inline">\(bgx\)</span>.
+Before looping it computes auxiliary variables and then at every iteration <code>p</code> it
+calls the function <code>group_iterator</code>. The auxiliary variables, as described in
+<a href="posteriorComputation.html#full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p">Full conditional for <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span></a> are as follows:</p>
+<ul>
+<li><code>AP</code>. It is an array of size <span class="math inline">\(n \times P \times P\)</span>.
+<code>AP[i,p,q]</code><span class="math inline">\(=a_{i,p,q} - \sum_{h=1}^H \psi^a_{p,h} \psi^a_{p,h} x_{i,h}\)</span>.</li>
+<li><code>GP</code>. It is an array of size <span class="math inline">\(n \times V \times P\)</span>.
+<code>GP[i,v,q]</code><span class="math inline">\(=g_{i,v,q} - \sum_{h=1}^H \psi^g_{p,h} x_{i,h}\)</span>.</li>
+<li><code>Say</code>. It is a matrix of size <span class="math inline">\(P \times P\)</span>.
+<code>Say[p,q]</code><span class="math inline">\(=\sum_{i=1}^n R^a_{i,p,q}y_i=\sum_{i=1}^n\)</span><code>AP[i,p,q]</code><span class="math inline">\(y_i\)</span>.</li>
+<li><code>Sgy</code>. It is a matrix of size <span class="math inline">\(V \times P\)</span>.
+<code>Sgy[v,p]</code><span class="math inline">\(=\sum_{i=1}^n R^g_{i,v,p}y_i=\sum_{i=1}^n\)</span><code>GP[i,v,p]</code><span class="math inline">\(y_i\)</span>.</li>
+<li><code>Syy</code>. The sum of squares of <span class="math inline">\(y\)</span>. <code>Syy</code><span class="math inline">\(=\sum_{i=1}^n y_i^2\)</span>.</li>
+</ul>
+<p>Since there are 2 cases to update jointly <span class="math inline">\( {\boldsymbol \theta} _{-p,p}\)</span>, <span class="math inline">\( {\boldsymbol \beta} _p\)</span> and <span class="math inline">\(bgx\)</span>,
+that is when <span class="math inline">\(\xi_q=0\)</span> for every <span class="math inline">\(q\neq p\)</span>, in which case only <span class="math inline">\( {\boldsymbol \beta} _p\)</span> gets
+updated. If <span class="math inline">\(\xi_q=1\)</span> at least for <span class="math inline">\(q\)</span>, then <span class="math inline">\( {\boldsymbol \theta} _{-p,p}\)</span> also gets updated,
+but mot all the entries, only <span class="math inline">\( {\boldsymbol \theta} _{-p,p}[ {\boldsymbol \xi} _{-p}=1]\)</span>. Since the procedure
+samples jointly <span class="math inline">\( {\boldsymbol \theta} _{-p,p}[ {\boldsymbol \xi} _{-p}=1]\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span>, and it is returned as
+only one object by <code>group_iterator</code>, then at the end of the loop the coefficients
+are distributed accordingly.</p>
+</div>
+<div id="updates-nu" class="section level4 hasAnchor" number="4.2.4.6">
+<h4><span class="header-section-number">4.2.4.6</span> Updates nu<a href="functions.html#updates-nu" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Samples <span class="math inline">\(\nu\)</span> according to <a href="posteriorComputation.html#full-conditional-nu">Full conditional <span class="math inline">\(\nu\)</span></a>.</p>
+</div>
+<div id="horseshoe-structure-for-theta" class="section level4 hasAnchor" number="4.2.4.7">
+<h4><span class="header-section-number">4.2.4.7</span> Horseshoe Structure for Theta<a href="functions.html#horseshoe-structure-for-theta" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Next the horseshoe structure for the Network coefficients is sampled.</p>
+<div id="samples-l2t" class="section level5 hasAnchor" number="4.2.4.7.1">
+<h5><span class="header-section-number">4.2.4.7.1</span> # Samples l2T<a href="functions.html#samples-l2t" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Samples <span class="math inline">\(\lambda^2_{p,p&#39;}\)</span> according to <a href="posteriorComputation.html#eq:horseshoeLambda">(3.1)</a>.</p>
+</div>
+<div id="samples-t2t" class="section level5 hasAnchor" number="4.2.4.7.2">
+<h5><span class="header-section-number">4.2.4.7.2</span> Samples t2T<a href="functions.html#samples-t2t" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Samples <span class="math inline">\(\sigma^2_\theta\)</span> according to <a href="posteriorComputation.html#eq:horseshoeSigma">(3.2)</a>.</p>
+</div>
+<div id="samples-vt" class="section level5 hasAnchor" number="4.2.4.7.3">
+<h5><span class="header-section-number">4.2.4.7.3</span> Samples vT<a href="functions.html#samples-vt" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Samples <span class="math inline">\(\kappa_{\lambda_{p,p&#39;}}\)</span> according to <a href="posteriorComputation.html#eq:horseshoeKappaLambda">(3.3)</a>.</p>
+</div>
+<div id="samples-xit" class="section level5 hasAnchor" number="4.2.4.7.4">
+<h5><span class="header-section-number">4.2.4.7.4</span> Samples xiT<a href="functions.html#samples-xit" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Samples <span class="math inline">\(\kappa_{\sigma^2_\theta}\)</span> according to <a href="posteriorComputation.html#eq:horseshoeKappaSigma">(3.4)</a>.</p>
+</div>
+</div>
+<div id="horseshoe-structure-for-b" class="section level4 hasAnchor" number="4.2.4.8">
+<h4><span class="header-section-number">4.2.4.8</span> Horseshoe Structure for B<a href="functions.html#horseshoe-structure-for-b" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Next the horseshoe structure for the Voxel coefficients is sampled.</p>
+<div id="samples-l2b" class="section level5 hasAnchor" number="4.2.4.8.1">
+<h5><span class="header-section-number">4.2.4.8.1</span> Samples l2B<a href="functions.html#samples-l2b" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Samples <span class="math inline">\(\phi^2_{v,p}\)</span> according to <a href="posteriorComputation.html#eq:horseshoePhi">(3.5)</a>.</p>
+</div>
+<div id="samples-t2b" class="section level5 hasAnchor" number="4.2.4.8.2">
+<h5><span class="header-section-number">4.2.4.8.2</span> Samples t2B<a href="functions.html#samples-t2b" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Samples <span class="math inline">\(\eta^2_p\)</span> according to <a href="posteriorComputation.html#eq:horseshoeEta">(3.6)</a>.</p>
+</div>
+<div id="samples-vb" class="section level5 hasAnchor" number="4.2.4.8.3">
+<h5><span class="header-section-number">4.2.4.8.3</span> Samples vB<a href="functions.html#samples-vb" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Samples <span class="math inline">\(\kappa_{\phi_{v,p}}\)</span> according to <a href="posteriorComputation.html#eq:horseshoeKappaPhi">(3.7)</a>.</p>
+</div>
+<div id="samples-xib" class="section level5 hasAnchor" number="4.2.4.8.4">
+<h5><span class="header-section-number">4.2.4.8.4</span> Samples xiB<a href="functions.html#samples-xib" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Samples <span class="math inline">\(\kappa_{\eta_p}\)</span> according to <a href="posteriorComputation.html#eq:horseshoeKappaEta">(3.8)</a>.</p>
+</div>
+</div>
+<div id="samples-st2-and-sb2" class="section level4 hasAnchor" number="4.2.4.9">
+<h4><span class="header-section-number">4.2.4.9</span> Samples sT2 and sB2<a href="functions.html#samples-st2-and-sb2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In order to sample <span class="math inline">\(\tau^2_\theta\)</span> and <span class="math inline">\(\tau^2_\beta\)</span> the following auxiliary
+variables are built:</p>
+<ul>
+<li><code>Q</code>. Number of active regions.</li>
+<li><code>Beta</code>. Network and Voxel coefficients together. <code>Beta</code><span class="math inline">\(=(\theta_{1,2},\theta_{1,3},\theta_{2,3},\ldots,\theta_{1,P},\ldots,\theta_{P-1,P}, {\boldsymbol \beta} _1&#39;,\ldots, {\boldsymbol \beta} _P&#39;)&#39;\)</span>.</li>
+<li><code>R</code>. Matrix of residuals. Each row corresponds to an observation and each
+column corresponds to a coefficient in the same order as <code>Beta</code>.</li>
+</ul>
+</div>
+<div id="samples-st2" class="section level4 hasAnchor" number="4.2.4.10">
+<h4><span class="header-section-number">4.2.4.10</span> Samples sT2<a href="functions.html#samples-st2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Samples <span class="math inline">\(\tau^2_\theta\)</span> as follows:</p>
+<ul>
+<li>Computes <span class="math inline">\(\hat{b}_{\tau_\theta}\)</span>.</li>
+<li>Computes <span class="math inline">\(\hat{a}_{\tau_\theta}\)</span>.</li>
+<li>Samples <span class="math inline">\(\tau^2_\theta\)</span>.</li>
+</ul>
+</div>
+<div id="samples-sb2" class="section level4 hasAnchor" number="4.2.4.11">
+<h4><span class="header-section-number">4.2.4.11</span> Samples sB2<a href="functions.html#samples-sb2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Samples <span class="math inline">\(\tau^2_\beta\)</span> as follows:</p>
+<ul>
+<li>Computes <span class="math inline">\(\hat{b}_{\tau_\beta}\)</span>.</li>
+<li>Computes <span class="math inline">\(\hat{a}_{\tau_\beta}\)</span>.</li>
+<li>Samples <span class="math inline">\(\tau^2_\beta\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="group_iterator" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> <code>group_iterator</code><a href="functions.html#group_iterator" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="description-1" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Description<a href="functions.html#description-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This function performs the joint sampling of <span class="math inline">\( {\boldsymbol \theta} _{-p,p}\)</span>, <span class="math inline">\( {\boldsymbol \beta} _p\)</span> and
+<span class="math inline">\(\xi_p\)</span> for a particular <span class="math inline">\(p\)</span>. It follows
+<a href="posteriorComputation.html#full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p">Full conditional for <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span></a>.</p>
+</div>
+<div id="inputs-2" class="section level3 hasAnchor" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> Inputs<a href="functions.html#inputs-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This function receives as inputs the variables <code>Syy</code>, <code>Say</code> and <code>Sgy</code> that can
+be thought as conditional sufficient statistics of the data (conditional on
+knowing <span class="math inline">\(\{ {\boldsymbol \psi} ^a_p,  {\boldsymbol \psi} ^g_p\}_{p=1}^P\)</span>) and play a similar role as the
+sufficient statistics of a regular regression model. It also requires the
+variance of the errors <span class="math inline">\(\tau_\theta^2\)</span> and <span class="math inline">\(\tau_\beta^2\)</span> and the priors
+variance to sample <span class="math inline">\(( {\boldsymbol \theta} _{-p,p}, {\boldsymbol \beta} _p)\)</span> jointly according to <span class="math inline">\( {\boldsymbol \xi} \)</span>.
+To sample <span class="math inline">\(\xi_p\)</span> the prior probability <span class="math inline">\(\nu\)</span> is also required Finally, the
+auxiliary <code>C</code> is used and <code>p</code> indicates which region is begin sampled.</p>
+<p>The data inputs are as follows:</p>
+<table style="width:99%;">
+<colgroup>
+<col width="5%" />
+<col width="18%" />
+<col width="74%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="right">Code</td>
+<td align="center">Model</td>
+<td align="left">Description</td>
+</tr>
+<tr class="even">
+<td align="right"><code>Say</code></td>
+<td align="center"><span class="math inline">\(S_{ay}\)</span></td>
+<td align="left">“Conditional sufficient statistic” for the Network Coefficients.
+It is a matrix of size <span class="math inline">\(P \times P\)</span>. <code>Say[p,q]</code>
+<span class="math inline">\(=\sum_{i=1}^n (a_{i,p,q} - \sum_{h=1}^H \psi^a_{p,h} \psi^a_{p,h} x_{i,h})y_i\)</span></td>
+</tr>
+<tr class="odd">
+<td align="right"><code>Sgy</code></td>
+<td align="center"><span class="math inline">\(S_{gy}\)</span></td>
+<td align="left">“Conditional sufficient statistic” for the Voxel Coefficients.
+It is a matrix of size <span class="math inline">\(V \times P\)</span>. <code>Sgy[p,q]</code>
+<span class="math inline">\(=\sum_{i=1}^n (g_{i,p,q} - \sum_{h=1}^H \psi^g_{p,h} x_{i,h})y_i\)</span></td>
+</tr>
+<tr class="even">
+<td align="right"><code>Syy</code></td>
+<td align="center"><span class="math inline">\(S_{yy}\)</span></td>
+<td align="left">The sum of squares of <span class="math inline">\(y\)</span>. <code>Syy</code><span class="math inline">\(=\sum_{i=1}^n y_i^2\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<p>The other input variables are:</p>
+<table style="width:99%;">
+<colgroup>
+<col width="5%" />
+<col width="18%" />
+<col width="74%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="right">Code</td>
+<td align="center">Model</td>
+<td align="left">Description</td>
+</tr>
+<tr class="even">
+<td align="right"><code>sT2</code></td>
+<td align="center"><span class="math inline">\(\tau^2\theta\)</span></td>
+<td align="left">Variance of the Network equation error.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>sB2</code></td>
+<td align="center"><span class="math inline">\(\tau^2\beta\)</span></td>
+<td align="left">Variance of the Voxel equation error.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>LT</code></td>
+<td align="center"><span class="math inline">\(\sigma^2_\theta {\boldsymbol \Lambda} \)</span></td>
+<td align="left">Product of the shrinking parameters of the Network Horseshoe prior.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>LB</code></td>
+<td align="center"><span class="math inline">\( {\boldsymbol \eta} ^2_\beta {\boldsymbol \Phi} \)</span></td>
+<td align="left">Product of the shrinking parameters of the Voxel Horseshoe prior.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>g</code></td>
+<td align="center"><span class="math inline">\(bgx\)</span></td>
+<td align="left">Region indicator variables.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>v</code></td>
+<td align="center"><span class="math inline">\(\nu\)</span></td>
+<td align="left">Prior probability for the region indicators.</td>
+</tr>
+</tbody>
+</table>
+<p>The set-up inputs are as follows:</p>
+<table>
+<colgroup>
+<col width="9%" />
+<col width="90%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="right">Code</td>
+<td align="left">Description</td>
+</tr>
+<tr class="even">
+<td align="right"><code>p</code></td>
+<td align="left">Selected region.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>C</code></td>
+<td align="left">Is a Boolean matrix of size <span class="math inline">\(V \times P\)</span> that indicates which
+entries of the voxel data are valid entries. For every observation
+<code>i</code>, <code>G[i,,][C]</code><span class="math inline">\(= {\boldsymbol g} _{i,1}&#39;,\ldots, {\boldsymbol g} _{i,P}&#39;\)</span>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="output-2" class="section level3 hasAnchor" number="4.3.3">
+<h3><span class="header-section-number">4.3.3</span> Output<a href="functions.html#output-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The outputs of the function are the samples for <span class="math inline">\( {\boldsymbol \theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span> in
+a single object and the updated version of <span class="math inline">\( {\boldsymbol \xi} \)</span>. Also the probability of a
+region been selected is returned for analysis purposes.</p>
+<table style="width:99%;">
+<colgroup>
+<col width="5%" />
+<col width="18%" />
+<col width="74%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="right">Code</td>
+<td align="center">Model</td>
+<td align="left">Description</td>
+</tr>
+<tr class="even">
+<td align="right"><code>b</code></td>
+<td align="center"><span class="math inline">\( {\boldsymbol \theta} _{-p,p}\)</span> and
+<span class="math inline">\( {\boldsymbol \beta} _p\)</span></td>
+<td align="left">This object returns the sample of <span class="math inline">\( {\boldsymbol \theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span>. However, it only
+returns the samples for the Network coefficients for which <span class="math inline">\(\xi_q = 1\)</span>. That is
+<code>b</code><span class="math inline">\(=( {\boldsymbol \theta} _{-p,p}[ {\boldsymbol \xi} _{-p} = 1]&#39;, {\boldsymbol \beta} _p&#39;)&#39;\)</span>.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>g</code></td>
+<td align="center"><span class="math inline">\( {\boldsymbol \xi} \)</span></td>
+<td align="left"><span class="math inline">\( {\boldsymbol \xi} \)</span> after updating entry <span class="math inline">\(p\)</span>.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>pr</code></td>
+<td align="center"></td>
+<td align="left">Full conditional probability of <span class="math inline">\(\xi_p = 1\)</span>. For analysis purposes only.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="walktrhough" class="section level3 hasAnchor" number="4.3.4">
+<h3><span class="header-section-number">4.3.4</span> Walktrhough<a href="functions.html#walktrhough" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="checks-if-there-are-elements-in-the-symmetric-network" class="section level4 hasAnchor" number="4.3.4.1">
+<h4><span class="header-section-number">4.3.4.1</span> Checks if there are elements in the Symmetric Network<a href="functions.html#checks-if-there-are-elements-in-the-symmetric-network" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>If <span class="math inline">\(\xi_q = 0\)</span> for <span class="math inline">\(q \neq p\)</span>, then <span class="math inline">\(\theta_{q,p}\)</span> is set as <span class="math inline">\(0\)</span> for every <span class="math inline">\(q\)</span>
+and only <span class="math inline">\( {\boldsymbol \beta} _p\)</span> is sampled. This section checks that condition and makes the
+necessary adjustments to compute the auxiliary variables described in
+<a href="posteriorComputation.html#full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p">Full conditional for <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span></a>.</p>
+</div>
+<div id="computes-the-log-odds" class="section level4 hasAnchor" number="4.3.4.2">
+<h4><span class="header-section-number">4.3.4.2</span> Computes the Log-Odds<a href="functions.html#computes-the-log-odds" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Computes the Log-odd probability of a region being selected. Notice that after
+making the necessary adjustments in the previous section two cases are not
+required. In this way the auxiliary variables <span class="math inline">\(c_i\)</span> are equivalent to <code>lo</code> in
+both cases of
+<a href="posteriorComputation.html#full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p">Full conditional for <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span></a>.</p>
+</div>
+<div id="computes-the-probability" class="section level4 hasAnchor" number="4.3.4.3">
+<h4><span class="header-section-number">4.3.4.3</span> Computes the Probability<a href="functions.html#computes-the-probability" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Computes the probability of the full conditional of <span class="math inline">\(\xi_p\)</span>. It also checks for
+numerical problems if the odds are equal to <code>Inf</code>.</p>
+</div>
+<div id="updates-g" class="section level4 hasAnchor" number="4.3.4.4">
+<h4><span class="header-section-number">4.3.4.4</span> Updates g<a href="functions.html#updates-g" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Updates the entry <span class="math inline">\(p\)</span> of <span class="math inline">\( {\boldsymbol \xi} \)</span>.</p>
+</div>
+<div id="updates-theta-and-b" class="section level4 hasAnchor" number="4.3.4.5">
+<h4><span class="header-section-number">4.3.4.5</span> Updates Theta and B<a href="functions.html#updates-theta-and-b" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Updates <span class="math inline">\( {\boldsymbol \theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span> depending on <span class="math inline">\(\xi_p\)</span>.</p>
+</div>
+<div id="returns-values-1" class="section level4 hasAnchor" number="4.3.4.6">
+<h4><span class="header-section-number">4.3.4.6</span> Returns values<a href="functions.html#returns-values-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Returns the outputs.</p>
 
 </div>
 </div>

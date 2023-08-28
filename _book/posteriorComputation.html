@@ -108,8 +108,8 @@ div.csl-indent {
 <li class="chapter" data-level="2" data-path="modelFramework.html"><a href="modelFramework.html"><i class="fa fa-check"></i><b>2</b> Model Framework</a></li>
 <li class="chapter" data-level="3" data-path="posteriorComputation.html"><a href="posteriorComputation.html"><i class="fa fa-check"></i><b>3</b> Posterior Computation</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-a_p."><i class="fa fa-check"></i><b>3.1</b> Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span></a></li>
-<li class="chapter" data-level="3.2" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-g_p."><i class="fa fa-check"></i><b>3.2</b> Full conditional for <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span></a></li>
+<li class="chapter" data-level="3.1" data-path="posteriorComputation.html"><a href="posteriorComputation.html#fullConditionalPsiA"><i class="fa fa-check"></i><b>3.1</b> Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span></a></li>
+<li class="chapter" data-level="3.2" data-path="posteriorComputation.html"><a href="posteriorComputation.html#fullConditionalPsiG"><i class="fa fa-check"></i><b>3.2</b> Full conditional for <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span></a></li>
 <li class="chapter" data-level="3.3" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p"><i class="fa fa-check"></i><b>3.3</b> Full conditional for <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span></a></li>
 <li class="chapter" data-level="3.4" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-tau2_theta"><i class="fa fa-check"></i><b>3.4</b> Full Conditional for <span class="math inline">\(\tau^2_\theta\)</span></a></li>
 <li class="chapter" data-level="3.5" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-tau2_beta"><i class="fa fa-check"></i><b>3.5</b> Full Conditional for <span class="math inline">\(\tau^2_\beta\)</span></a></li>
@@ -124,6 +124,20 @@ div.csl-indent {
 <li class="chapter" data-level="4.1.2" data-path="functions.html"><a href="functions.html#inputs"><i class="fa fa-check"></i><b>4.1.2</b> Inputs</a></li>
 <li class="chapter" data-level="4.1.3" data-path="functions.html"><a href="functions.html#output"><i class="fa fa-check"></i><b>4.1.3</b> Output</a></li>
 <li class="chapter" data-level="4.1.4" data-path="functions.html"><a href="functions.html#walkthrough"><i class="fa fa-check"></i><b>4.1.4</b> Walkthrough</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="functions.html"><a href="functions.html#bmrr_iterator"><i class="fa fa-check"></i><b>4.2</b> <code>bmrr_iterator</code></a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="functions.html"><a href="functions.html#description"><i class="fa fa-check"></i><b>4.2.1</b> Description</a></li>
+<li class="chapter" data-level="4.2.2" data-path="functions.html"><a href="functions.html#inputs-1"><i class="fa fa-check"></i><b>4.2.2</b> Inputs</a></li>
+<li class="chapter" data-level="4.2.3" data-path="functions.html"><a href="functions.html#output-1"><i class="fa fa-check"></i><b>4.2.3</b> Output</a></li>
+<li class="chapter" data-level="4.2.4" data-path="functions.html"><a href="functions.html#walkthrough-1"><i class="fa fa-check"></i><b>4.2.4</b> Walkthrough</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="functions.html"><a href="functions.html#group_iterator"><i class="fa fa-check"></i><b>4.3</b> <code>group_iterator</code></a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="functions.html"><a href="functions.html#description-1"><i class="fa fa-check"></i><b>4.3.1</b> Description</a></li>
+<li class="chapter" data-level="4.3.2" data-path="functions.html"><a href="functions.html#inputs-2"><i class="fa fa-check"></i><b>4.3.2</b> Inputs</a></li>
+<li class="chapter" data-level="4.3.3" data-path="functions.html"><a href="functions.html#output-2"><i class="fa fa-check"></i><b>4.3.3</b> Output</a></li>
+<li class="chapter" data-level="4.3.4" data-path="functions.html"><a href="functions.html#walktrhough"><i class="fa fa-check"></i><b>4.3.4</b> Walktrhough</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -169,27 +183,25 @@ conditional <span class="math inline">\(p( {\boldsymbol \psi} ^g_{p,.}| {\boldsy
 <li>Sample <span class="math inline">\(\nu\)</span> from the full conditional <span class="math inline">\(p(\nu| {\boldsymbol \xi} )\)</span>.</li>
 <li>Sample the horseshoe parameters using the latent variable approach as in <span class="citation">(<a href="#ref-makalic_simple_2016">Makalic and Schmidt 2016</a>)</span>.</li>
 </ol>
-<div id="full-conditional-for-boldsymbol-psi-a_p." class="section level2 hasAnchor" number="3.1">
-<h2><span class="header-section-number">3.1</span> Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-a_p." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="fullConditionalPsiA" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span><a href="posteriorComputation.html#fullConditionalPsiA" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><span class="math display">\[ {\boldsymbol \psi} ^a_{p,.}| {\boldsymbol \psi} ^a_{-p,.}, {\boldsymbol \Theta} ,\sigma^2, {\boldsymbol A} \sim N \left( \hat{ {\boldsymbol \psi} }^a_{p,.}, \tau_\theta^2 ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1} \right)\]</span> where
 <span class="math display">\[\begin{align*}
-    \hat{ {\boldsymbol \psi} }^a_{p,.} &amp;=  ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1}  {\boldsymbol W} &#39;  {\boldsymbol R} \\
-     {\boldsymbol R} &amp;= [ ( {\boldsymbol R} _1)_{-p,p}&#39;,...,( {\boldsymbol R} _n)_{-p,p}&#39; ]&#39;     \\
-     {\boldsymbol W} &amp;= [  {\boldsymbol W} _1&#39;,..., {\boldsymbol W} _n&#39;]&#39;                                                  \\
-    ( {\boldsymbol R} _i)_{-p,p} &amp;= ( {\boldsymbol A} _i)_{-p,p} -  {\boldsymbol \Theta} _{-p,p}y_i \quad \forall i \in \{1,...,n\} \\
-     {\boldsymbol W} _i &amp;=  {\boldsymbol \psi} ^a_{-p,.} \cdot ({\boldsymbol 1}_P \otimes  {\boldsymbol x} _i&#39;) \quad \forall i \in \{1,...,n\}.              \\
+    \hat{ {\boldsymbol \psi} }^a_{p,.} &amp;= ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1}  {\boldsymbol W} &#39;  {\boldsymbol R} \\
+     {\boldsymbol W} &amp;= [  {\boldsymbol W} _1&#39;,..., {\boldsymbol W} _{p-1}&#39;, {\boldsymbol W} _{p+1}&#39;,\ldots, {\boldsymbol W} _P&#39;]&#39;        \\
+     {\boldsymbol W} _q               &amp;= ( {\boldsymbol \psi} ^a_{q,.} \otimes  {\boldsymbol 1} _n) \cdot  {\boldsymbol X} \quad q \neq p \\
+     {\boldsymbol R} &amp;= \text{vec}(A_{.,-p,p}) -  {\boldsymbol \Theta} _{-p,p} \otimes y           \\
 \end{align*}\]</span></p>
 </div>
-<div id="full-conditional-for-boldsymbol-psi-g_p." class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> Full conditional for <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-g_p." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="fullConditionalPsiG" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Full conditional for <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span><a href="posteriorComputation.html#fullConditionalPsiG" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><span class="math display">\[ {\boldsymbol \psi} ^g_{p,.}| {\boldsymbol \beta} _p,\sigma^2, {\boldsymbol g} _p \sim N \left( \hat{ {\boldsymbol \psi} }^g_{p,.}, \tau_\beta^2 ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1}  \right)\]</span>
 where
 <span class="math display">\[\begin{align*}
-    \hat{ {\boldsymbol \psi} }^g_{p,.} &amp;=  ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1}  {\boldsymbol W} &#39;  {\boldsymbol R} \\
-     {\boldsymbol R} &amp;= [ ( {\boldsymbol R} _1)_{-p,p}&#39;,...,( {\boldsymbol R} _n)_{-p,p}&#39; ]&#39;     \\
-     {\boldsymbol W} &amp;= [  {\boldsymbol W} _1&#39;,..., {\boldsymbol W} _n&#39;]&#39;                                                  \\
-    ( {\boldsymbol R} _i)_{-p,p} &amp;=  {\boldsymbol g} _{i,p} -  {\boldsymbol \beta} _p y_i \quad \forall i \in \{1,...,n\} \\
-     {\boldsymbol W} _i &amp;= {\boldsymbol 1}_{V_p} \otimes  {\boldsymbol x} _i&#39; \quad \forall i \in \{1,...,n\}.              \\
+    \hat{ {\boldsymbol \psi} }^g_{p,.} &amp;= ( {\boldsymbol W} &#39; {\boldsymbol W} )^{-1}  {\boldsymbol W} &#39;  {\boldsymbol R} \\
+     {\boldsymbol W} &amp;=  {\boldsymbol 1} _{V_p} \otimes  {\boldsymbol x} \\
+     {\boldsymbol R} &amp;= ( {\boldsymbol R} _{.,v,p}&#39;,..., {\boldsymbol R} _{.,V_p,p}&#39;)&#39;                             \\
+     {\boldsymbol R} _{.,v,p}         &amp;=  {\boldsymbol g} _{.,v,p} -  {\boldsymbol \beta} _{v,p} y \quad \forall v \in \{1,...,V_p\} \\
 \end{align*}\]</span></p>
 </div>
 <div id="full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p" class="section level2 hasAnchor" number="3.3">
@@ -270,22 +282,50 @@ where
 <p>Following <span class="citation">(<a href="#ref-makalic_simple_2016">Makalic and Schmidt 2016</a>)</span> auxiliary variables are used for the priors of
 the <span class="math inline">\(\lambda_{p,p&#39;}\)</span>’s, <span class="math inline">\(\sigma^2_\theta\)</span>, <span class="math inline">\(\phi_{v.p}\)</span>’2 and <span class="math inline">\(\eta_p\)</span>’s as
 follows:</p>
-<p><span class="math display">\[ \lambda_{p,p&#39;} \sim IG(1/2, 1/\kappa_{\lambda_{p,p&#39;}}) \]</span>
+<p><span class="math display">\[ \lambda^2_{p,p&#39;} \sim IG(1/2, 1/\kappa_{\lambda_{p,p&#39;}}) \]</span>
 <span class="math display">\[ \sigma^2_\theta \sim IG(1/2, 1/\kappa_{\sigma^2_\theta}) \]</span>
-<span class="math display">\[ \phi_{v,p} \sim IG(1/2, 1/\kappa_{\phi_{v,p}}) \]</span>
-<span class="math display">\[ \eta_p \sim IG(1/2, 1/\kappa_{\eta_p}) \]</span>
+<span class="math display">\[ \phi^2_{v,p} \sim IG(1/2, 1/\kappa_{\phi_{v,p}}) \]</span>
+<span class="math display">\[ \eta^2_p \sim IG(1/2, 1/\kappa_{\eta_p}) \]</span>
 <span class="math display">\[ \kappa_{\lambda_{p,p}}, \kappa_{\sigma_\theta}, \kappa_{\phi_{v,p}}, \kappa_{\eta_p} \stackrel{iid}{\sim} IG(1/2, 1) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\} \]</span>
 Then the full conditionals for the Network Horseshoe parameters (including auxiliary variables) are given by</p>
-<p><span class="math display">\[ \lambda^2_{p,p&#39;}| \sigma^2_\theta, \tau^2_\theta, \theta_{p,p&#39;}, \xi_p, \xi_{p&#39;} \stackrel{ind.}{\sim}
-IG \left(1, \frac{1}{\kappa_{\lambda_{p,p&#39;}}}+I_{\xi_p=1}I_{\xi_{p&#39;}=1}\frac{\theta^2_{p,p&#39;}}{2 \sigma^2_\theta \tau^2_\theta}\right) \quad p&lt;p&#39;\]</span></p>
-<p><span class="math display">\[ \sigma^2_\theta|  {\boldsymbol \Lambda} , \tau^2_\theta,  {\boldsymbol \Theta} , \xi_p \stackrel{ind.}{\sim} IG \left(1, \frac{1}{\kappa_{\sigma^2_\theta}} + \frac{1}{2 \tau^2_\theta} \sum_{\substack{p&lt;p&#39; \\ \xi_p = 1 \\ \xi_{p&#39;}=1}}\frac{\theta_{p,p&#39;}^2}{\tau^2_{\theta}\lambda^2_{p,p&#39;}} \right)   \]</span>
-<span class="math display">\[ \kappa_{\lambda_{p,p&#39;}}|\lambda^2_{p,p&#39;} \sim IG \left(1, 1 + \frac{1}{\lambda^2_{p,p&#39;}}\right) \]</span>
-<span class="math display">\[ \kappa_{\sigma_\theta}|\sigma^2_\theta \sim IG \left(1, 1 + \frac{1}{\sigma^2_\theta}\right) \]</span>
-Then the full conditionals for the Voxel Horseshoe parameters (including auxiliary variables) are given by</p>
-<p><span class="math display">\[ \phi^2_{v,p}| \eta^2_p, \tau^2_\beta, \phi_{v,p}, \xi_p \stackrel{ind.}{\sim} IG \left(1, \frac{1}{\kappa_{\phi_{v,p}}}+I_{\xi_p=1}\frac{ \beta^2_{v,p}}{2 \eta^2_p \tau^2_\beta}\right) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\}  \]</span>
-<span class="math display">\[ \eta^2_p|  {\boldsymbol \Phi} , \tau^2_\beta,  {\boldsymbol B} , \xi_p \stackrel{ind.}{\sim} IG \left(1, \frac{1}{\kappa_{\eta_P}} + \frac{I_{\xi_p = 1}}{2 \tau^2_\beta} \sum_{\substack{v=1}}^{V_p}\frac{\beta_{v,p}^2}{\tau^2_{\theta}\lambda^2_{p,p&#39;}} \right) \quad p \in \{1,\ldots,P\}  \]</span></p>
-<p><span class="math display">\[ \kappa_{\phi_{v,p}}|\phi^2_{v,p} \sim IG \left(1, 1 + \frac{1}{\phi^2_{v,p}}\right) \]</span>
-<span class="math display">\[ \kappa_{\eta_p}|\eta^2_p \sim IG \left(1, 1 + \frac{1}{\eta^2_p}\right) \quad p \in \{1,\ldots,P\} \]</span></p>
+<p><span class="math display" id="eq:horseshoeLambda">\[\begin{equation}
+\lambda^2_{p,p&#39;}| \sigma^2_\theta, \tau^2_\theta, \theta_{p,p&#39;}, \xi_p, \xi_{p&#39;} \stackrel{ind.}{\sim}
+IG \left(\frac{1}{2} + \frac{I_{\xi_p=1}I_{\xi_{p&#39;}=1}}{2}, \frac{1}{\kappa_{\lambda_{p,p&#39;}}}+I_{\xi_p=1}I_{\xi_{p&#39;}=1}\frac{\theta^2_{p,p&#39;}}{2 \sigma^2_\theta \tau^2_\theta}\right) \quad p&lt;p&#39;
+\tag{3.1}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:horseshoeSigma">\[\begin{equation}
+\sigma^2_\theta|  {\boldsymbol \Lambda} , \tau^2_\theta,  {\boldsymbol \Theta} , \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2} + \frac{Q}{2}, \frac{1}{\kappa_{\sigma^2_\theta}} + \frac{1}{2 \tau^2_\theta} \sum_{\substack{p&lt;p&#39; \\ \xi_p = 1 \\ \xi_{p&#39;}=1}}\frac{\theta_{p,p&#39;}^2}{\tau^2_{\theta}\lambda^2_{p,p&#39;}} \right)
+\tag{3.2}
+\end{equation}\]</span>
+where <span class="math inline">\(Q=\sum_p^{P}\xi_p\)</span>.</p>
+<p><span class="math display" id="eq:horseshoeKappaLambda">\[\begin{equation}
+\kappa_{\lambda_{p,p&#39;}}|\lambda^2_{p,p&#39;} \sim IG \left(1, 1 + \frac{1}{\lambda^2_{p,p&#39;}}\right)
+\tag{3.3}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:horseshoeKappaSigma">\[\begin{equation}
+\kappa_{\sigma_\theta}|\sigma^2_\theta \sim IG \left(1, 1 + \frac{1}{\sigma^2_\theta}\right)
+\tag{3.4}
+\end{equation}\]</span></p>
+<p>And the full conditionals for the Voxel Horseshoe parameters (including auxiliary variables) are given by</p>
+<p><span class="math display" id="eq:horseshoePhi">\[\begin{equation}
+\tag{3.5}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:horseshoePhi">\[\begin{equation}
+\phi^2_{v,p}| \eta^2_p, \tau^2_\beta, \phi_{v,p}, \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2}+\frac{\xi_p}{2}, \frac{1}{\kappa_{\phi_{v,p}}}+I_{\xi_p=1}\frac{ \beta^2_{v,p}}{2 \eta^2_p \tau^2_\beta}\right) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\}
+\tag{3.5}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:horseshoeEta">\[\begin{equation}
+\eta^2_p|  {\boldsymbol \Phi} , \tau^2_\beta,  {\boldsymbol B} , \xi_p \stackrel{ind.}{\sim} IG \left(1, \frac{1}{\kappa_{\eta_P}} + \frac{I_{\xi_p = 1}}{2 \tau^2_\beta} \sum_{\substack{v=1}}^{V_p}\frac{\beta_{v,p}^2}{\tau^2_{\theta}\lambda^2_{p,p&#39;}} \right) \quad p \in \{1,\ldots,P\}
+\tag{3.6}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:horseshoeKappaPhi">\[\begin{equation}
+\kappa_{\phi_{v,p}}|\phi^2_{v,p} \sim IG \left(1, 1 + \frac{1}{\phi^2_{v,p}}\right)
+\tag{3.7}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:horseshoeKappaEta">\[\begin{equation}
+\kappa_{\eta_p}|\eta^2_p \sim IG \left(1, 1 + \frac{1}{\eta^2_p}\right) \quad p \in \{1,\ldots,P\}
+\tag{3.8}
+\end{equation}\]</span></p>
 
 </div>
 </div>

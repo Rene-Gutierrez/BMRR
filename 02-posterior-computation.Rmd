@@ -20,27 +20,25 @@ conditional $p(\bpsi^g_{p,.}|\bbeta_p,\tau^2_\beta,\bg_p)$.
 6. Sample $\nu$ from the full conditional $p(\nu|\bxi)$.
 7. Sample the horseshoe parameters using the latent variable approach as in [@makalic_simple_2016].
 
-## Full Conditional for $\bpsi^a_{p,.}$
+## Full Conditional for $\bpsi^a_{p,.}$ {#fullConditionalPsiA}
 
 $$\bpsi^a_{p,.}|\bpsi^a_{-p,.},\bTheta,\sigma^2,\bA \sim N \left( \hat{\bpsi}^a_{p,.}, \tau_\theta^2 (\bW'\bW)^{-1} \right)$$ where
 \begin{align*}
-    \hat{\bpsi}^a_{p,.} &=  (\bW'\bW)^{-1} \bW' \bR \\
-    \bR &= [ (\bR_1)_{-p,p}',...,(\bR_n)_{-p,p}' ]'     \\
-    \bW &= [ \bW_1',...,\bW_n']'                                                  \\
-    (\bR_i)_{-p,p} &= (\bA_i)_{-p,p} - \bTheta_{-p,p}y_i \quad \forall i \in \{1,...,n\} \\
-    \bW_i &= \bpsi^a_{-p,.} \cdot ({\boldsymbol 1}_P \otimes \bx_i') \quad \forall i \in \{1,...,n\}.              \\
+    \hat{\bpsi}^a_{p,.} &= (\bW'\bW)^{-1} \bW' \bR                                   \\
+    \bW                 &= [ \bW_1',...,\bW_{p-1}',\bW_{p+1}',\ldots,\bW_P']'        \\
+    \bW_q               &= (\bpsi^a_{q,.} \otimes \bones_n) \cdot \bX \quad q \neq p \\
+    \bR                 &= \text{vec}(A_{.,-p,p}) - \bgTh_{-p,p} \otimes y           \\
 \end{align*}
 
-## Full conditional for $\bpsi^g_{p,.}$
+## Full conditional for $\bpsi^g_{p,.}$ {#fullConditionalPsiG}
 
 $$\bpsi^g_{p,.}|\bbeta_p,\sigma^2,\bg_p \sim N \left( \hat{\bpsi}^g_{p,.}, \tau_\beta^2 (\bW'\bW)^{-1}  \right)$$
 where
 \begin{align*}
-    \hat{\bpsi}^g_{p,.} &=  (\bW'\bW)^{-1} \bW' \bR \\
-    \bR &= [ (\bR_1)_{-p,p}',...,(\bR_n)_{-p,p}' ]'     \\
-    \bW &= [ \bW_1',...,\bW_n']'                                                  \\
-    (\bR_i)_{-p,p} &= \bg_{i,p} - \bbeta_p y_i \quad \forall i \in \{1,...,n\} \\
-    \bW_i &= {\boldsymbol 1}_{V_p} \otimes \bx_i' \quad \forall i \in \{1,...,n\}.              \\
+    \hat{\bpsi}^g_{p,.} &= (\bW'\bW)^{-1} \bW' \bR                                        \\
+    \bW                 &= \bones_{V_p} \otimes \bx                                       \\
+    \bR                 &= (\bR_{.,v,p}',...,\bR_{.,V_p,p}')'                             \\
+    \bR_{.,v,p}         &= \bg_{.,v,p} - \bbeta_{v,p} y \quad \forall v \in \{1,...,V_p\} \\
 \end{align*}
 
 ## Full conditional for $\xi_p$, $\bTheta_{-p,p}$ and $\bbeta_p$
@@ -131,36 +129,57 @@ Following [@makalic_simple_2016] auxiliary variables are used for the priors of
 the $\lambda_{p,p'}$'s, $\sigma^2_\theta$, $\phi_{v.p}$'2 and $\eta_p$'s as
 follows:
 
-$$ \lambda_{p,p'} \sim IG(1/2, 1/\kappa_{\lambda_{p,p'}}) $$
+$$ \lambda^2_{p,p'} \sim IG(1/2, 1/\kappa_{\lambda_{p,p'}}) $$
 $$ \sigma^2_\theta \sim IG(1/2, 1/\kappa_{\sigma^2_\theta}) $$
-$$ \phi_{v,p} \sim IG(1/2, 1/\kappa_{\phi_{v,p}}) $$
-$$ \eta_p \sim IG(1/2, 1/\kappa_{\eta_p}) $$
+$$ \phi^2_{v,p} \sim IG(1/2, 1/\kappa_{\phi_{v,p}}) $$
+$$ \eta^2_p \sim IG(1/2, 1/\kappa_{\eta_p}) $$
 $$ \kappa_{\lambda_{p,p}}, \kappa_{\sigma_\theta}, \kappa_{\phi_{v,p}}, \kappa_{\eta_p} \stackrel{iid}{\sim} IG(1/2, 1) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\} $$
 Then the full conditionals for the Network Horseshoe parameters (including auxiliary variables) are given by
 
-$$ \lambda^2_{p,p'}| \sigma^2_\theta, \tau^2_\theta, \theta_{p,p'}, \xi_p, \xi_{p'} \stackrel{ind.}{\sim}
-IG \left(1, \frac{1}{\kappa_{\lambda_{p,p'}}}+I_{\xi_p=1}I_{\xi_{p'}=1}\frac{\theta^2_{p,p'}}{2 \sigma^2_\theta \tau^2_\theta}\right) \quad p<p'$$
+\begin{equation}
+\lambda^2_{p,p'}| \sigma^2_\theta, \tau^2_\theta, \theta_{p,p'}, \xi_p, \xi_{p'} \stackrel{ind.}{\sim}
+IG \left(\frac{1}{2} + \frac{I_{\xi_p=1}I_{\xi_{p'}=1}}{2}, \frac{1}{\kappa_{\lambda_{p,p'}}}+I_{\xi_p=1}I_{\xi_{p'}=1}\frac{\theta^2_{p,p'}}{2 \sigma^2_\theta \tau^2_\theta}\right) \quad p<p'
+(\#eq:horseshoeLambda)
+\end{equation}
 
-$$ \sigma^2_\theta| \bgL, \tau^2_\theta, \bgTh, \xi_p \stackrel{ind.}{\sim} IG \left(1, \frac{1}{\kappa_{\sigma^2_\theta}} + \frac{1}{2 \tau^2_\theta} \sum_{\substack{p<p' \\ \xi_p = 1 \\ \xi_{p'}=1}}\frac{\theta_{p,p'}^2}{\tau^2_{\theta}\lambda^2_{p,p'}} \right)   $$
-$$ \kappa_{\lambda_{p,p'}}|\lambda^2_{p,p'} \sim IG \left(1, 1 + \frac{1}{\lambda^2_{p,p'}}\right) $$
-$$ \kappa_{\sigma_\theta}|\sigma^2_\theta \sim IG \left(1, 1 + \frac{1}{\sigma^2_\theta}\right) $$
-Then the full conditionals for the Voxel Horseshoe parameters (including auxiliary variables) are given by
+\begin{equation}
+\sigma^2_\theta| \bgL, \tau^2_\theta, \bgTh, \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2} + \frac{Q}{2}, \frac{1}{\kappa_{\sigma^2_\theta}} + \frac{1}{2 \tau^2_\theta} \sum_{\substack{p<p' \\ \xi_p = 1 \\ \xi_{p'}=1}}\frac{\theta_{p,p'}^2}{\tau^2_{\theta}\lambda^2_{p,p'}} \right)
+(\#eq:horseshoeSigma)
+\end{equation}
+where $Q=\sum_p^{P}\xi_p$.
 
-$$ \phi^2_{v,p}| \eta^2_p, \tau^2_\beta, \phi_{v,p}, \xi_p \stackrel{ind.}{\sim} IG \left(1, \frac{1}{\kappa_{\phi_{v,p}}}+I_{\xi_p=1}\frac{ \beta^2_{v,p}}{2 \eta^2_p \tau^2_\beta}\right) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\}  $$
-$$ \eta^2_p| \bgPh, \tau^2_\beta, \bB, \xi_p \stackrel{ind.}{\sim} IG \left(1, \frac{1}{\kappa_{\eta_P}} + \frac{I_{\xi_p = 1}}{2 \tau^2_\beta} \sum_{\substack{v=1}}^{V_p}\frac{\beta_{v,p}^2}{\tau^2_{\theta}\lambda^2_{p,p'}} \right) \quad p \in \{1,\ldots,P\}  $$
+\begin{equation}
+\kappa_{\lambda_{p,p'}}|\lambda^2_{p,p'} \sim IG \left(1, 1 + \frac{1}{\lambda^2_{p,p'}}\right)
+(\#eq:horseshoeKappaLambda)
+\end{equation}
 
+\begin{equation}
+\kappa_{\sigma_\theta}|\sigma^2_\theta \sim IG \left(1, 1 + \frac{1}{\sigma^2_\theta}\right)
+(\#eq:horseshoeKappaSigma)
+\end{equation}
 
-$$ \kappa_{\phi_{v,p}}|\phi^2_{v,p} \sim IG \left(1, 1 + \frac{1}{\phi^2_{v,p}}\right) $$
-$$ \kappa_{\eta_p}|\eta^2_p \sim IG \left(1, 1 + \frac{1}{\eta^2_p}\right) \quad p \in \{1,\ldots,P\} $$
+And the full conditionals for the Voxel Horseshoe parameters (including auxiliary variables) are given by
 
+\begin{equation}
+(\#eq:horseshoePhi)
+\end{equation}
 
+\begin{equation}
+\phi^2_{v,p}| \eta^2_p, \tau^2_\beta, \phi_{v,p}, \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2}+\frac{\xi_p}{2}, \frac{1}{\kappa_{\phi_{v,p}}}+I_{\xi_p=1}\frac{ \beta^2_{v,p}}{2 \eta^2_p \tau^2_\beta}\right) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\}
+(\#eq:horseshoePhi)
+\end{equation}
 
+\begin{equation}
+\eta^2_p| \bgPh, \tau^2_\beta, \bB, \xi_p \stackrel{ind.}{\sim} IG \left(1, \frac{1}{\kappa_{\eta_P}} + \frac{I_{\xi_p = 1}}{2 \tau^2_\beta} \sum_{\substack{v=1}}^{V_p}\frac{\beta_{v,p}^2}{\tau^2_{\theta}\lambda^2_{p,p'}} \right) \quad p \in \{1,\ldots,P\}
+(\#eq:horseshoeEta)
+\end{equation}
 
+\begin{equation}
+\kappa_{\phi_{v,p}}|\phi^2_{v,p} \sim IG \left(1, 1 + \frac{1}{\phi^2_{v,p}}\right)
+(\#eq:horseshoeKappaPhi)
+\end{equation}
 
-
-
-
-
-
-
-
+\begin{equation}
+\kappa_{\eta_p}|\eta^2_p \sim IG \left(1, 1 + \frac{1}{\eta^2_p}\right) \quad p \in \{1,\ldots,P\}
+(\#eq:horseshoeKappaEta)
+\end{equation}

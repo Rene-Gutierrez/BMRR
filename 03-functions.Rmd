@@ -173,7 +173,7 @@ auxiliary variables are returned.
 |`t2B`  |$\{\eta_p\}_{p=1}^P$               | Samples of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a matrix of size      |
 |       |                                   | `nmcmc`$\times P$. For sample $s$, `t2B[s,p]`$={\eta_p}^s$.                                                                   |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`l2B`  |$\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}$ | Samples of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is an array of size      |
+|`l2B`  |$\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}$ | Samples of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is an array of size        |
 |       |                                   | `nmcmc`$\times V \times P$. For sample $s$, `l2B[s,v,p]`$=\phi_{v,p}^s = \phi_{v,p}^s$ for $v \leq V_p$ and                   |
 |       |                                   | `l2B[s,v,p]=NA` for $v>V_p$.                                                                                                  |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
@@ -205,10 +205,10 @@ returned:
 |      |                                   |$(\theta_{1,2}^s,\theta_{1,3}^s,\theta_{2,3}^s,\ldots,\theta_{1,P}^s,\ldots,\theta_{P-1,P}^s,{\bgb_1^s}',\ldots,{\bgb_P^s}')$. |
 +------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 |`DA`  |$\{\bgps_{p,h}^a\}_{p=1,h=1}^{P,H}$| Samples of the bilinear structure of the Network equation coefficients of the covariates $X$. It is an array of size          |
-|      |                                   | (`nmcmc` $\times P \times H$).  For sample $s$, `DA[s,p,h]`$= {\psi_{p,h}^{a,s}}'$.                                           |
+|      |                                   | (`nmcmc` $\times P \times H$).  For sample $s$, `DA[s,p,h]`$= {\psi_{p,h}^{a,s}}$.                                            |
 +------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 |`DG`  |$\{\bgps_{p,h}^g\}_{p=1,h=1}^{P,H}$| Samples of the structure of the Voxel equation coefficients of the covariates $X$. It is an array of size                     |
-|      |                                   | (`nmcmc` $\times P \times H$).  For sample $s$, `DA[s,p,h]`$= {\psi_{p,h}^{g,s}}'$.                                           |
+|      |                                   | (`nmcmc` $\times P \times H$).  For sample $s$, `DA[s,p,h]`$= {\psi_{p,h}^{g,s}}$.                                            |
 +------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 |`sT2` |$\tau^2_\theta$                    | Samples of the variance of the error of the Network equation. It is a vector of size `nmcmc`. For sample $s$, `sT2[s]`        |
 |      |                                   | $= {\tau^2_\theta}^s$.                                                                                                        |
@@ -218,8 +218,53 @@ returned:
 +------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 
 The `state` output is a list containing all the model variables 
-(including auxiliaries).
+(including auxiliaries). Here are the elements of the list:
 
++------:+:---------------------------------:+:------------------------------------------------------------------------------------------------------------------------------+
+|Code   | Model                             | Description                                                                                                                   |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`g`    | $\bxi$                            | Last MCMC iteration of the region indicator variables. It is returned as a binary                                             |
+|       |                                   | vector of size $P$. `g[p]` $={\xi_p}$.                                                                                        |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`nu`   | $\nu$                             | Last MCMC iteration of the probability parameter of the Bernoulli prior of the indicators $\xi_p$. It is a scalar.            |
+|       |                                   | `nu`$=\nu$.                                                                                                                   |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`Theta`| $\bgTh$                           | Last MCMC iteration of the Network coefficients. It is a matrix of size ($\times P \times P$).                                |
+|       |                                   | `Theta[p,q]`$=(\bgTh)_{p,q}=\theta_{p,q}$ for $p\neq q$ and `Theta[p,p]=NA`.                                                  |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`B`    | $\{\bg_p\}_{p=1}^P$               | Last MCMC iteration of the Voxel coefficients. It is a matrix of size ($\times V \times P$), where $V=\max\{V_p\}_{p=1}^P$.   |
+|       |                                   | `B[v,p]`$=\beta_{v,p}$ for $v \leq V_p$, and `B[v,p]=NA` for $v > V_p$.                                                       |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`DA`   |$\{\bgps_{p,h}^a\}_{p=1,h=1}^{P,H}$| Last MCMC iteration of the bilinear structure of the Network equation coefficients of the covariates $X$. It is a matrix of   |
+|       |                                   | size ($\times P \times H$). `DA[p,h]`$= {\psi_{p,h}^{a}}$.                                                                    |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`DG`   |$\{\bgps_{p,h}^g\}_{p=1,h=1}^{P,H}$| Last MCMC iteration of the structure of the Voxel equation coefficients of the covariates $X$. It is a matrix of size         |
+|       |                                   | ($\times P \times H$). `DA[p,h]`$= {\psi_{p,h}^{g}}$.                                                                         |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`sT2`  |$\tau^2_\theta$                    | Last MCMC iteration of the variance of the error of the Network equation. It is a scalar. `sT2[s]`$= {\tau^2_\theta}$.        |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`sB2`  |$\tau^2_\beta$                     | Last MCMC iteration of the variance of the error of the Voxel equation. It is a scalar. `sB2[s]`$= {\tau^2_\beta}$.           |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`t2T`  |$\sigma_\theta^2$                  | Last MCMC iteration of the global shrinking parameter for the Horseshoe structure of the Network coefficients. It is a scalar.|
+|       |                                   | `t2T`$={\sigma^2_\theta}$.                                                                                                    |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`l2T`  |$\bgL$                             | Last MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is a matrix  | |       |                                   | of size $\times P \times P$. `l2T[p,q]`$=(\bgL)_{p,q} = \lambda_{p,q}$ for $p \neq q$ and `l2T[s,p,p]=NA`.                    |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`xiT`  |$\kappa_{\sigma_\theta^2}$         | Last MCMC iteration of the auxiliary variable of the global shrinking parameter for the Horseshoe structure of the Network    |
+|       |                                   | coefficients. It is a scalar. `xiT`$=\kappa_{\sigma^2_\theta}$.                                                               |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`vT`   |$\kappa_{\lambda_{p,p'}}$          | Last MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network    | |       |                                   | coefficients. It is a matrix of size $\times P \times P$. `vT[p,q]`$=(\bgL)_{p,q} = \kappa_{\lambda_{p,q}}$ for               |
+|       |                                   | $p \neq q$ and `l2T[p,p] = NA`.                                                                                               |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`t2B`  |$\{\eta_p\}_{p=1}^P$               | Last MCMC iteration of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a vector  | |       |                                   | of size $P$. `t2B[p]`$={\eta_p}$.                                                                                             |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`l2B`  |$\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}$ | Last MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is a matrix of | |       |                                   | size $\times V \times P$. `l2B[v,p]`$=(\bgPh)_{v,p} = \phi_{v,p}$ for $v \leq V_p$ and `l2B[v,p]=NA` for $v>V_p$.             |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`xiB`  |$\kappa_{\eta_p}$                  | Last MCMC iteration of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel     | |       |                                   | coefficients. It is a vector of size $P$. `xiT[p]`$=\kappa_{\eta_p}$.                                                         |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`vB`   |$\kappa_{\phi_{v,p}}$              | Last MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel      | |       |                                   | coefficients .It is a matrix of size $\times V \times P$. `vB[v,p]`$=\kappa_{\phi_{v,p}}$ for                                 |
+|       |                                   | $v \leq V_p$ and `vB[v,p] = NA` for $v> V_p$.                                                                                 |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 
 ### Walkthrough
 
@@ -237,11 +282,13 @@ Obtains the sample size and dimensions of the objects.
 This variables are used on every iteration of the MCMC `bmrr_iterator`.
 
 * `C`. Is a Boolean matrix of size $V \times P$ that indicates which entries of
-  the voxel data are valid entries.
+  the voxel data are valid entries. For every observation `i`, `G[i,,][C]`
+  $=\vGi$.
 * `Zv` It is a transformation of the Network and Voxel data objects into one 
   matrix. Each row is an observation of the Network object followed by the 
   voxel object. Sometimes is convenient to work with the original data objects
   and sometimes is more convenient to work with the stacked object.
+  `Zv[i,]`$=(\vAi,\vGi)$.
 * `XG`. A replication of the covariates $V$ times, stacked one over the other
   it is used for the computation of $\{\psi_{v,p}^g\}_{v=1,p=1}^{V_p,P}$.
   
@@ -280,3 +327,447 @@ Saves the last iteration of the MCMC in a list.
 
 Returns the two outputs, the MCMC samples (`sam`) and the last iteration of the 
 MCMC (`state`).
+
+## `bmrr_iterator`
+
+### Description
+
+This is the function that actually samples at each of the iterations of the
+MCMC. It receives as inputs the data (with the auxiliary data transformations of
+it), the hyper-parameters of the hyper-priors and the current state of the MCMC.
+It performs the sampling of all the model parameters except for the Network and
+Voxel coefficients, and region indicators. For theses parameters it relies on 
+the `group_iterator` function.
+
+### Inputs
+
+The data inputs are directly pass through the `bmrr_sampler` function with the 
+addition of two useful transformations. The data inputs are as follows:
+
++---:+:-------------------:+:-------------------------------------------------------------------+
+|Code| Model               | Description                                                        |
++----+---------------------+--------------------------------------------------------------------+
+|`y` | $\by$               | This is the variable of interest. It should be inputted as a       |
+|    |                     | vector of size $n$, the number of observations.                    |
++----+---------------------+--------------------------------------------------------------------+
+|`A` | $\bA$               | The Network object. It should be inputted as an array of           |
+|    |                     | size $(n \times P \times P)$. For each observation $i$,            |
+|    |                     | `A[i,,]` must be symmetric with `NA` as diagonal elements.         |
++----+---------------------+--------------------------------------------------------------------+
+|`G` | $\{\bg_p\}_{p=1}^P$ | The voxel object. It should be inputted as an array                |
+|    |                     | of size $(n \times V \times P)$, where $V= \max(\{V_p\}_{p=1}^P)$. |
+|    |                     | If the regions are not the same size (i.e. there is a $p$ for      |
+|    |                     | which $V_p < V$), then pad the entry `G[i,p,]` with `NA`'s, do not |
+|    |                     | use `0` or any other numeric value.                                |
++----+---------------------+--------------------------------------------------------------------+
+|`X` |$\bX$                | Other covariates to take in consideration. It should be inputted as|
+|    |                     | a matrix of size $(n \times H)$. Each column `X[,h]` represents one| 
+|    |                     | covariate.                                                         |
++----+---------------------+--------------------------------------------------------------------+
+|`Zv`|                     | It is a transformation of the Network and Voxel data objects into  |
+|    |                     | one matrix. Each row is an observation of the Network object       |
+|    |                     | followed by the voxel object. `Zv[i,]`$=(\vAi,\vGi)$.              |
++----+---------------------+--------------------------------------------------------------------+
+|`XG`|                     | A replication of the covariates $V$ times, stacked one over the    | 
+|    |                     | other it is used for the computation of                            |
+|    |                     | $\{\psi_{v,p}^g\}_{v=1,p=1}^{V_p,P}$.                              |
++----+---------------------+--------------------------------------------------------------------+
+|`C` |                     | Is a Boolean matrix of size $V \times P$ that indicates which      | 
+|    |                     | entries of the voxel data are valid entries. For every observation |
+|    |                     | `i`, `G[i,,][C]`$=\vGi$.                                           |
++----+---------------------+--------------------------------------------------------------------+
+
+The MCMC current state variables are:
+
++------:+:---------------------------------:+:------------------------------------------------------------------------------------------------------------------------------+
+|Code   | Model                             | Description                                                                                                                   |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`g`    | $\bxi$                            | Current MCMC iteration of the region indicator variables. It is a binary                                                      |
+|       |                                   | vector of size $P$. `g[p]` $={\xi_p}$.                                                                                        |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`nu`   | $\nu$                             | Current MCMC iteration of the probability parameter of the Bernoulli prior of the indicators $\xi_p$. It is a scalar.         |
+|       |                                   | `nu`$=\nu$.                                                                                                                   |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`Theta`| $\bgTh$                           | Current MCMC iteration of the Network coefficients. It is a matrix of size ($\times P \times P$).                             |
+|       |                                   | `Theta[p,q]`$=(\bgTh)_{p,q}=\theta_{p,q}$ for $p\neq q$ and `Theta[p,p]=NA`.                                                  |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`B`    | $\{\bg_p\}_{p=1}^P$               | Current MCMC iteration of the Voxel coefficients. It is a matrix of size ($\times V \times P$), where $V=\max\{V_p\}_{p=1}^P$.|
+|       |                                   | `B[v,p]`$=\beta_{v,p}$ for $v \leq V_p$, and `B[v,p]=NA` for $v > V_p$.                                                       |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`DA`   |$\{\bgps_{p,h}^a\}_{p=1,h=1}^{P,H}$| Current MCMC iteration of the bilinear structure of the Network equation coefficients of the covariates $X$. It is a matrix of|
+|       |                                   | size ($\times P \times H$). `DA[p,h]`$= {\psi_{p,h}^{a}}$.                                                                    |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`DG`   |$\{\bgps_{p,h}^g\}_{p=1,h=1}^{P,H}$| Current MCMC iteration of the structure of the Voxel equation coefficients of the covariates $X$. It is a matrix of size      |
+|       |                                   | ($\times P \times H$). `DA[p,h]`$= {\psi_{p,h}^{g}}$.                                                                         |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`sT2`  |$\tau^2_\theta$                    | Current MCMC iteration of the variance of the error of the Network equation. It is a scalar. `sT2[s]`$= {\tau^2_\theta}$.     |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`sB2`  |$\tau^2_\beta$                     | Current MCMC iteration of the variance of the error of the Voxel equation. It is a scalar. `sB2[s]`$= {\tau^2_\beta}$.        |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`t2T`  |$\sigma_\theta^2$                  | Current MCMC iteration of the global shrinking parameter for the Horseshoe structure of the Network coefficients. It is a     |
+|       |                                   | scalar. `t2T`$={\sigma^2_\theta}$.                                                                                            |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`l2T`  |$\bgL$                             | Current MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is a      | |       |                                   | matrix of size $\times P \times P$. `l2T[p,q]`$=(\bgL)_{p,q} = \lambda_{p,q}$ for $p \neq q$ and `l2T[s,p,p]=NA`.             |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`xiT`  |$\kappa_{\sigma_\theta^2}$         | Current MCMC iteration of the auxiliary variable of the global shrinking parameter for the Horseshoe structure of the Network |
+|       |                                   | coefficients. It is a scalar. `xiT`$=\kappa_{\sigma^2_\theta}$.                                                               |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`vT`   |$\kappa_{\lambda_{p,p'}}$          | Current MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network | |       |                                   | coefficients. It is a matrix of size $\times P \times P$. `vT[p,q]`$=(\bgL)_{p,q} = \kappa_{\lambda_{p,q}}$ for               |
+|       |                                   | $p \neq q$ and `l2T[p,p] = NA`.                                                                                               |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`t2B`  |$\{\eta_p\}_{p=1}^P$               | Current MCMC iteration of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a      | |       |                                   | vector of size $P$. `t2B[p]`$={\eta_p}$.                                                                                      |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`l2B`  |$\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}$ | Current MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is a matrix | |       |                                   | of size $\times V \times P$. `l2B[v,p]`$=(\bgPh)_{v,p} = \phi_{v,p}$ for $v \leq V_p$ and `l2B[v,p]=NA` for $v>V_p$.          |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`xiB`  |$\kappa_{\eta_p}$                  | Current MCMC iteration of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel  | |       |                                   | coefficients. It is a vector of size $P$. `xiT[p]`$=\kappa_{\eta_p}$.                                                         |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`vB`   |$\kappa_{\phi_{v,p}}$              | Current MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel   | |       |                                   | coefficients .It is a matrix of size $\times V \times P$. `vB[v,p]`$=\kappa_{\phi_{v,p}}$ for                                 |
+|       |                                   | $v \leq V_p$ and `vB[v,p] = NA` for $v> V_p$.                                                                                 |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+
+Finally the hyper-parameter values of the hyper-priors are passed through from 
+`bmrr_sampler`.
+
++-----:+:-------------------:+:-------------------------------------------------------------------+
+|Code  | Model               | Description                                                        |
++------+---------------------+--------------------------------------------------------------------+
+|`a_sT`| $a_{\tau_\theta}$   | Shape hyper-parameter of the Inverse-gamma prior for               |
+|      |                     | $\tau_\theta^2$. An scalar. By default, `a_sT = 1`.                |
++------+---------------------+--------------------------------------------------------------------+
+|`b_sT`| $b_{\tau_\theta}$   | Scale hyper-parameter of the Inverse-gamma prior for               |
+|      |                     | $\tau_\theta^2$. An scalar. By default, `b_sT = 1`.                |
++------+---------------------+--------------------------------------------------------------------+
+|`a_sB`| $a_{\tau_\beta}$    | Shape hyper-parameter of the Inverse-gamma prior for               |
+|      |                     | $\tau_\beta^2$. An scalar. By default, `a_sB = 1`.                 |
++------+---------------------+--------------------------------------------------------------------+
+|`b_sB`| $b_{\tau_\beta}$    | Scale hyper-parameter of the Inverse-gamma prior for               |
+|      |                     | $\tau_\beta^2$. An scalar. By default, `b_sB = 1`.                 |
++------+---------------------+--------------------------------------------------------------------+
+|`a_nu`| $a_{\nu}$           | Shape 1 hyper-parameter of the Beta prior for                      |
+|      |                     | $\nu$. An scalar. By default, `a_sB = 1`.                          |
++------+---------------------+--------------------------------------------------------------------+
+|`b_nu`| $b_{\nu}$           | Shape 2 hyper-parameter of the Beta prior for                      |
+|      |                     | $\nu$. An scalar. By default, `b_sB = 1`.                          |
++------+---------------------+--------------------------------------------------------------------+
+
+### Output
+
+The function returns the update of the state of all the variables in the MCMC.
+
++------:+:---------------------------------:+:------------------------------------------------------------------------------------------------------------------------------+
+|Code   | Model                             | Description                                                                                                                   |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`g`    | $\bxi$                            | Updated MCMC iteration of the region indicator variables. It is a binary                                                      |
+|       |                                   | vector of size $P$. `g[p]` $={\xi_p}$.                                                                                        |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`nu`   | $\nu$                             | Updated MCMC iteration of the probability parameter of the Bernoulli prior of the indicators $\xi_p$. It is a scalar.         |
+|       |                                   | `nu`$=\nu$.                                                                                                                   |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`Theta`| $\bgTh$                           | Updated MCMC iteration of the Network coefficients. It is a matrix of size ($\times P \times P$).                             |
+|       |                                   | `Theta[p,q]`$=(\bgTh)_{p,q}=\theta_{p,q}$ for $p\neq q$ and `Theta[p,p]=NA`.                                                  |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`B`    | $\{\bg_p\}_{p=1}^P$               | Updated MCMC iteration of the Voxel coefficients. It is a matrix of size ($\times V \times P$), where $V=\max\{V_p\}_{p=1}^P$.|
+|       |                                   | `B[v,p]`$=\beta_{v,p}$ for $v \leq V_p$, and `B[v,p]=NA` for $v > V_p$.                                                       |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`DA`   |$\{\bgps_{p,h}^a\}_{p=1,h=1}^{P,H}$| Updated MCMC iteration of the bilinear structure of the Network equation coefficients of the covariates $X$. It is a matrix of|
+|       |                                   | size ($\times P \times H$). `DA[p,h]`$= {\psi_{p,h}^{a}}$.                                                                    |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`DG`   |$\{\bgps_{p,h}^g\}_{p=1,h=1}^{P,H}$| Updated MCMC iteration of the structure of the Voxel equation coefficients of the covariates $X$. It is a matrix of size      |
+|       |                                   | ($\times P \times H$). `DA[p,h]`$= {\psi_{p,h}^{g}}$.                                                                         |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`sT2`  |$\tau^2_\theta$                    | Updated MCMC iteration of the variance of the error of the Network equation. It is a scalar. `sT2[s]`$= {\tau^2_\theta}$.     |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`sB2`  |$\tau^2_\beta$                     | Updated MCMC iteration of the variance of the error of the Voxel equation. It is a scalar. `sB2[s]`$= {\tau^2_\beta}$.        |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`t2T`  |$\sigma_\theta^2$                  | Updated MCMC iteration of the global shrinking parameter for the Horseshoe structure of the Network coefficients. It is a     |
+|       |                                   | scalar. `t2T`$={\sigma^2_\theta}$.                                                                                            |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`l2T`  |$\bgL$                             | Updated MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is a      | |       |                                   | matrix of size $\times P \times P$. `l2T[p,q]`$=(\bgL)_{p,q} = \lambda_{p,q}$ for $p \neq q$ and `l2T[s,p,p]=NA`.             |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`xiT`  |$\kappa_{\sigma_\theta^2}$         | Updated MCMC iteration of the auxiliary variable of the global shrinking parameter for the Horseshoe structure of the Network |
+|       |                                   | coefficients. It is a scalar. `xiT`$=\kappa_{\sigma^2_\theta}$.                                                               |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`vT`   |$\kappa_{\lambda_{p,p'}}$          | Updated MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network | |       |                                   | coefficients. It is a matrix of size $\times P \times P$. `vT[p,q]`$=(\bgL)_{p,q} = \kappa_{\lambda_{p,q}}$ for               |
+|       |                                   | $p \neq q$ and `l2T[p,p] = NA`.                                                                                               |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`t2B`  |$\{\eta_p\}_{p=1}^P$               | Updated MCMC iteration of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a      | |       |                                   | vector of size $P$. `t2B[p]`$={\eta_p}$.                                                                                      |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`l2B`  |$\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}$ | Updated MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is a matrix | |       |                                   | of size $\times V \times P$. `l2B[v,p]`$=(\bgPh)_{v,p} = \phi_{v,p}$ for $v \leq V_p$ and `l2B[v,p]=NA` for $v>V_p$.          |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`xiB`  |$\kappa_{\eta_p}$                  | Updated MCMC iteration of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel  | |       |                                   | coefficients. It is a vector of size $P$. `xiT[p]`$=\kappa_{\eta_p}$.                                                         |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`vB`   |$\kappa_{\phi_{v,p}}$              | Updated MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel   | |       |                                   | coefficients .It is a matrix of size $\times V \times P$. `vB[v,p]`$=\kappa_{\phi_{v,p}}$ for                                 |
+|       |                                   | $v \leq V_p$ and `vB[v,p] = NA` for $v> V_p$.                                                                                 |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+
+### Walkthrough
+
+#### Problem Dimensions
+
+Obtains the relevant dimensions of the data:
+
+* `N`.  Number of samples.
+* `mV`. $\max \{V_p\}_{p=1}^P$.
+* `V`$=(V_1,\ldots,V_p)'.$
+* `P`. Number of regions.
+* `Q`. Number of relevant regions.
+* `H`. Number of covariates.
+
+#### Samples DT
+
+Loops through every region $p$ and samples according to 
+[Full Conditional for $\bpsi^a_{p,.}$] as follows:
+
+* Computes $W$.
+* Computes $R$.
+* Computes $W'W$.
+* Computes $\hat{\psi}_{p,.}^a$.
+* Samples $\psi_{p,.}^a$.
+
+#### Samples DT
+
+Loops through every region $p$ and samples according to 
+[Full Conditional for $\bpsi^a_{p,.}$] as follows:
+
+* Computes $W$.
+* Computes $R$.
+* Computes $W'W$.
+* Computes $\hat{\psi}_{p,.}^g$.
+* Samples $\psi_{p,.}^g$.
+
+#### Creates DT, DB and D
+
+Creates auxiliary variables:
+
+* `DT`. An auxiliary variable to compute $\bgTh$, $\{\bgb_p\}_{p=1}^P$ and
+$\bgx$. It is an array of size $H \times P \times P$. 
+`DT[h,q,p]`$=\psi^a_{q,h} \psi^a_{p,h}$ for $p \neq q$ and `DT[h,q,p]=NA`
+elsewhere.
+* `DB`. An auxiliary variable to compute $\bgTh$, $\{\bgb_p\}_{p=1}^P$ and
+$\bgx$. It is an array of size $H \times V \times P$. 
+`DB[h,v,p]`$=\psi^g_{p,h}$ for $v,\leq V_p$ and `DB[h,v,p]=NA` elsewhere.
+* `D`. An auxiliary variable to compute $\tau^2_\theta$ and $\tau^2_\beta$.
+It is a matrix of size $H \times P(P-1)/2 + \sum_{p=1}^P V_p$.
+
+#### Samples g, Theta and B
+
+Samples the variables that are the main focus of the analysis. To do so it 
+loops through every $p$ to sample jointly $\bgth_{-p,p}$, $\bgb_p$ and $bgx$.
+Before looping it computes auxiliary variables and then at every iteration `p` it 
+calls the function `group_iterator`. The auxiliary variables, as described in 
+[Full conditional for $\xi_p$, $\bTheta_{-p,p}$ and $\bbeta_p$] are as follows:
+
+* `AP`. It is an array of size $n \times P \times P$. 
+`AP[i,p,q]`$=a_{i,p,q} - \sum_{h=1}^H \psi^a_{p,h} \psi^a_{p,h} x_{i,h}$.
+* `GP`. It is an array of size $n \times V \times P$. 
+`GP[i,v,q]`$=g_{i,v,q} - \sum_{h=1}^H \psi^g_{p,h} x_{i,h}$.
+* `Say`. It is a matrix of size $P \times P$. 
+`Say[p,q]`$=\sum_{i=1}^n R^a_{i,p,q}y_i=\sum_{i=1}^n$`AP[i,p,q]`$y_i$.
+* `Sgy`. It is a matrix of size $V \times P$. 
+`Sgy[v,p]`$=\sum_{i=1}^n R^g_{i,v,p}y_i=\sum_{i=1}^n$`GP[i,v,p]`$y_i$.
+* `Syy`. The sum of squares of $y$. `Syy`$=\sum_{i=1}^n y_i^2$.
+
+Since there are 2 cases to update jointly $\bgth_{-p,p}$, $\bgb_p$ and $bgx$, 
+that is when $\xi_q=0$ for every $q\neq p$, in which case  only $\bgb_p$ gets 
+updated. If $\xi_q=1$ at least for $q$, then $\bgth_{-p,p}$ also gets updated, 
+but mot all the entries, only $\bgth_{-p,p}[\bgx_{-p}=1]$. Since the procedure
+samples jointly $\bgth_{-p,p}[\bgx_{-p}=1]$ and $\bgb_p$, and it is returned as
+only one object by `group_iterator`, then at the end of the loop the coefficients
+are distributed accordingly.
+
+#### Updates nu
+
+Samples $\nu$ according to [Full conditional $\nu$].
+
+#### Horseshoe Structure for Theta
+
+Next the horseshoe structure for the Network coefficients is sampled.
+
+##### # Samples l2T
+
+Samples $\lambda^2_{p,p'}$ according to \@ref(eq:horseshoeLambda).
+
+##### Samples t2T
+
+Samples $\sigma^2_\theta$ according to \@ref(eq:horseshoeSigma).
+
+##### Samples vT
+
+Samples $\kappa_{\lambda_{p,p'}}$ according to \@ref(eq:horseshoeKappaLambda).
+
+##### Samples xiT
+
+Samples $\kappa_{\sigma^2_\theta}$ according to \@ref(eq:horseshoeKappaSigma).
+
+#### Horseshoe Structure for B
+
+Next the horseshoe structure for the Voxel coefficients is sampled.
+
+##### Samples l2B
+
+Samples $\phi^2_{v,p}$ according to \@ref(eq:horseshoePhi).
+
+##### Samples t2B
+
+Samples $\eta^2_p$ according to \@ref(eq:horseshoeEta).
+
+##### Samples vB
+
+Samples $\kappa_{\phi_{v,p}}$ according to \@ref(eq:horseshoeKappaPhi).
+
+##### Samples xiB
+
+Samples $\kappa_{\eta_p}$ according to \@ref(eq:horseshoeKappaEta).
+
+#### Samples sT2 and sB2
+
+In order to sample $\tau^2_\theta$ and $\tau^2_\beta$ the following auxiliary
+variables are built:
+
+* `Q`.    Number of active regions.
+* `Beta`. Network and Voxel coefficients together. `Beta`$=(\vTh,\vB)'$.
+* `R`.    Matrix of residuals. Each row corresponds to an observation and each
+          column corresponds to a coefficient in the same order as `Beta`.
+          
+#### Samples sT2
+
+Samples $\tau^2_\theta$ as follows:
+
+* Computes $\hat{b}_{\tau_\theta}$.
+* Computes $\hat{a}_{\tau_\theta}$.
+* Samples $\tau^2_\theta$.
+
+#### Samples sB2
+
+Samples $\tau^2_\beta$ as follows:
+
+* Computes $\hat{b}_{\tau_\beta}$.
+* Computes $\hat{a}_{\tau_\beta}$.
+* Samples $\tau^2_\beta$.
+
+## `group_iterator`
+
+### Description
+
+This function performs the joint sampling of $\bgth_{-p,p}$, $\bgb_p$ and 
+$\xi_p$ for a particular $p$. It follows 
+[Full conditional for $\xi_p$, $\bTheta_{-p,p}$ and $\bbeta_p$].
+
+### Inputs
+
+This function receives as inputs the variables `Syy`, `Say` and `Sgy` that can
+be thought as conditional sufficient statistics of the data (conditional on 
+knowing $\{\bgps^a_p, \bgps^g_p\}_{p=1}^P$) and play a similar role as the
+sufficient statistics of a regular regression model. It also requires the 
+variance of the errors $\tau_\theta^2$ and $\tau_\beta^2$ and the priors 
+variance to sample $(\bgth_{-p,p},\bgb_p)$ jointly according to $\bgx$. 
+To sample $\xi_p$ the prior probability $\nu$ is also required Finally, the
+auxiliary `C` is used and `p` indicates which region is begin sampled.
+
+The data inputs are as follows:
+
++-----:+:-------------------:+:--------------------------------------------------------------------------------------+
+|Code  | Model               | Description                                                                           |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`Say` | $S_{ay}$            | "Conditional sufficient statistic" for the Network Coefficients.                      |
+|      |                     | It is a matrix of size $P \times P$. `Say[p,q]`                                       |
+|      |                     | $=\sum_{i=1}^n (a_{i,p,q} - \sum_{h=1}^H \psi^a_{p,h} \psi^a_{p,h} x_{i,h})y_i$       |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`Sgy` | $S_{gy}$            | "Conditional sufficient statistic" for the Voxel Coefficients.                        |
+|      |                     | It is a matrix of size $V \times P$. `Sgy[p,q]`                                       |
+|      |                     | $=\sum_{i=1}^n (g_{i,p,q} - \sum_{h=1}^H \psi^g_{p,h} x_{i,h})y_i$                    |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`Syy` | $S_{yy}$            | The sum of squares of $y$. `Syy`$=\sum_{i=1}^n y_i^2$.                                |
++------+---------------------+---------------------------------------------------------------------------------------+
+
+The other input variables are:
+
++-----:+:-------------------:+:--------------------------------------------------------------------------------------+
+|Code  | Model               | Description                                                                           |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`sT2` | $\tau^2\theta$      | Variance of the Network equation error.                                               |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`sB2` | $\tau^2\beta$       | Variance of the Voxel equation error.                                                 |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`LT`  |$\sigma^2_\theta\bgL$| Product of the shrinking parameters of the Network Horseshoe prior.                   |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`LB`  |$\bget^2_\beta\bgPh$ | Product of the shrinking parameters of the Voxel Horseshoe prior.                     |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`g`   |$bgx$                | Region indicator variables.                                                           |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`v`   |$\nu$                | Prior probability for the region indicators.                                          |
++------+---------------------+---------------------------------------------------------------------------------------+
+
+The set-up inputs are as follows:
+
++-----:+:-------------------------------------------------------------------+
+|Code  | Description                                                        |
++------+--------------------------------------------------------------------+
+|`p`   | Selected region.                                                   |
++------+--------------------------------------------------------------------+
+|`C`   | Is a Boolean matrix of size $V \times P$ that indicates which      | 
+|      | entries of the voxel data are valid entries. For every observation |
+|      | `i`, `G[i,,][C]`$=\vGi$.                                           |
++------+--------------------------------------------------------------------+
+
+### Output
+
+The outputs of the function are the samples for $\bgth_{-p,p}$ and $\bgb_p$ in
+a single object and the updated version of $\bgx$. Also the probability of a 
+region been selected is returned for analysis purposes.
+
++-----:+:-------------------:+:--------------------------------------------------------------------------------------+
+|Code  | Model               | Description                                                                           |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`b`   | $\bgth_{-p,p}$ and  | This object returns the sample of $\bgth_{-p,p}$ and $\bgb_p$. However, it only       |
+|      | $\bgb_p$            | returns the samples for the Network coefficients for which $\xi_q = 1$. That is       | 
+|      |                     | `b`$=(\bgth_{-p,p}[\bgx_{-p} = 1]',\bgb_p')'$.                                        |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`g`   | $\bgx$              | $\bgx$ after updating entry $p$.                                                      |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`pr`  |                     | Full conditional probability of $\xi_p = 1$. For analysis purposes only.              |
++------+---------------------+---------------------------------------------------------------------------------------+
+
+### Walktrhough
+
+#### Checks if there are elements in the Symmetric Network
+
+If $\xi_q = 0$ for $q \neq p$, then $\theta_{q,p}$ is set as $0$ for every $q$
+and only $\bgb_p$ is sampled. This section checks that condition and makes the
+necessary adjustments to compute the auxiliary variables described in 
+[Full conditional for $\xi_p$, $\bTheta_{-p,p}$ and $\bbeta_p$].
+
+#### Computes the Log-Odds
+
+Computes the Log-odd probability of a region being selected. Notice that after
+making the necessary adjustments in the previous section two cases are not 
+required. In this way the auxiliary variables $c_i$ are equivalent to `lo` in 
+both cases of 
+[Full conditional for $\xi_p$, $\bTheta_{-p,p}$ and $\bbeta_p$].
+
+#### Computes the Probability
+
+Computes the probability of the full conditional of $\xi_p$. It also checks for
+numerical problems if the odds are equal to `Inf`.
+
+#### Updates g
+
+Updates the entry $p$ of $\bgx$.
+
+#### Updates Theta and B
+
+Updates $\bgth_{-p,p}$ and $\bgb_p$ depending on $\xi_p$.
+
+#### Returns values
+
+Returns the outputs.
+
+
+
+
+
+
+
+
+
+

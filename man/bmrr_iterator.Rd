@@ -55,6 +55,10 @@ diagonal entries.}
 
 \item{XG}{A replication of X into a matrix of \code{mV * N} rows by \code{H} columns.}
 
+\item{Zv}{A matrization of the arrays \code{A} and \code{G} with \code{N} rows and
+\code{P * (P - 1) / P + mV} columns equal to the number of
+coefficients in both the Network object and the Voxel object.}
+
 \item{Theta}{A matrix of size \code{P} by \code{P} corresponding to the
 state in the MCMC of the Network coefficients.}
 
@@ -121,10 +125,6 @@ of the error in the Voxel equations.}
 \item{a_sB}{Shape of the hyper_prior parameter for \code{sB}.}
 
 \item{b_sB}{Scale of the hyper_prior parameter for \code{sB}.}
-
-\item{ZV}{A matrization of the arrays \code{A} and \code{G} with \code{N} rows and
-\code{P * (P - 1) / P + mV} columns equal to the number of
-coefficients in both the Network object and the Voxel object.}
 }
 \value{
 A list containing all the updated parameters after one iteration of

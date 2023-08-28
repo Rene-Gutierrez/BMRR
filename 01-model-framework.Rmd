@@ -91,4 +91,4 @@ $$ \tau^2_\beta \sim IG(a_{\tau_\beta}, b_{\tau_\beta}) $$
 
 Finally, for the other covariate coefficients:
 
-$$ \psi_{p,h}^a,\psi^g_{p,h} \stackrel{iid}{\sim}N(0,1) \quad p \in \{1,\ldots,P\}, \quad h \in \{1,\ldots,H\} $$
+$$ \psi_{p,h}^a,\psi^g_{p,h} \propto 1 \quad p \in \{1,\ldots,P\}, \quad h \in \{1,\ldots,H\} $$

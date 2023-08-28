@@ -9,7 +9,8 @@
 #' @param Sgy The sum (over observations) of the product of the main variable
 #'            `y` and the difference of the Voxel values and the effect of the
 #'            covariates. Input as a matrix of `mV` rows and `P` columns.
-#' @param Syy The sum (over observations) of the squares of the main variable `y`.
+#' @param Syy The sum (over observations) of the squares of the main variable
+#'            `y`.
 #' @param C   Boolean matrix for the Voxel structure.
 #' @param LT  Product of the global and shrinkage variables for the Network
 #'            coefficients. Input as a matrix of `P` by `P`.
@@ -23,13 +24,13 @@
 group_iterator <- function(Say,
                            Sgy,
                            Syy,
-                           C,
-                           LT,
-                           LB,
                            sT2,
                            sB2,
+                           LT,
+                           LB,
                            g,
                            nu,
+                           C,
                            p){
   # Checks if there are elements in the Symmetric Network
   if(!prod(!(g == 1)[-p])){
@@ -47,7 +48,8 @@ group_iterator <- function(Say,
 
   # Computes the Log-Odds
   bh <- Sxy / (Syy + 1 / L)
-  lo <- -(1 / 2) * (log(L) + log(Syy + 1 / L)) + bh^2 * (Syy + 1 / L) / (2 * c(rep(sT2, nT), rep(sB2, nB)))
+  lo <- -(1 / 2) * (log(L) + og(Syy + 1 / L)) + 
+    bh^2 * (Syy + 1 / L) / (2 * c(rep(sT2, nT), rep(sB2, nB)))
 
   # Computes the Probability
   od <- exp(sum(lo, na.rm = TRUE)  + log(nu) - log(1 - nu))
@@ -64,11 +66,12 @@ group_iterator <- function(Say,
   if(g[p] == 1){
     b      <- rnorm(n    = length(L),
                     mean = 0,
-                    sd   = sqrt(c(rep(sT2, nT), rep(sB2, nB)) / (Syy + 1 / L))) + bh
+                    sd   = sqrt(c(rep(sT2, nT), rep(sB2, nB)) / (Syy + 1 / L))) + bh # nolint
   } else {
     b      <- rep(0, length(L))
   }
 
+  # Returns values
   return(list(pr = pr,
               g  = g,
               b  = b))

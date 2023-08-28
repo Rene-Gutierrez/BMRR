@@ -247,7 +247,7 @@ bmrr_sampler <- function(y,
                        b_sB  = b_sB)
 
   # Adjusts the number of samples to sample
-  niter  <- thinning * niter
+  niter  <- thinning * nmcmc
 
   # Sampling
   for(s in 1:(burnin + niter)){
