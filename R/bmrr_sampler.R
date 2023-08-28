@@ -16,12 +16,22 @@
 #' @param A         Network Object. Enter as an array of size (`N`, `P`, `P`).
 #'                  Notice that the method doesn't take into consideration the
 #'                  diagonal entries.
+#' @param a_nu      Shape 1 of the hyper_prior parameter for `nu`.
+#' @param b_nu      Shape 2 of the hyper_prior parameter for `nu`.
+#' @param a_sT      Shape of the hyper_prior parameter for `sT`.
+#' @param b_sT      Scale of the hyper_prior parameter for `sT`.
+#' @param a_sB      Shape of the hyper_prior parameter for `sB`.
+#' @param b_sB      Scale of the hyper_prior parameter for `sB`.
 #' @param nmcmc     Number of MCMC samples. Default is `1000`.
 #' @param burnin    Number of samples to burn-in. By default there is no
 #'                  burn-in, that is the parameter is set to `0`.
-#' @param thining   Natural number indicating how many iterations of the MCMC
-#'                  have to be performed to obtain a sample. BY default there is
+#' @param thinning  Natural number indicating how many iterations of the MCMC
+#'                  have to be performed to obtain a sample. By default there is
 #'                  no thinning, that is the parameter is set to `1`.
+#' @param state     A list with all the parameters. It can be used to continue
+#'                  the MCMC from a previous output or initialize the MCMC
+#'                  chain. By default the algorithm doesn't require the
+#'                  parameter list, and will initialize the method by itself.
 #' @param small_out Parameter indicating if an output of small size is required.
 #'                  Given the nature of problems to analyze, as in the paper,
 #'                  the parameter space can be extremely big. If small_out is
@@ -30,24 +40,12 @@
 #'                  return second order parameters of method, that is only the
 #'                  parameters at main regression functions and the region
 #'                  indicators are returned.
-#' @param state     A list with all the parameters. It can be used to continue
-#'                  the MCMC from a previous output or initialize the MCMC
-#'                  chain. By default the algorithm doesn't require the
-#'                  parameter list, and will initialize the method by itself.
-#' @param a_nu      Shape 1 of the hyper_prior parameter for `nu`.
-#' @param b_nu      Shape 2 of the hyper_prior parameter for `nu`.
-#' @param a_sT      Shape of the hyper_prior parameter for `sT`.
-#' @param b_sT      Scale of the hyper_prior parameter for `sT`.
-#' @param a_sB      Shape of the hyper_prior parameter for `sB`.
-#' @param b_sB      Scale of the hyper_prior parameter for `sB`.
 #'
 #' @return A list containing two elements:
 #' \itemize{
 #'  \item{`sam`}{ A sample of the parameters, if `small_out = TRUE`:
 #'  \itemize{
 #'    \item{`g`}{ A binary matrix of size `nmcmc` rows and `P` columns.}
-#'    \item{`nu`}{An vector of length `nmcmc` for the probability of the
-#'    Bernoulli prior on `g`.}
 #'    \item{`B`}{ A matrix of size `nmcmc` rows and `P * (P - 1) / P + mV`
 #'    columns , where `mV` is the number of voxels on the Voxel object,
 #'    corresponding to the samples of the coefficients. The order of the
@@ -68,6 +66,8 @@
 #'  If `small_out = FALSE`:
 #'  \itemize{
 #'    \item{`g`}{ A binary matrix of size `nmcmc` rows and `P` columns.}
+#'    \item{`nu`}{An vector of length `nmcmc` for the probability of the
+#'    Bernoulli prior on `g`.}
 #'    \item{`Theta`}{ An array of size `nmcmc` by `P` by `P` corresponding to the
 #'    samples of the Network coefficients.}
 #'    \item{`B`}{ An array of size `nmcmc` by `mV` by `P`  corresponding to the
@@ -120,15 +120,15 @@ bmrr_sampler <- function(y,
                          b_sB       = 1,
                          nmcmc      = 1000,
                          burnin     = 0,
-                         thining    = 1,
-                         small_out = TRUE,
-                         state      = list()){
+                         thinning   = 1,
+                         state      = list(),
+                         small_out  = TRUE){
 
-  # Computes Sufficient Statistics and Problem Dimensions
+  # Problem Dimensions
   N   <- dim(G)[1]
   mV  <- dim(G)[2]
   P   <- dim(G)[3]
-  M   <- dim(X)[2]
+  H   <- dim(X)[2]
 
   # Creates Auxiliary Variables
   C  <- !is.na(G[1,,])
@@ -136,15 +136,14 @@ bmrr_sampler <- function(y,
   for(i in 1:N){
     Zv[i, ] <- c(dat$A[i,,][upper.tri(dat$A[i,,])], dat$G[i,,][C])
   }
-  X   <- dat$X
   XG  <- kronecker(X = rep(1, mV), Y = X)
 
   # Sample Holders
   if(small_out){
     sg     <- matrix(data    = NA, nrow =   nmcmc, ncol = P)
     sB     <- array(data     = NA, dim  = c(nmcmc, P * (P - 1)/ 2 + sum(C)))
-    sDA    <- array(data     = NA, dim  = c(nmcmc, P, M))
-    sDG    <- array(data     = NA, dim  = c(nmcmc, P, M))
+    sDA    <- array(data     = NA, dim  = c(nmcmc, P, H))
+    sDG    <- array(data     = NA, dim  = c(nmcmc, P, H))
     ssT2   <- numeric(length = nmcmc)
     ssB2   <- numeric(length = nmcmc)
   } else {
@@ -152,8 +151,8 @@ bmrr_sampler <- function(y,
     snu    <- numeric(length = nmcmc)
     sTheta <- array(data     = NA, dim  = c(nmcmc, P, P))
     sB     <- array(data     = NA, dim  = c(nmcmc, mV, P))
-    sDA    <- array(data     = NA, dim  = c(nmcmc, P, M))
-    sDG    <- array(data     = NA, dim  = c(nmcmc, P, M))
+    sDA    <- array(data     = NA, dim  = c(nmcmc, P, H))
+    sDG    <- array(data     = NA, dim  = c(nmcmc, P, H))
     ssT2   <- numeric(length = nmcmc)
     ssB2   <- numeric(length = nmcmc)
     sl2T   <- array(data     = NA, dim  = c(nmcmc, P, P))
@@ -165,8 +164,6 @@ bmrr_sampler <- function(y,
     svB    <- array(data     = NA, dim  = c(nmcmc, mV, P))
     sxiB   <- numeric(length = nmcmc)
   }
-  # Adjusts the number of samples to sample
-  nmcmc  <- thining * nmcmc
 
   # Initialization
   if(length(state) != 0){
@@ -190,11 +187,11 @@ bmrr_sampler <- function(y,
     Theta  <- matrix(data = 0,  nrow = P,  ncol = P)
     B      <- matrix(data = NA, nrow = mV, ncol = P)
     B[C]   <- 0
-    DA     <- matrix(data = rnorm(n = P * M,
+    DA     <- matrix(data = rnorm(n = P * H,
                                   mean = 0,
                                   sd   = 1/10),
-                     nrow = P,  ncol = M)
-    DG     <- matrix(data = 0, nrow = P,  ncol = M)
+                     nrow = P,  ncol = H)
+    DG     <- matrix(data = 0, nrow = P,  ncol = H)
     t2T    <- 1
     l2T    <- matrix(data = 1, nrow = P,   ncol = P)
     xiT    <- 1
@@ -249,8 +246,11 @@ bmrr_sampler <- function(y,
                        a_sB  = a_sB,
                        b_sB  = b_sB)
 
+  # Adjusts the number of samples to sample
+  niter  <- thinning * nmcmc
+
   # Sampling
-  for(s in 1:(burnin + nmcmc)){
+  for(s in 1:(burnin + niter)){
     # Runs Iterator
     out <- bmrr_iterator(G     = G,
                          A     = A,
@@ -283,8 +283,8 @@ bmrr_sampler <- function(y,
                          b_sB  = b_sB)
     # Saves Samples
     if(s > burnin){
-      if(((s - burnin) %% thining == 0)){
-        temp <- (s - burnin) / thining
+      if(((s - burnin) %% thinning == 0)){
+        temp <- (s - burnin) / thinning
         if(small_out){
           sg[temp,]      <- out$g
           sB[temp,]      <- c(out$Theta[upper.tri(out$Theta)], out$B[C])
@@ -315,10 +315,10 @@ bmrr_sampler <- function(y,
 
     # Progress Bar Update
     setTxtProgressBar(pb    = pb,
-                      value = s / (burnin + nmcmc))
+                      value = s / (burnin + niter))
   }
 
-  # Saves the Samples on a list according to small_out
+  # Saves the Samples
   if(small_out){
     sam <- list(g   = sg,
                 B   = sB,

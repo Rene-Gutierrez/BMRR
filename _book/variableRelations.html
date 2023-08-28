@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Bayesian Multi-Object Response Regression</title>
-  <meta name="description" content="Bayesian Multi-Object Response Regression" />
+  <title>Chapter 4 Variable Relations | Bayesian Multi-Object Response Regression</title>
+  <meta name="description" content="Chapter 4 Variable Relations | Bayesian Multi-Object Response Regression" />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Bayesian Multi-Object Response Regression" />
+  <meta property="og:title" content="Chapter 4 Variable Relations | Bayesian Multi-Object Response Regression" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Bayesian Multi-Object Response Regression" />
+  <meta name="twitter:title" content="Chapter 4 Variable Relations | Bayesian Multi-Object Response Regression" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="modelFramework.html"/>
+<link rel="prev" href="posteriorComputation.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -108,38 +108,15 @@ div.csl-indent {
 <li class="chapter" data-level="2" data-path="modelFramework.html"><a href="modelFramework.html"><i class="fa fa-check"></i><b>2</b> Model Framework</a></li>
 <li class="chapter" data-level="3" data-path="posteriorComputation.html"><a href="posteriorComputation.html"><i class="fa fa-check"></i><b>3</b> Posterior Computation</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="posteriorComputation.html"><a href="posteriorComputation.html#fullConditionalPsiA"><i class="fa fa-check"></i><b>3.1</b> Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span></a></li>
-<li class="chapter" data-level="3.2" data-path="posteriorComputation.html"><a href="posteriorComputation.html#fullConditionalPsiG"><i class="fa fa-check"></i><b>3.2</b> Full conditional for <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span></a></li>
+<li class="chapter" data-level="3.1" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-a_p."><i class="fa fa-check"></i><b>3.1</b> Full Conditional for <span class="math inline">\( {\boldsymbol \psi} ^a_{p,.}\)</span></a></li>
+<li class="chapter" data-level="3.2" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-boldsymbol-psi-g_p."><i class="fa fa-check"></i><b>3.2</b> Full conditional for <span class="math inline">\( {\boldsymbol \psi} ^g_{p,.}\)</span></a></li>
 <li class="chapter" data-level="3.3" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-xi_p-boldsymbol-theta-_-pp-and-boldsymbol-beta-_p"><i class="fa fa-check"></i><b>3.3</b> Full conditional for <span class="math inline">\(\xi_p\)</span>, <span class="math inline">\( {\boldsymbol \Theta} _{-p,p}\)</span> and <span class="math inline">\( {\boldsymbol \beta} _p\)</span></a></li>
 <li class="chapter" data-level="3.4" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-tau2_theta"><i class="fa fa-check"></i><b>3.4</b> Full Conditional for <span class="math inline">\(\tau^2_\theta\)</span></a></li>
 <li class="chapter" data-level="3.5" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-tau2_beta"><i class="fa fa-check"></i><b>3.5</b> Full Conditional for <span class="math inline">\(\tau^2_\beta\)</span></a></li>
 <li class="chapter" data-level="3.6" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-nu"><i class="fa fa-check"></i><b>3.6</b> Full conditional <span class="math inline">\(\nu\)</span></a></li>
 <li class="chapter" data-level="3.7" data-path="posteriorComputation.html"><a href="posteriorComputation.html#full-conditional-for-the-horseshoe-structure"><i class="fa fa-check"></i><b>3.7</b> Full Conditional for the Horseshoe Structure</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>4</b> Functions</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="functions.html"><a href="functions.html#bmrr_sampler"><i class="fa fa-check"></i><b>4.1</b> <code>bmrr_sampler</code></a>
-<ul>
-<li class="chapter" data-level="4.1.1" data-path="functions.html"><a href="functions.html#desription"><i class="fa fa-check"></i><b>4.1.1</b> Desription</a></li>
-<li class="chapter" data-level="4.1.2" data-path="functions.html"><a href="functions.html#inputs"><i class="fa fa-check"></i><b>4.1.2</b> Inputs</a></li>
-<li class="chapter" data-level="4.1.3" data-path="functions.html"><a href="functions.html#output"><i class="fa fa-check"></i><b>4.1.3</b> Output</a></li>
-<li class="chapter" data-level="4.1.4" data-path="functions.html"><a href="functions.html#walkthrough"><i class="fa fa-check"></i><b>4.1.4</b> Walkthrough</a></li>
-</ul></li>
-<li class="chapter" data-level="4.2" data-path="functions.html"><a href="functions.html#bmrr_iterator"><i class="fa fa-check"></i><b>4.2</b> <code>bmrr_iterator</code></a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="functions.html"><a href="functions.html#description"><i class="fa fa-check"></i><b>4.2.1</b> Description</a></li>
-<li class="chapter" data-level="4.2.2" data-path="functions.html"><a href="functions.html#inputs-1"><i class="fa fa-check"></i><b>4.2.2</b> Inputs</a></li>
-<li class="chapter" data-level="4.2.3" data-path="functions.html"><a href="functions.html#output-1"><i class="fa fa-check"></i><b>4.2.3</b> Output</a></li>
-<li class="chapter" data-level="4.2.4" data-path="functions.html"><a href="functions.html#walkthrough-1"><i class="fa fa-check"></i><b>4.2.4</b> Walkthrough</a></li>
-</ul></li>
-<li class="chapter" data-level="4.3" data-path="functions.html"><a href="functions.html#group_iterator"><i class="fa fa-check"></i><b>4.3</b> <code>group_iterator</code></a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="functions.html"><a href="functions.html#description-1"><i class="fa fa-check"></i><b>4.3.1</b> Description</a></li>
-<li class="chapter" data-level="4.3.2" data-path="functions.html"><a href="functions.html#inputs-2"><i class="fa fa-check"></i><b>4.3.2</b> Inputs</a></li>
-<li class="chapter" data-level="4.3.3" data-path="functions.html"><a href="functions.html#output-2"><i class="fa fa-check"></i><b>4.3.3</b> Output</a></li>
-<li class="chapter" data-level="4.3.4" data-path="functions.html"><a href="functions.html#walktrhough"><i class="fa fa-check"></i><b>4.3.4</b> Walktrhough</a></li>
-</ul></li>
-</ul></li>
+<li class="chapter" data-level="4" data-path="variableRelations.html"><a href="variableRelations.html"><i class="fa fa-check"></i><b>4</b> Variable Relations</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -161,58 +138,19 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Bayesian Multi-Object Response Regression</h1>
-<p class="author"><em>Rene Gutierrez Marquez</em></p>
-<p class="date"><em>2023-08-17</em></p>
-</div>
-<div id="about" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> About<a href="index.html#about" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="package-description" class="section level2 hasAnchor" number="1.1">
-<h2><span class="header-section-number">1.1</span> Package Description<a href="index.html#package-description" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This work documents the package <code>bmrr</code> introduced in “Multi-object
-Data Integration in the Study of Primary Progressive Aphasia”. It also presents
-an usage example in the context of the simulations on the paper for easy
-replication. BMRR stands for Bayesian Multi-Object Response Regression and deals
-with a scalar variable of interest as a dependent variable and two objects as
-responses, one a Network object and another an image object or more
-generally a Voxel object. Both objects are linked through regions of interest.
-The main purpose of the model is to determine which regions of interest are
-associated with the variable of interest. The model can incorporate other
-explanatory variables.</p>
-</div>
-<div id="package-requierments" class="section level2 hasAnchor" number="1.2">
-<h2><span class="header-section-number">1.2</span> Package Requierments<a href="index.html#package-requierments" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The package requires the <code>mvtnorm</code> <span class="citation">(<a href="#ref-mvtnorm">Genz et al. 2021</a>; <a href="#ref-genz">Genz and Bretz 2009</a>)</span> package.</p>
-</div>
-<div id="package-installation" class="section level2 hasAnchor" number="1.3">
-<h2><span class="header-section-number">1.3</span> Package Installation<a href="index.html#package-installation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>To install the package enter:</p>
-<pre><code>library(devtools)
-install_github(&quot;Rene-Gutierrez/bmrr&quot;)</code></pre>
-</div>
-<div id="document-structure" class="section level2 hasAnchor" number="1.4">
-<h2><span class="header-section-number">1.4</span> Document Structure<a href="index.html#document-structure" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In section <a href="modelFramework.html#modelFramework">2</a> we introduce the model and variables</p>
+<div id="variableRelations" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Variable Relations<a href="variableRelations.html#variableRelations" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Here the relationship between the model variables as they appear in the chapters
+<a href="modelFramework.html#modelFramework">2</a> and <a href="posteriorComputation.html#posteriorComputation">3</a> or <a href="modelFramework.html#modelFramework">Model Framework</a>.</p>
 
-</div>
-</div>
-<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-genz" class="csl-entry">
-Genz, Alan, and Frank Bretz. 2009. <em>Computation of Multivariate Normal and t Probabilities</em>. Lecture Notes in Statistics. Heidelberg: Springer-Verlag.
-</div>
-<div id="ref-mvtnorm" class="csl-entry">
-Genz, Alan, Frank Bretz, Tetsuhisa Miwa, Xuefei Mi, Friedrich Leisch, Fabian Scheipl, and Torsten Hothorn. 2021. <em><span class="nocase">mvtnorm</span>: Multivariate Normal and t Distributions</em>. <a href="https://CRAN.R-project.org/package=mvtnorm">https://CRAN.R-project.org/package=mvtnorm</a>.
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="modelFramework.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="posteriorComputation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -243,7 +181,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-variable-relations.Rmd",
 "text": "Edit"
 },
 "history": {
