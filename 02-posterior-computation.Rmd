@@ -170,7 +170,7 @@ And the full conditionals for the Voxel Horseshoe parameters (including auxiliar
 \end{equation}
 
 \begin{equation}
-\eta^2_p| \bgPh, \tau^2_\beta, \bB, \xi_p \stackrel{ind.}{\sim} IG \left(1, \frac{1}{\kappa_{\eta_P}} + \frac{I_{\xi_p = 1}}{2 \tau^2_\beta} \sum_{\substack{v=1}}^{V_p}\frac{\beta_{v,p}^2}{\tau^2_{\theta}\lambda^2_{p,p'}} \right) \quad p \in \{1,\ldots,P\}
+\eta^2_p| \bgPh, \tau^2_\beta, \bB, \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2} + \frac{I_{\xi_p=1}}{2}, \frac{1}{\kappa_{\eta_P}} + \frac{I_{\xi_p = 1}}{2 \tau^2_\beta} \sum_{\substack{v=1}}^{V_p}\frac{\beta_{v,p}^2}{\tau^2_{\theta}\lambda^2_{p,p'}} \right) \quad p \in \{1,\ldots,P\}
 (\#eq:horseshoeEta)
 \end{equation}
 

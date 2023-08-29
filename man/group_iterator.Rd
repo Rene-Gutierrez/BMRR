@@ -4,7 +4,7 @@
 \alias{group_iterator}
 \title{BMRR Iterator}
 \usage{
-group_iterator(Say, Sgy, Syy, C, LT, LB, sT2, sB2, g, nu, p)
+group_iterator(Say, Sgy, Syy, sT2, sB2, LT, LB, g, nu, C, p)
 }
 \arguments{
 \item{Say}{The sum (over observations) of the product of the main variable
@@ -15,9 +15,12 @@ covariates. Input as a matrix of \code{P} by \code{P}.}
 \code{y} and the difference of the Voxel values and the effect of the
 covariates. Input as a matrix of \code{mV} rows and \code{P} columns.}
 
-\item{Syy}{The sum (over observations) of the squares of the main variable \code{y}.}
+\item{Syy}{The sum (over observations) of the squares of the main variable
+\code{y}.}
 
-\item{C}{Boolean matrix for the Voxel structure.}
+\item{sT2}{Variance of the error term of the Network equations.}
+
+\item{sB2}{Variance of the error term of the Voxel equations.}
 
 \item{LT}{Product of the global and shrinkage variables for the Network
 coefficients. Input as a matrix of \code{P} by \code{P}.}
@@ -25,11 +28,9 @@ coefficients. Input as a matrix of \code{P} by \code{P}.}
 \item{LB}{Product of the global and shrinkage variables for the Voxel
 coefficients.  Input as a matrix of \code{mV} rows and \code{P} columns.}
 
-\item{sT2}{Variance of the error term of the Network equations.}
-
-\item{sB2}{Variance of the error term of the Voxel equations.}
-
 \item{g}{Binary indicators for every region.}
+
+\item{C}{Boolean matrix for the Voxel structure.}
 
 \item{p}{Region of interest.}
 }

@@ -535,98 +535,104 @@ sample <span class="math inline">\(s\)</span>, such that <code>B[s,] =</code>
 </colgroup>
 <tbody>
 <tr class="odd">
-<td>Code</td>
-<td>Model</td>
-<td>Description</td>
+<td align="right">Code</td>
+<td align="center">Model</td>
+<td align="left">Description</td>
 </tr>
 <tr class="even">
-<td><code>g</code></td>
-<td><span class="math inline">\( {\boldsymbol \xi} \)</span></td>
-<td>Last MCMC iteration of the region indicator variables. It is returned as a binary
+<td align="right"><code>g</code></td>
+<td align="center"><span class="math inline">\( {\boldsymbol \xi} \)</span></td>
+<td align="left">Last MCMC iteration of the region indicator variables. It is returned as a binary
 vector of size <span class="math inline">\(P\)</span>. <code>g[p]</code> <span class="math inline">\(={\xi_p}\)</span>.</td>
 </tr>
 <tr class="odd">
-<td><code>nu</code></td>
-<td><span class="math inline">\(\nu\)</span></td>
-<td>Last MCMC iteration of the probability parameter of the Bernoulli prior of the indicators <span class="math inline">\(\xi_p\)</span>. It is a scalar.
+<td align="right"><code>nu</code></td>
+<td align="center"><span class="math inline">\(\nu\)</span></td>
+<td align="left">Last MCMC iteration of the probability parameter of the Bernoulli prior of the indicators <span class="math inline">\(\xi_p\)</span>. It is a scalar.
 <code>nu</code><span class="math inline">\(=\nu\)</span>.</td>
 </tr>
 <tr class="even">
-<td><code>Theta</code></td>
-<td><span class="math inline">\( {\boldsymbol \Theta} \)</span></td>
-<td>Last MCMC iteration of the Network coefficients. It is a matrix of size (<span class="math inline">\(\times P \times P\)</span>).
+<td align="right"><code>Theta</code></td>
+<td align="center"><span class="math inline">\( {\boldsymbol \Theta} \)</span></td>
+<td align="left">Last MCMC iteration of the Network coefficients. It is a matrix of size (<span class="math inline">\(\times P \times P\)</span>).
 <code>Theta[p,q]</code><span class="math inline">\(=( {\boldsymbol \Theta} )_{p,q}=\theta_{p,q}\)</span> for <span class="math inline">\(p\neq q\)</span> and <code>Theta[p,p]=NA</code>.</td>
 </tr>
 <tr class="odd">
-<td><code>B</code></td>
-<td><span class="math inline">\(\{ {\boldsymbol g} _p\}_{p=1}^P\)</span></td>
-<td>Last MCMC iteration of the Voxel coefficients. It is a matrix of size (<span class="math inline">\(\times V \times P\)</span>), where <span class="math inline">\(V=\max\{V_p\}_{p=1}^P\)</span>.
+<td align="right"><code>B</code></td>
+<td align="center"><span class="math inline">\(\{ {\boldsymbol g} _p\}_{p=1}^P\)</span></td>
+<td align="left">Last MCMC iteration of the Voxel coefficients. It is a matrix of size (<span class="math inline">\(\times V \times P\)</span>), where <span class="math inline">\(V=\max\{V_p\}_{p=1}^P\)</span>.
 <code>B[v,p]</code><span class="math inline">\(=\beta_{v,p}\)</span> for <span class="math inline">\(v \leq V_p\)</span>, and <code>B[v,p]=NA</code> for <span class="math inline">\(v &gt; V_p\)</span>.</td>
 </tr>
 <tr class="even">
-<td><code>DA</code></td>
-<td><span class="math inline">\(\{ {\boldsymbol \psi} _{p,h}^a\}_{p=1,h=1}^{P,H}\)</span></td>
-<td>Last MCMC iteration of the bilinear structure of the Network equation coefficients of the covariates <span class="math inline">\(X\)</span>. It is a matrix of
+<td align="right"><code>DA</code></td>
+<td align="center"><span class="math inline">\(\{ {\boldsymbol \psi} _{p,h}^a\}_{p=1,h=1}^{P,H}\)</span></td>
+<td align="left">Last MCMC iteration of the bilinear structure of the Network equation coefficients of the covariates <span class="math inline">\(X\)</span>. It is a matrix of
 size (<span class="math inline">\(\times P \times H\)</span>). <code>DA[p,h]</code><span class="math inline">\(= {\psi_{p,h}^{a}}\)</span>.</td>
 </tr>
 <tr class="odd">
-<td><code>DG</code></td>
-<td><span class="math inline">\(\{ {\boldsymbol \psi} _{p,h}^g\}_{p=1,h=1}^{P,H}\)</span></td>
-<td>Last MCMC iteration of the structure of the Voxel equation coefficients of the covariates <span class="math inline">\(X\)</span>. It is a matrix of size
+<td align="right"><code>DG</code></td>
+<td align="center"><span class="math inline">\(\{ {\boldsymbol \psi} _{p,h}^g\}_{p=1,h=1}^{P,H}\)</span></td>
+<td align="left">Last MCMC iteration of the structure of the Voxel equation coefficients of the covariates <span class="math inline">\(X\)</span>. It is a matrix of size
 (<span class="math inline">\(\times P \times H\)</span>). <code>DA[p,h]</code><span class="math inline">\(= {\psi_{p,h}^{g}}\)</span>.</td>
 </tr>
 <tr class="even">
-<td><code>sT2</code></td>
-<td><span class="math inline">\(\tau^2_\theta\)</span></td>
-<td>Last MCMC iteration of the variance of the error of the Network equation. It is a scalar. <code>sT2[s]</code><span class="math inline">\(= {\tau^2_\theta}\)</span>.</td>
+<td align="right"><code>sT2</code></td>
+<td align="center"><span class="math inline">\(\tau^2_\theta\)</span></td>
+<td align="left">Last MCMC iteration of the variance of the error of the Network equation. It is a scalar. <code>sT2[s]</code><span class="math inline">\(= {\tau^2_\theta}\)</span>.</td>
 </tr>
 <tr class="odd">
-<td><code>sB2</code></td>
-<td><span class="math inline">\(\tau^2_\beta\)</span></td>
-<td>Last MCMC iteration of the variance of the error of the Voxel equation. It is a scalar. <code>sB2[s]</code><span class="math inline">\(= {\tau^2_\beta}\)</span>.</td>
+<td align="right"><code>sB2</code></td>
+<td align="center"><span class="math inline">\(\tau^2_\beta\)</span></td>
+<td align="left">Last MCMC iteration of the variance of the error of the Voxel equation. It is a scalar. <code>sB2[s]</code><span class="math inline">\(= {\tau^2_\beta}\)</span>.</td>
 </tr>
 <tr class="even">
-<td><code>t2T</code></td>
-<td><span class="math inline">\(\sigma_\theta^2\)</span></td>
-<td>Last MCMC iteration of the global shrinking parameter for the Horseshoe structure of the Network coefficients. It is a scalar.
+<td align="right"><code>t2T</code></td>
+<td align="center"><span class="math inline">\(\sigma_\theta^2\)</span></td>
+<td align="left">Last MCMC iteration of the global shrinking parameter for the Horseshoe structure of the Network coefficients. It is a scalar.
 <code>t2T</code><span class="math inline">\(={\sigma^2_\theta}\)</span>.</td>
 </tr>
 <tr class="odd">
-<td><code>l2T</code></td>
-<td><span class="math inline">\( {\boldsymbol \Lambda} \)</span></td>
-<td>Last MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is a matrix</td>
+<td align="right"><code>l2T</code></td>
+<td align="center"><span class="math inline">\( {\boldsymbol \Lambda} \)</span></td>
+<td align="left">Last MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is a matrix
+of size <span class="math inline">\(\times P \times P\)</span>. <code>l2T[p,q]</code><span class="math inline">\(=( {\boldsymbol \Lambda} )_{p,q} = \lambda_{p,q}\)</span> for <span class="math inline">\(p \neq q\)</span> and <code>l2T[s,p,p]=NA</code>.</td>
 </tr>
 <tr class="even">
-<td><code>xiT</code></td>
-<td><span class="math inline">\(\kappa_{\sigma_\theta^2}\)</span></td>
-<td>Last MCMC iteration of the auxiliary variable of the global shrinking parameter for the Horseshoe structure of the Network
+<td align="right"><code>xiT</code></td>
+<td align="center"><span class="math inline">\(\kappa_{\sigma_\theta^2}\)</span></td>
+<td align="left">Last MCMC iteration of the auxiliary variable of the global shrinking parameter for the Horseshoe structure of the Network
 coefficients. It is a scalar. <code>xiT</code><span class="math inline">\(=\kappa_{\sigma^2_\theta}\)</span>.</td>
 </tr>
 <tr class="odd">
-<td><code>vT</code></td>
-<td><span class="math inline">\(\kappa_{\lambda_{p,p&#39;}}\)</span></td>
-<td>Last MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network
+<td align="right"><code>vT</code></td>
+<td align="center"><span class="math inline">\(\kappa_{\lambda_{p,p&#39;}}\)</span></td>
+<td align="left">Last MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network
+coefficients. It is a matrix of size <span class="math inline">\(\times P \times P\)</span>. <code>vT[p,q]</code><span class="math inline">\(=( {\boldsymbol \Lambda} )_{p,q} = \kappa_{\lambda_{p,q}}\)</span> for
 <span class="math inline">\(p \neq q\)</span> and <code>l2T[p,p] = NA</code>.</td>
 </tr>
 <tr class="even">
-<td><code>t2B</code></td>
-<td><span class="math inline">\(\{\eta_p\}_{p=1}^P\)</span></td>
-<td>Last MCMC iteration of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a vector</td>
+<td align="right"><code>t2B</code></td>
+<td align="center"><span class="math inline">\(\{\eta_p\}_{p=1}^P\)</span></td>
+<td align="left">Last MCMC iteration of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a vector
+of size <span class="math inline">\(P\)</span>. <code>t2B[p]</code><span class="math inline">\(={\eta_p}\)</span>.</td>
 </tr>
 <tr class="odd">
-<td><code>l2B</code></td>
-<td><span class="math inline">\(\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}\)</span></td>
-<td>Last MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is a matrix of</td>
+<td align="right"><code>l2B</code></td>
+<td align="center"><span class="math inline">\(\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}\)</span></td>
+<td align="left">Last MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is a matrix of
+size <span class="math inline">\(\times V \times P\)</span>. <code>l2B[v,p]</code><span class="math inline">\(=( {\boldsymbol \Phi} )_{v,p} = \phi_{v,p}\)</span> for <span class="math inline">\(v \leq V_p\)</span> and <code>l2B[v,p]=NA</code> for <span class="math inline">\(v&gt;V_p\)</span>.</td>
 </tr>
 <tr class="even">
-<td><code>xiB</code></td>
-<td><span class="math inline">\(\kappa_{\eta_p}\)</span></td>
-<td>Last MCMC iteration of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel</td>
+<td align="right"><code>xiB</code></td>
+<td align="center"><span class="math inline">\(\kappa_{\eta_p}\)</span></td>
+<td align="left">Last MCMC iteration of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel
+coefficients. It is a vector of size <span class="math inline">\(P\)</span>. <code>xiT[p]</code><span class="math inline">\(=\kappa_{\eta_p}\)</span>.</td>
 </tr>
 <tr class="odd">
-<td><code>vB</code></td>
-<td><span class="math inline">\(\kappa_{\phi_{v,p}}\)</span></td>
-<td>Last MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel
+<td align="right"><code>vB</code></td>
+<td align="center"><span class="math inline">\(\kappa_{\phi_{v,p}}\)</span></td>
+<td align="left">Last MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel
+coefficients .It is a matrix of size <span class="math inline">\(\times V \times P\)</span>. <code>vB[v,p]</code><span class="math inline">\(=\kappa_{\phi_{v,p}}\)</span> for
 <span class="math inline">\(v \leq V_p\)</span> and <code>vB[v,p] = NA</code> for <span class="math inline">\(v&gt; V_p\)</span>.</td>
 </tr>
 </tbody>
@@ -1128,6 +1134,8 @@ are distributed accordingly.</p>
 </div>
 <div id="horseshoe-structure-for-theta" class="section level4 hasAnchor" number="4.2.4.7">
 <h4><span class="header-section-number">4.2.4.7</span> Horseshoe Structure for Theta<a href="functions.html#horseshoe-structure-for-theta" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>An auxiliary variable is created <code>gg</code> that indicates which Network coefficients
+are non-zero.</p>
 <p>Next the horseshoe structure for the Network coefficients is sampled.</p>
 <div id="samples-l2t" class="section level5 hasAnchor" number="4.2.4.7.1">
 <h5><span class="header-section-number">4.2.4.7.1</span> # Samples l2T<a href="functions.html#samples-l2t" class="anchor-section" aria-label="Anchor link to header"></a></h5>
@@ -1148,6 +1156,8 @@ are distributed accordingly.</p>
 </div>
 <div id="horseshoe-structure-for-b" class="section level4 hasAnchor" number="4.2.4.8">
 <h4><span class="header-section-number">4.2.4.8</span> Horseshoe Structure for B<a href="functions.html#horseshoe-structure-for-b" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>An auxiliary variable is created <code>gV</code> that indicates which Voxel coefficients
+are non-zero.</p>
 <p>Next the horseshoe structure for the Voxel coefficients is sampled.</p>
 <div id="samples-l2b" class="section level5 hasAnchor" number="4.2.4.8.1">
 <h5><span class="header-section-number">4.2.4.8.1</span> Samples l2B<a href="functions.html#samples-l2b" class="anchor-section" aria-label="Anchor link to header"></a></h5>

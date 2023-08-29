@@ -91,13 +91,14 @@
 #'    \item{`vT`}{ An array of size `nmcmc` by `P` by `P` corresponding to the
 #'    samples of the auxiliary variable of the local shrinking parameter of the
 #'    Network coefficients prior.}
-#'    \item{`t2B`}{ A vector of length `nmcmc` corresponding to the samples of
-#'    the global shrinking parameter of the Voxel coefficients prior.}
+#'    \item{`t2B`}{ A matrix of size `nmcmc` by `P` corresponding to the samples
+#'     of the global shrinking parameter of each region of the Voxel
+#'     coefficients prior.}
 #'    \item{`l2B`}{ An array of size `nmcmc` by `mV` rows by `P` columns corresponding to the
 #'    samples of the local shrinking parameter of the Voxel coefficients prior.}
-#'    \item{`xiB`}{ A vector of length `nmcmc` corresponding to the samples of
-#'    the auxiliary variable corresponding to the global shrinking parameter
-#'    of the Voxel coefficients prior.}
+#'    \item{`xiB`}{ A matrix of size `nmcmc` by `P` corresponding to the samples
+#'     of the auxiliary variable corresponding to the global shrinking parameter
+#'     of each region of the Voxel coefficients prior.}
 #'    \item{`vB`}{ An array of size `nmcmc` by `mV` rows by `P` columns corresponding to the
 #'    samples of the auxiliary variable of the local shrinking parameter of the
 #'    Voxel coefficients prior.}
@@ -160,9 +161,9 @@ bmrr_sampler <- function(y,
     svT    <- array(data     = NA, dim  = c(nmcmc, P, P))
     sxiT   <- numeric(length = nmcmc)
     sl2B   <- array(data     = NA, dim  = c(nmcmc, mV, P))
-    st2B   <- numeric(length = nmcmc)
+    st2B   <- matrix(data    = NA, nrow =   nmcmc, P)
     svB    <- array(data     = NA, dim  = c(nmcmc, mV, P))
-    sxiB   <- numeric(length = nmcmc)
+    sxiB   <- matrix(data    = NA, nrow =   nmcmc, P)
   }
 
   # Initialization
@@ -196,10 +197,10 @@ bmrr_sampler <- function(y,
     l2T    <- matrix(data = 1, nrow = P,   ncol = P)
     xiT    <- 1
     vT     <- matrix(data = 1, nrow = P,   ncol = P)
-    t2B    <- 1
+    t2B    <- rep(1, P)
     l2B    <- matrix(data = NA, nrow = mV, ncol = P)
     l2B[C] <- 1
-    xiB    <- 1
+    xiB    <- rep(1, P)
     vB     <- matrix(data = NA, nrow = mV, ncol = P)
     vB[C]  <- 1
     sT2    <- 1
@@ -305,10 +306,10 @@ bmrr_sampler <- function(y,
           svT[temp,,]    <- out$vT
           sxiT[temp]     <- out$xiT
           ssB2[temp]     <- out$sB2
-          st2B[temp]     <- out$t2B
+          st2B[temp,]    <- out$t2B
           sl2B[temp,,]   <- out$l2B
           svB[temp,,]    <- out$vB
-          sxiB[temp]     <- out$xiB
+          sxiB[temp,]    <- out$xiB
         }
       }
     }
