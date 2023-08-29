@@ -48,14 +48,15 @@
 #' @param vT    A matrix of size `P` by `P` corresponding to the state in the
 #'              MCMC of the auxiliary variable of the local shrinking parameter
 #'              of the Network coefficients prior.
-#' @param t2B   A scalar corresponding to the state in the MCMC of the global
-#'              shrinking parameter of the Voxel coefficients prior.
+#' @param t2B   A vector of size `P` corresponding to the state in the MCMC of
+#'              the global shrinking parameter for each region of the Voxel
+#'              coefficients prior.
 #' @param l2B   A matrix of size `mV` rows by `P` columns corresponding to the
 #'              state in the MCMC of the local shrinking parameter of the Voxel
 #'               coefficients prior.
-#' @param xiB   A scalar corresponding to the state in the MCMC of the auxiliary
-#'              variable corresponding to the global shrinking parameter of the
-#'              Voxel coefficients prior.
+#' @param xiB   A vector of size `P` corresponding to the state in the MCMC of
+#'              the auxiliary variable corresponding to the global shrinking
+#'              parameter of each region of the Voxel coefficients prior.
 #' @param vB    A matrix of size `mV` rows by `P` columns corresponding to the
 #'              state in the MCMC of the auxiliary variable of the local
 #'              shrinking parameter of the Voxel coefficients prior.
@@ -93,12 +94,12 @@
 #'           \item{`vT`}{ A matrix of size `P` by `P` corresponding to the
 #'                        state in the MCMC of the auxiliary variable of the local shrinking parameter of the
 #'                        Network coefficients prior.}
-#'           \item{`t2B`}{ A scalar corresponding to the state in the MCMC of the global
-#'                         shrinking parameter of the Voxel coefficients prior.}
+#'           \item{`t2B`}{ A vector of size `P` corresponding to the state in the MCMC of the global
+#'                         shrinking parameter of each region of the Voxel coefficients prior.}
 #'           \item{`l2B`}{ A matrix of size `mV` rows by `P` columns corresponding to the
 #'                         state in the MCMC of the local shrinking parameter of the Voxel coefficients prior.}
-#'           \item{`xiB`}{ A scalar corresponding to the state in the MCMC of the auxiliary variable corresponding to the global shrinking parameter
-#'                          of the Voxel coefficients prior.}
+#'           \item{`xiB`}{ A vector of size `P` corresponding to the state in the MCMC of the auxiliary variable corresponding to the global shrinking parameter
+#'                          of each region of the Voxel coefficients prior.}
 #'           \item{`vB`}{ A matrix of size `mV` rows by `P` columns corresponding to the
 #'                        state in the MCMC of the auxiliary variable of the local shrinking parameter of the
 #'                        Voxel coefficients prior.}
@@ -134,13 +135,14 @@ bmrr_iterator <- function(y,
                           a_sB,
                           b_sB){
   # Problem dimensions
-  N  <- length(y)            # Number of Observations
-  mV <- dim(B)[1]            # Maximum Voxel Size
-  V  <- colSums(C)           # Number of Voxels per Region
-  P  <- dim(B)[2]            # Number of ROI's
-  Q  <- sum(g)               # Number of Active Regions
-  H  <- ncol(X)              # Number of Covariates
-  gp <- numeric(length = P)
+  N   <- length(y)            # Number of Observations
+  mV  <- dim(B)[1]            # Maximum Voxel Size
+  V   <- colSums(C)           # Number of Voxels per Region
+  P   <- dim(B)[2]            # Number of ROI's
+  Q   <- sum(g)               # Number of Active Regions
+  H   <- ncol(X)              # Number of Covariates
+  gp  <- numeric(length = P)
+  upp <- upper.tri(Theta)
 
   # Samples DT
   for(p in 1:P){
@@ -172,7 +174,7 @@ bmrr_iterator <- function(y,
     DT[m, , ]       <- DA[, m] %*% t(DA[, m])
     diag(DT[m, , ]) <- NA
     DB[m, , ][C]    <- kronecker(X = t(DG[, m]), Y = rep(1, mV))[C]
-    D[m, ]          <- c(DT[m,,][upper.tri(DT[m,,])], DB[m,,][C])
+    D[m, ]          <- c(DT[m,,][upp], DB[m,,][C])
   }
 
   # Samples g, Theta and B
@@ -188,7 +190,7 @@ bmrr_iterator <- function(y,
                           sT2 = sT2,
                           sB2 = sB2,
                           LT  = t2T * l2T,
-                          LB  = t2B * l2B,
+                          LB  = t(t2B * t(l2B)),
                           g   = g,
                           nu  = nu,
                           C   = C,
@@ -219,43 +221,28 @@ bmrr_iterator <- function(y,
   nu  <- rbeta(n = 1, shape1 = anu, shape2 = bnu)
 
   # Horseshoe Structure for Theta
+  gg <- g %*% t(g)
   # Samples l2T
-  for(p in 2:P){
-    for(pp in 1:(p - 1)){
-      if(g[p] * g[pp] == 1){
-        l2T[p, pp] <- 1 / rgamma(n     = 1,
-                                 shape = 1,
-                                 rate  = 1 / vT[p, pp] +
-                                 Theta[p, pp]^2 / (2 * sT2 * t2T))
-        l2T[pp, p] <- l2T[p, pp]
-      } else {
-        l2T[p, pp] <- 1 / rgamma(n     = 1,
-                                 shape = 1 / 2,
-                                 rate  = 1 / vT[p, pp])
-        l2T[pp, p] <- l2T[p, pp]
-      }
-    }
-  }
+  l2T[lower.tri(l2T, diag = TRUE)] <- 0
+  temp <- 1 / rgamma(n     = P * (P -1) / 2,
+                     shape = 1 / 2 + gg[upp] / 2,
+                     rate  = 1 + vT[upp] +
+                       gg[upp] * Theta[upp]^2 / (2 * sT2 * t2T))
+  l2T[upp] <- temp
+  l2T      <- l2T + t(l2T)
 
   # Samples t2T
-  if(sum(g) > 0){
-    t2T <- 1 / rgamma(n     = 1,
-                      shape = (sum(g) * (sum(g) - 1) / 2 + 1) / 2,
-                      rate  = 1 / xiT +
-                        sum(Theta[g == 1, g == 1][lower.tri(Theta[g == 1, g == 1])]^2 / (2 * sT2 * l2T[g == 1, g == 1][lower.tri(l2T[g == 1, g == 1])]))) # nolint
-  } else {
-    t2T <- 1 / rgamma(n     = 1,
-                      shape = 1 / 2,
-                      rate  = 1 / xiT)
-  }
-
+  t2T <- 1 / rgamma(n     = 1,
+                    shape = (sum(gg[upp]) + 1) / 2,
+                    rate  = 1 / xiT +
+                      sum(Theta[gg == 1]^2 / (2 * sT2 * l2T[gg == 1]), na.rm = TRUE) / 2)
   # Samples vT
-  out <- 1 / rgamma(n     = P * (P - 1) / 2,
-                    shape = 1,
-                    rate  = 1 + 1 / l2T[lower.tri(l2T)])
-  vT[upper.tri(vT, diag = TRUE)] <- 0
-  vT[lower.tri(vT)]              <- out
-  vT                             <- vT + t(vT)
+  vT[lower.tri(vT, diag = TRUE)] <- 0
+  temp    <- 1 / rgamma(n     = P * (P - 1) / 2,
+                        shape = 1,
+                        rate  = 1 + 1 / l2T[upp])
+  vT[upp] <- temp
+  vT      <- vT + t(vT)
 
   # Samples xiT
   xiT <- 1 / rgamma(n     = 1,
@@ -263,44 +250,28 @@ bmrr_iterator <- function(y,
                     rate  = 1 + 1 / t2T)
 
   # Horseshoe Structure for B
+  gV <- kronecker(X = rep(1, mV), Y = t(g))
   # Samples l2B
-  for(p in 1:P){
-    if(g[p] == 1){
-      l2B[1:V[p], p] <- 1 / rgamma(n     = V[p],
-                                   shape = 1,
-                                   rate  = 1 / vB[, p] + 
-                                    B[, p]^2 / (2 * sB2 * t2B)) # nolint
-    } else {
-      l2B[1:V[p], p] <- 1 / rgamma(n     = V[p],
-                                   shape = 1 / 2,
-                                   rate  = 1 / vB[, p])
-    }
-  }
+  l2B[C] <- 1 / rgamma(n     = sum(C),
+                       shape = 1 / 2 + gV[C] / 2,
+                       rate  = 1 / vB[C] +
+                         gV[C] * t(t(B[C]^2) / (2 * sB2 * t2B)))
 
   # Samples t2B
-  if(sum(g) > 0){
-    t2B <- 1 / rgamma(n     = 1,
-                      shape = (sum(V[g == 1]) + 1) / 2,
-                      rate  = 1 / xiB +
-                        sum(B[, g == 1]^2 / (2 * sB2 * l2B[, g == 1]), na.rm = TRUE)) # nolint
-  } else {
-    t2B <- 1 / rgamma(n     = 1,
-                      shape = 1 / 2,
-                      rate  = 1 / xiB)
-  }
+  t2B <- 1 / rgamma(n     = P,
+                    shape = 1 / 2 + colSums(C) * g / 2,
+                    rate  = 1 / xiB +
+                      g * colSums(B^2 / (2 * sB2 * l2B), na.rm = TRUE))
 
   # Samples vB
-  for(p in 1:P){
-    vB[1:V[p], p]<- 1 / rgamma(n     = V[p],
-                               shape = 1,
-                               rate  = 1 + 1 / l2B[V[p], p])
-  }
+  vB[C] <- 1 / rgamma(n     = sum(C),
+                      shape = 1,
+                      rate  = 1 + 1 / l2B[C])
 
   # Samples xiB
-  xiB <- 1 / rgamma(n     = 1,
+  xiB <- 1 / rgamma(n     = P,
                     shape = 1,
                     rate  = 1 + 1 / t2B)
-
 
   # Samples sT2 and sB2
   Q    <- sum(g == 1)
@@ -321,7 +292,7 @@ bmrr_iterator <- function(y,
   # Samples sB2
   RG  <- R[ ,(P * (P - 1) / 2 + 1):(P * (P - 1) / 2 + sum(C))]
   bs2 <- 2 + sum(RG^2)
-  bs2 <- bs2 + sum(B[, g == 1]^2 / l2B[, g == 1], na.rm = NA) / t2B
+  bs2 <- bs2 + sum(t(B[, g == 1]^2 / l2B[, g == 1]) / t2B[g == 1], na.rm = NA)
   bs2 <- bs2 / 2 + b_sB
   as2 <- 2 + N * sum(C)
   as2 <- as2 + sum(C[, g == 1])

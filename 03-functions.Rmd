@@ -248,21 +248,27 @@ The `state` output is a list containing all the model variables
 |`t2T`  |$\sigma_\theta^2$                  | Last MCMC iteration of the global shrinking parameter for the Horseshoe structure of the Network coefficients. It is a scalar.|
 |       |                                   | `t2T`$={\sigma^2_\theta}$.                                                                                                    |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`l2T`  |$\bgL$                             | Last MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is a matrix  | |       |                                   | of size $\times P \times P$. `l2T[p,q]`$=(\bgL)_{p,q} = \lambda_{p,q}$ for $p \neq q$ and `l2T[s,p,p]=NA`.                    |
+|`l2T`  |$\bgL$                             | Last MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is a matrix  | 
+|       |                                   | of size $\times P \times P$. `l2T[p,q]`$=(\bgL)_{p,q} = \lambda_{p,q}$ for $p \neq q$ and `l2T[s,p,p]=NA`.                    |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 |`xiT`  |$\kappa_{\sigma_\theta^2}$         | Last MCMC iteration of the auxiliary variable of the global shrinking parameter for the Horseshoe structure of the Network    |
 |       |                                   | coefficients. It is a scalar. `xiT`$=\kappa_{\sigma^2_\theta}$.                                                               |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`vT`   |$\kappa_{\lambda_{p,p'}}$          | Last MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network    | |       |                                   | coefficients. It is a matrix of size $\times P \times P$. `vT[p,q]`$=(\bgL)_{p,q} = \kappa_{\lambda_{p,q}}$ for               |
+|`vT`   |$\kappa_{\lambda_{p,p'}}$          | Last MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network    | 
+|       |                                   | coefficients. It is a matrix of size $\times P \times P$. `vT[p,q]`$=(\bgL)_{p,q} = \kappa_{\lambda_{p,q}}$ for               |
 |       |                                   | $p \neq q$ and `l2T[p,p] = NA`.                                                                                               |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`t2B`  |$\{\eta_p\}_{p=1}^P$               | Last MCMC iteration of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a vector  | |       |                                   | of size $P$. `t2B[p]`$={\eta_p}$.                                                                                             |
+|`t2B`  |$\{\eta_p\}_{p=1}^P$               | Last MCMC iteration of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a vector  | 
+|       |                                   | of size $P$. `t2B[p]`$={\eta_p}$.                                                                                             |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`l2B`  |$\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}$ | Last MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is a matrix of | |       |                                   | size $\times V \times P$. `l2B[v,p]`$=(\bgPh)_{v,p} = \phi_{v,p}$ for $v \leq V_p$ and `l2B[v,p]=NA` for $v>V_p$.             |
+|`l2B`  |$\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}$ | Last MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is a matrix of | 
+|       |                                   | size $\times V \times P$. `l2B[v,p]`$=(\bgPh)_{v,p} = \phi_{v,p}$ for $v \leq V_p$ and `l2B[v,p]=NA` for $v>V_p$.             |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`xiB`  |$\kappa_{\eta_p}$                  | Last MCMC iteration of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel     | |       |                                   | coefficients. It is a vector of size $P$. `xiT[p]`$=\kappa_{\eta_p}$.                                                         |
+|`xiB`  |$\kappa_{\eta_p}$                  | Last MCMC iteration of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel     | 
+|       |                                   | coefficients. It is a vector of size $P$. `xiT[p]`$=\kappa_{\eta_p}$.                                                         |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`vB`   |$\kappa_{\phi_{v,p}}$              | Last MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel      | |       |                                   | coefficients .It is a matrix of size $\times V \times P$. `vB[v,p]`$=\kappa_{\phi_{v,p}}$ for                                 |
+|`vB`   |$\kappa_{\phi_{v,p}}$              | Last MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel      | 
+|       |                                   | coefficients .It is a matrix of size $\times V \times P$. `vB[v,p]`$=\kappa_{\phi_{v,p}}$ for                                 |
 |       |                                   | $v \leq V_p$ and `vB[v,p] = NA` for $v> V_p$.                                                                                 |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 
@@ -581,6 +587,9 @@ Samples $\nu$ according to [Full conditional $\nu$].
 
 #### Horseshoe Structure for Theta
 
+An auxiliary variable is created `gg` that indicates which Network coefficients 
+are non-zero.
+
 Next the horseshoe structure for the Network coefficients is sampled.
 
 ##### # Samples l2T
@@ -600,6 +609,9 @@ Samples $\kappa_{\lambda_{p,p'}}$ according to \@ref(eq:horseshoeKappaLambda).
 Samples $\kappa_{\sigma^2_\theta}$ according to \@ref(eq:horseshoeKappaSigma).
 
 #### Horseshoe Structure for B
+
+An auxiliary variable is created `gV` that indicates which Voxel coefficients 
+are non-zero.
 
 Next the horseshoe structure for the Voxel coefficients is sampled.
 

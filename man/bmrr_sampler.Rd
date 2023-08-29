@@ -125,13 +125,14 @@ of the Network coefficients prior.}
 \item{\code{vT}}{ An array of size \code{nmcmc} by \code{P} by \code{P} corresponding to the
 samples of the auxiliary variable of the local shrinking parameter of the
 Network coefficients prior.}
-\item{\code{t2B}}{ A vector of length \code{nmcmc} corresponding to the samples of
-the global shrinking parameter of the Voxel coefficients prior.}
+\item{\code{t2B}}{ A matrix of size \code{nmcmc} by \code{P} corresponding to the samples
+of the global shrinking parameter of each region of the Voxel
+coefficients prior.}
 \item{\code{l2B}}{ An array of size \code{nmcmc} by \code{mV} rows by \code{P} columns corresponding to the
 samples of the local shrinking parameter of the Voxel coefficients prior.}
-\item{\code{xiB}}{ A vector of length \code{nmcmc} corresponding to the samples of
-the auxiliary variable corresponding to the global shrinking parameter
-of the Voxel coefficients prior.}
+\item{\code{xiB}}{ A matrix of size \code{nmcmc} by \code{P} corresponding to the samples
+of the auxiliary variable corresponding to the global shrinking parameter
+of each region of the Voxel coefficients prior.}
 \item{\code{vB}}{ An array of size \code{nmcmc} by \code{mV} rows by \code{P} columns corresponding to the
 samples of the auxiliary variable of the local shrinking parameter of the
 Voxel coefficients prior.}

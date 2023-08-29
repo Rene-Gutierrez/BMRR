@@ -89,8 +89,9 @@ of the Network coefficients prior.}
 variable corresponding to the global shrinking parameter of the
 Network coefficients prior.}
 
-\item{t2B}{A scalar corresponding to the state in the MCMC of the global
-shrinking parameter of the Voxel coefficients prior.}
+\item{t2B}{A vector of size \code{P} corresponding to the state in the MCMC of
+the global shrinking parameter for each region of the Voxel
+coefficients prior.}
 
 \item{l2B}{A matrix of size \code{mV} rows by \code{P} columns corresponding to the
 state in the MCMC of the local shrinking parameter of the Voxel
@@ -100,9 +101,9 @@ coefficients prior.}
 state in the MCMC of the auxiliary variable of the local
 shrinking parameter of the Voxel coefficients prior.}
 
-\item{xiB}{A scalar corresponding to the state in the MCMC of the auxiliary
-variable corresponding to the global shrinking parameter of the
-Voxel coefficients prior.}
+\item{xiB}{A vector of size \code{P} corresponding to the state in the MCMC of
+the auxiliary variable corresponding to the global shrinking
+parameter of each region of the Voxel coefficients prior.}
 
 \item{sT2}{A scalar corresponding to the state in the MCMC of the variance
 of the error in the Network equations.}
@@ -154,12 +155,12 @@ of the Network coefficients prior.}
 \item{\code{vT}}{ A matrix of size \code{P} by \code{P} corresponding to the
 state in the MCMC of the auxiliary variable of the local shrinking parameter of the
 Network coefficients prior.}
-\item{\code{t2B}}{ A scalar corresponding to the state in the MCMC of the global
-shrinking parameter of the Voxel coefficients prior.}
+\item{\code{t2B}}{ A vector of size \code{P} corresponding to the state in the MCMC of the global
+shrinking parameter of each region of the Voxel coefficients prior.}
 \item{\code{l2B}}{ A matrix of size \code{mV} rows by \code{P} columns corresponding to the
 state in the MCMC of the local shrinking parameter of the Voxel coefficients prior.}
-\item{\code{xiB}}{ A scalar corresponding to the state in the MCMC of the auxiliary variable corresponding to the global shrinking parameter
-of the Voxel coefficients prior.}
+\item{\code{xiB}}{ A vector of size \code{P} corresponding to the state in the MCMC of the auxiliary variable corresponding to the global shrinking parameter
+of each region of the Voxel coefficients prior.}
 \item{\code{vB}}{ A matrix of size \code{mV} rows by \code{P} columns corresponding to the
 state in the MCMC of the auxiliary variable of the local shrinking parameter of the
 Voxel coefficients prior.}
