@@ -48,7 +48,7 @@ group_iterator <- function(Say,
 
   # Computes the Log-Odds
   bh <- Sxy / (Syy + 1 / L)
-  lo <- -(1 / 2) * (log(L) + og(Syy + 1 / L)) + 
+  lo <- -(1 / 2) * (log(L) + log(Syy + 1 / L)) +
     bh^2 * (Syy + 1 / L) / (2 * c(rep(sT2, nT), rep(sB2, nB)))
 
   # Computes the Probability
