@@ -235,7 +235,8 @@ bmrr_iterator <- function(y,
   t2T <- 1 / rgamma(n     = 1,
                     shape = (sum(gg[upp]) + 1) / 2,
                     rate  = 1 / xiT +
-                      sum(Theta[gg == 1]^2 / (2 * sT2 * l2T[gg == 1]), na.rm = TRUE) / 2)
+                      sum(Theta[gg == 1]^2 / (2 * sT2 * l2T[gg == 1]),
+                          na.rm = TRUE) / 2)
   # Samples vT
   vT[lower.tri(vT, diag = TRUE)] <- 0
   temp    <- 1 / rgamma(n     = P * (P - 1) / 2,
