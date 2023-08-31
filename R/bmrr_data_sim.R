@@ -1,16 +1,25 @@
+#' BMRR Sampler
+#'
+#' @description Function to simulate data that can be used on the BMRR model by
+#' the [bmrr_sampler] function. The data simulated follows the simulation
+#' structure of the paper "Multi-Object Data Integration in the Study of
+#' Primary Progressive Aphasia."
+
 bmrr_data_sim <- function(P      = 20,
                           V      = rep(10,  P),
                           H      = 3,
                           u      = rep(0.5, P),
                           nu     = 0.5,
-                          cB     = c(1, 1),
-                          cT     = c(1, 1),
+                          cB     = c(0, 0),
+                          cT     = c(0, 0),
                           cDA    = 0,
                           cDG    = 0,
                           s2T    = 1,
                           s2B    = 1,
                           s2A    = 1,
                           s2G    = 1,
+                          s2DA   = 1,
+                          s2DG   = 1,
                           covInd = c(TRUE, rep(FALSE, H-1)),
                           N      = 25){
   # Maximum Number of Voxels
@@ -47,10 +56,10 @@ bmrr_data_sim <- function(P      = 20,
   B[C][gB[C] == 1] <- rnorm(n = sum(gB[C]), mean = mB, sd = sqrt(s2B))
 
   # Creates DA
-  DA <- matrix(data = rnorm(n = P * H, mean = cDA, sd = 1), nrow = P, ncol = H)
+  DA <- matrix(data = rnorm(n = P * H, mean = cDA, sd = s2DA), nrow = P, ncol = H)
 
   # Creates DA
-  DG <- matrix(data = rnorm(n = P * H, mean = cDA, sd = 1), nrow = P, ncol = H)
+  DG <- matrix(data = rnorm(n = P * H, mean = cDA, sd = s2DG), nrow = P, ncol = H)
 
   # Data
   # Samples y
@@ -122,15 +131,22 @@ bmrr_data_sim <- function(P      = 20,
   pre_y <- (pre_y - mean(pre_y)) / sd(pre_y)
 
   # Samples X
-  pre_X <- matrix(data = rnorm(n    = N * H,
-                               mean = 0,
-                               sd   = 1),
-                  nrow = N,
-                  ncol = H)
+  # Samples X
+  pre_X <- matrix(data = NA, nrow = N, ncol = H)
+  for(h in 1:H){
+    if(covInd[h]){
+      pre_X[, h] <- rbinom(n = N, size = 1, prob = 0.5)
+    } else {
+      pre_X[, h] <- rnorm(n = N, mean = 0, sd = 1)
+    }
+  }
 
   # Standardizes
-  pre_X <- t(t(pre_X) - colMeans(pre_X))
-  pre_X <- t(t(pre_X) / apply(X = pre_X, MARGIN = 2, FUN = sd))
+  for(h in 1:H){
+    if(!covInd[h]){
+      pre_X[, h] <- (X[, h] - mean(X[, h])) / sd(X[, h])
+    }
+  }
 
   # Samples A
   pre_A <- array(data = Theta %x% pre_y,
@@ -173,9 +189,6 @@ bmrr_data_sim <- function(P      = 20,
   for(n in 1:N){
     pre_AG[n,,] <- rbind(pre_A[n,,], pre_G[n,,])
   }
-
-  # B Indicator
-  C <- !is.na(B)
 
   # Returns Values
   return(list(Theta  = Theta,
