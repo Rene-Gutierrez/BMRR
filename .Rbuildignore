@@ -20,3 +20,4 @@
 ^\.RData$
 ^02-posterior-computation\.Rmd$
 ^03-functions\.Rmd$
+^test\.R$

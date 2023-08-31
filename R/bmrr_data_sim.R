@@ -1,68 +1,58 @@
 bmrr_data_sim <- function(P      = 20,
                           V      = rep(10,  P),
-                          M      = 3,
-                          pB     = rep(0.5, P),
-                          pT     = 0.5,
-                          cDA    = 1,
-                          cDG    = 1,
-                          cB     = 1,
-                          cT     = 1,
-                          s2     = 1,
-                          N      = 25,
-                          method = 'fixed'){
+                          H      = 3,
+                          u      = rep(0.5, P),
+                          nu     = 0.5,
+                          cB     = c(1, 1),
+                          cT     = c(1, 1),
+                          cDA    = 0,
+                          cDG    = 0,
+                          s2T    = 1,
+                          s2B    = 1,
+                          s2A    = 1,
+                          s2G    = 1,
+                          covInd = c(TRUE, rep(FALSE, H-1)),
+                          N      = 25){
   # Maximum Number of Voxels
   mV <- max(V)
+
+  # Variables
   # Computes Active Regions
-  gT              <- rep(0, P)
-  gT[1:(P * pT)] <- 1
+  g <- rbinom(n = P, size = 1, prob = nu)
   # Computes Active Voxels
-  gB              <- matrix(data = NA, nrow = mV, ncol = P)
+  gB <- matrix(data = NA, nrow = mV, ncol = P)
   for(p in 1:P){
-    gB[1:V[p], p]           <- 0
-    gB[1:(V[p] * pB[p]), p] <- 1
+    gB[1:V[p], p] <- 0
+    if(g[p] == 1){
+      gB[sample(x = 1:V[p], size = u[p] * V[p], replace = FALSE), p] <- 1
+    }
   }
 
   # Creates Theta
-  Theta                   <- (gT %*% t(gT))
-  Theta[upper.tri(Theta)] <- 0
-  diag(Theta)             <- 0
-  Theta                   <- Theta + t(Theta)
-  if(method == 'fixed'){
-    Theta <- Theta * cT
-  } else {
-    Theta <- Theta * matrix(data = s2 * 2^(runif(n = P * P,
-                                                 min = log2(cT[1]),
-                                                 max = log2(cT[2]))),
-                            nrow = P,
-                            ncol = P)
+  gg          <- g %*% t(g)
+  mT          <- runif(n = 1, min = cT[1], max = cT[2])
+  Theta       <- matrix(data = 0, nrow = P, ncol = P)
+  upp         <- upper.tri(Theta)
+  if(sum(gg[upp]) != 0){
+    Theta[upp][gg[upp] == 1] <- rnorm(n = sum(gg[upp]), mean = mT, sd = sqrt(s2T))
+    Theta                    <- Theta + t(Theta)
   }
-  Theta[lower.tri(x = Theta, diag = TRUE)] <- 0
-  Theta                                    <- Theta + t(Theta)
+  diag(Theta) <- NA
 
   # Creates B
-  B <- matrix(data = 0, nrow = mV, ncol = P)
-  for(p in 1:P){
-    if(gT[p] == 1){
-      nz       <- sample(x = 1:mV, size = pB[p] * mV)
-      B[nz, p] <- 1
-    }
-  }
-  if(method == 'fixed'){
-    B <- B * cB
-  } else {
-    B <- B * matrix(data = s2 * 2^(runif(n = mV * P,
-                                         min = log2(cB[1]),
-                                         max = log2(cB[2]))),
-                    nrow = mV,
-                    ncol = P)
-  }
+  mB               <- runif(n = 1, min = cB[1], max = cB[2])
+  B                <- matrix(data = NA, nrow = mV, ncol = P)
+  C                <- !is.na(gB)
+  B[C]             <- 0
+  B[C][gB[C] == 1] <- rnorm(n = sum(gB[C]), mean = mB, sd = sqrt(s2B))
 
   # Creates DA
-  DA <- abs(matrix(data = cDA, nrow = P, ncol = M))
+  DA <- matrix(data = rnorm(n = P * H, mean = cDA, sd = 1), nrow = P, ncol = H)
 
   # Creates DA
-  DG <- matrix(data = cDG, nrow = P, ncol = M)
+  DG <- matrix(data = rnorm(n = P * H, mean = cDA, sd = 1), nrow = P, ncol = H)
 
+  # Data
   # Samples y
   y <- rnorm(n    = N,
              mean = 0,
@@ -71,26 +61,32 @@ bmrr_data_sim <- function(P      = 20,
   y <- (y - mean(y)) / sd(y)
 
   # Samples X
-  X <- matrix(data = rnorm(n    = N * M,
-                           mean = 0,
-                           sd   = 1),
-              nrow = N,
-              ncol = M)
+  X <- matrix(data = NA, nrow = N, ncol = H)
+  for(h in 1:H){
+    if(covInd[h]){
+      X[, h] <- rbinom(n = N, size = 1, prob = 0.5)
+    } else {
+      X[, h] <- rnorm(n = N, mean = 0, sd = 1)
+    }
+  }
 
   # Standardizes
-  X <- t(t(X) - colMeans(X))
-  X <- t(t(X) / apply(X = X, MARGIN = 2, FUN = sd))
+  for(h in 1:H){
+    if(!covInd[h]){
+      X[, h] <- (X[, h] - mean(X[, h])) / sd(X[, h])
+    }
+  }
 
   # Samples A
   A <- array(data = Theta %x% y,
              dim  = c(N, P, P))
-  for(m in 1:M){
+  for(m in 1:H){
     A <- A + array(data = (DA[, m] %*% t(DA[, m])) %x% X[, m],
                    dim  = c(N, P, P))
   }
   A <- A + array(data = rnorm(n    = N * P * P,
                               mean = 0,
-                              sd   = sqrt(s2)),
+                              sd   = sqrt(s2A)),
                  dim  = c(N, P, P))
 
   for(n in 1:N){
@@ -101,13 +97,13 @@ bmrr_data_sim <- function(P      = 20,
   # Samples G
   G <- array(data = B %x% y,
              dim  = c(N, mV, P))
-  for(m in 1:M){
+  for(m in 1:H){
     G <- G + array(data = (kronecker(X = rep(1, mV), Y = t(DG[, m]))) %x% X[, m],
                    dim  = c(N, mV, P))
   }
   G <- G + array(data = rnorm(n    = N * mV * P,
                               mean = 0,
-                              sd   = sqrt(s2)),
+                              sd   = sqrt(s2G)),
                  dim  = c(N, mV, P))
 
 
@@ -126,11 +122,11 @@ bmrr_data_sim <- function(P      = 20,
   pre_y <- (pre_y - mean(pre_y)) / sd(pre_y)
 
   # Samples X
-  pre_X <- matrix(data = rnorm(n    = N * M,
+  pre_X <- matrix(data = rnorm(n    = N * H,
                                mean = 0,
                                sd   = 1),
                   nrow = N,
-                  ncol = M)
+                  ncol = H)
 
   # Standardizes
   pre_X <- t(t(pre_X) - colMeans(pre_X))
@@ -139,13 +135,13 @@ bmrr_data_sim <- function(P      = 20,
   # Samples A
   pre_A <- array(data = Theta %x% pre_y,
                  dim  = c(N, P, P))
-  for(m in 1:M){
+  for(m in 1:H){
     pre_A <- pre_A + array(data = (DA[, m] %*% t(DA[, m])) %x% pre_X[, m],
                            dim  = c(N, P, P))
   }
   pre_A <- pre_A + array(data = rnorm(n    = N * P * P,
                                       mean = 0,
-                                      sd   = sqrt(s2)),
+                                      sd   = sqrt(s2A)),
                          dim  = c(N, P, P))
 
   for(n in 1:N){
@@ -156,13 +152,13 @@ bmrr_data_sim <- function(P      = 20,
   # Samples G
   pre_G <- array(data = B %x% pre_y,
                  dim  = c(N, mV, P))
-  for(m in 1:M){
+  for(m in 1:H){
     pre_G <- pre_G + array(data = (kronecker(X = rep(1, mV), Y = t(DG[, m]))) %x% pre_X[, m],
                            dim  = c(N, mV, P))
   }
   pre_G <- pre_G + array(data = rnorm(n    = N * mV * P,
                                       mean = 0,
-                                      sd   = sqrt(s2)),
+                                      sd   = sqrt(s2G)),
                          dim  = c(N, mV, P))
 
   # Centers
@@ -187,7 +183,7 @@ bmrr_data_sim <- function(P      = 20,
               DA     = DA,
               DG     = DG,
               C      = C,
-              gT     = gT,
+              g      = g,
               gB     = gB,
               A      = A,
               G      = G,
@@ -196,7 +192,10 @@ bmrr_data_sim <- function(P      = 20,
               P      = P,
               V      = V,
               N      = N,
-              s2     = s2,
+              s2T    = s2T,
+              s2B    = s2B,
+              s2A    = s2A,
+              s2G    = s2G,
               pre_y  = pre_y,
               pre_A  = pre_A,
               pre_G  = pre_G,
