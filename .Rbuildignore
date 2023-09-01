@@ -14,8 +14,16 @@
 ^references\.bib$
 ^style\.css$
 ^docs$
+^docs/$
 ^docs02-posterior-computation\.Rmd$
 ^references\.Rmd$
 ^\.RData$
 ^02-posterior-computation\.Rmd$
 ^03-functions\.Rmd$
+^test\.R$
+.*Rmd$
+.*yml$
+.*bib$
+.*tex$
+.*css$
+^test\.R$

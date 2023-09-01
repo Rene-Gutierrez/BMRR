@@ -141,7 +141,7 @@ maximum number of coefficients in a region.}
 \item{\code{DA}}{ A matrix of size \code{P} rows by \code{H} columns corresponding to the
 state in the MCMC of the coefficients of the covariates in the Network equations.}
 \item{\code{DG}}{ A matrix of size \code{P} rows by \code{H} columns corresponding to the
-state in the MCMC of the of coefficients of the covariates in the Voxels equations.}
+state in the MCMC of the coefficients of the covariates in the Voxels equations.}
 \item{\code{sT2}}{ A scalar corresponding to the state in the MCMC of the
 variance of the error in the Network equations.}
 \item{\code{sB2}}{ A scalar corresponding to the state in the MCMC of
