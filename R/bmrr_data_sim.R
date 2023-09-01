@@ -3,13 +3,89 @@
 #' @description Function to simulate data that can be used on the BMRR model by
 #' the [bmrr_sampler] function. The data simulated follows the simulation
 #' structure of the paper "Multi-Object Data Integration in the Study of
-#' Primary Progressive Aphasia."
-
+#' Primary Progressive Aphasia." The function includes defaults for every input,
+#' according to the "Small dimensional example with high sparsity" setting
+#' described in the paper.
+#'
+#' @param P Number of regions. A natural number.
+#' @param V Number of voxels per region. A vector of natural numbers.
+#' @param N Number of observations. A natural number.
+#' @param H Number of covariates in addition to the main covariate.
+#' @param nu Probability of a region to be influential.
+#' @param u  Proportion of non zero voxels per region.
+#' @param cB Range of the uniform distribution to draw the mean of the Voxel
+#' coefficients.
+#' @param cT Range of the uniform distribution to draw the mean of the Network
+#' coefficients.
+#' @param cDA Mean of the parameters of the bilinear structure of the additional
+#' covariates of the Network equations.
+#' @param cDG Mean of the parameters of the structure of the additional
+#' covariates of the Voxel equations.
+#' @param s2T Variance of the non-zero Network coefficients.
+#' @param s2B Variance of the non-zero Voxel coefficients.
+#' @param s2A Variance of the error of the Network equations.
+#' @param s2G Variance of the error of the Voxel equations.
+#' @param s2DA Variance of the parameters of  the bilinear structure of the
+#'additional covariates of the Network equations.
+#' @param s2DG Variance of the parameters of the structure of the additional
+#' covariates of the Voxel equations.
+#' @param covInd Boolean vector of size `H` indicating if an additional
+#' covariate is a indicator covariate.
+#'
+#' @return Returns a list with all the data elements necessary to run
+#' [bmrr_sampler], the "True" model parameters and an additional data set that
+#' can be used to do out of sample prediction (under the same "True" model
+#' parameters). The data set:
+#'
+#' \itemize{
+#'  \item `A` Network Object. An array of size (`N`, `P`, `P`).
+#'            Notice that the method doesn't take into consideration the
+#'            diagonal entries.
+#'  \item `G` Voxel object. An array of size (`N`, `mV`, `P`)
+#'            where `mV` is the maximum number of voxels on any region. `NA` is
+#'            used to fill the array if the number of voxels per region is
+#'            different or otherwise irregular.
+#'  \item `y` Main covariate or variable of interest. A vector of size `N`.
+#'  \item `X` Additional covariates. A matrix of size `N` rows and `H` columns.
+#' }
+#'
+#' An additional data set that can be used for out of sample evaluation:
+#'
+#' \itemize{
+#'  \item `pre_A` Network Object. An array of size (`N`, `P`, `P`).
+#'            Notice that the method doesn't take into consideration the
+#'            diagonal entries.
+#'  \item `pre_G` Voxel object. An array of size (`N`, `mV`, `P`)
+#'            where `mV` is the maximum number of voxels on any region. `NA` is
+#'            used to fill the array if the number of voxels per region is
+#'            different or otherwise irregular.
+#'  \item `pre_y` Main covariate or variable of interest. A vector of size `N`.
+#'  \item `pre_X` Additional covariates. A matrix of size `N` rows and `H` columns.
+#' }
+#'
+#' The data generating parameters:
+#'
+#' \itemize{
+#'  \item{`g`}{ A binary vector of size `P` indicating the important regions.}
+#'  \item{`Theta`}{ A symmetric matrix of size `P` by `P` corresponding to the
+#'    Network coefficients of the main covariate.}
+#'  \item{`B`}{ A matrix of size `mV` rows by `P` columns corresponding to the
+#'    Voxel coefficients of the main covariate.}
+#'  \item{`DA`}{ A matrix of size `P` rows by `H` columns corresponding to the
+#'    bilinear structure of the coefficients of the additional covariates in
+#'    the Network equations.}
+#'  \item{`DG`}{ A matrix of size `P` rows by `H` columns corresponding to the
+#'    structure of the coefficients of the covariates in the Voxels equations.}
+#' }
+#'
+#' @export
+#'
 bmrr_data_sim <- function(P      = 20,
                           V      = rep(10,  P),
+                          N      = 25,
                           H      = 3,
-                          u      = rep(0.5, P),
                           nu     = 0.5,
+                          u      = rep(0.5, P),
                           cB     = c(0, 0),
                           cT     = c(0, 0),
                           cDA    = 0,
@@ -20,8 +96,7 @@ bmrr_data_sim <- function(P      = 20,
                           s2G    = 1,
                           s2DA   = 1,
                           s2DG   = 1,
-                          covInd = c(TRUE, rep(FALSE, H-1)),
-                          N      = 25){
+                          covInd = c(TRUE, rep(FALSE, H-1))){
   # Maximum Number of Voxels
   mV <- max(V)
 
@@ -81,9 +156,7 @@ bmrr_data_sim <- function(P      = 20,
 
   # Standardizes
   for(h in 1:H){
-    if(!covInd[h]){
       X[, h] <- (X[, h] - mean(X[, h])) / sd(X[, h])
-    }
   }
 
   # Samples A
@@ -191,27 +264,17 @@ bmrr_data_sim <- function(P      = 20,
   }
 
   # Returns Values
-  return(list(Theta  = Theta,
-              B      = B,
-              DA     = DA,
-              DG     = DG,
-              C      = C,
-              g      = g,
-              gB     = gB,
-              A      = A,
+  return(list(A      = A,
               G      = G,
               y      = y,
               X      = X,
-              P      = P,
-              V      = V,
-              N      = N,
-              s2T    = s2T,
-              s2B    = s2B,
-              s2A    = s2A,
-              s2G    = s2G,
               pre_y  = pre_y,
               pre_A  = pre_A,
               pre_G  = pre_G,
-              pre_AG = pre_AG))
-
+              pre_AG = pre_AG,
+              g      = g,
+              Theta  = Theta,
+              B      = B,
+              DA     = DA,
+              DG     = DG))
 }

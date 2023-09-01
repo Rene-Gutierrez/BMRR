@@ -80,7 +80,7 @@
 #'           \item{`DA`}{ A matrix of size `P` rows by `H` columns corresponding to the
 #'                        state in the MCMC of the coefficients of the covariates in the Network equations.}
 #'           \item{`DG`}{ A matrix of size `P` rows by `H` columns corresponding to the
-#'                        state in the MCMC of the of coefficients of the covariates in the Voxels equations.}
+#'                        state in the MCMC of the coefficients of the covariates in the Voxels equations.}
 #'           \item{`sT2`}{ A scalar corresponding to the state in the MCMC of the
 #'                         variance of the error in the Network equations.}
 #'           \item{`sB2`}{ A scalar corresponding to the state in the MCMC of

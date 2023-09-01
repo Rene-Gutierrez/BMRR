@@ -7,9 +7,10 @@
 bmrr_data_sim(
   P = 20,
   V = rep(10, P),
+  N = 25,
   H = 3,
-  u = rep(0.5, P),
   nu = 0.5,
+  u = rep(0.5, P),
   cB = c(0, 0),
   cT = c(0, 0),
   cDA = 0,
@@ -20,13 +21,103 @@ bmrr_data_sim(
   s2G = 1,
   s2DA = 1,
   s2DG = 1,
-  covInd = c(TRUE, rep(FALSE, H - 1)),
-  N = 25
+  covInd = c(TRUE, rep(FALSE, H - 1))
 )
+}
+\arguments{
+\item{P}{Number of regions. A natural number.}
+
+\item{V}{Number of voxels per region. A vector of natural numbers.}
+
+\item{N}{Number of observations. A natural number.}
+
+\item{H}{Number of covariates in addition to the main covariate.}
+
+\item{nu}{Probability of a region to be influential.}
+
+\item{u}{Proportion of non zero voxels per region.}
+
+\item{cB}{Range of the uniform distribution to draw the mean of the Voxel
+coefficients.}
+
+\item{cT}{Range of the uniform distribution to draw the mean of the Network
+coefficients.}
+
+\item{cDA}{Mean of the parameters of the bilinear structure of the additional
+covariates of the Network equations.}
+
+\item{cDG}{Mean of the parameters of the structure of the additional
+covariates of the Voxel equations.}
+
+\item{s2T}{Variance of the non-zero Network coefficients.}
+
+\item{s2B}{Variance of the non-zero Voxel coefficients.}
+
+\item{s2A}{Variance of the error of the Network equations.}
+
+\item{s2G}{Variance of the error of the Voxel equations.}
+
+\item{s2DA}{Variance of the parameters of  the bilinear structure of the
+additional covariates of the Network equations.}
+
+\item{s2DG}{Variance of the parameters of the structure of the additional
+covariates of the Voxel equations.}
+
+\item{covInd}{Boolean vector of size \code{H} indicating if an additional
+covariate is a indicator covariate.}
+}
+\value{
+Returns a list with all the data elements necessary to run
+\link{bmrr_sampler}, the "True" model parameters and an additional data set that
+can be used to do out of sample prediction (under the same "True" model
+parameters). The data set:
+
+\itemize{
+\item \code{A} Network Object. An array of size (\code{N}, \code{P}, \code{P}).
+Notice that the method doesn't take into consideration the
+diagonal entries.
+\item \code{G} Voxel object. An array of size (\code{N}, \code{mV}, \code{P})
+where \code{mV} is the maximum number of voxels on any region. \code{NA} is
+used to fill the array if the number of voxels per region is
+different or otherwise irregular.
+\item \code{y} Main covariate or variable of interest. A vector of size \code{N}.
+\item \code{X} Additional covariates. A matrix of size \code{N} rows and \code{H} columns.
+}
+
+An additional data set that can be used for out of sample evaluation:
+
+\itemize{
+\item \code{pre_A} Network Object. An array of size (\code{N}, \code{P}, \code{P}).
+Notice that the method doesn't take into consideration the
+diagonal entries.
+\item \code{pre_G} Voxel object. An array of size (\code{N}, \code{mV}, \code{P})
+where \code{mV} is the maximum number of voxels on any region. \code{NA} is
+used to fill the array if the number of voxels per region is
+different or otherwise irregular.
+\item \code{pre_y} Main covariate or variable of interest. A vector of size \code{N}.
+\item \code{pre_X} Additional covariates. A matrix of size \code{N} rows and \code{H} columns.
+}
+
+The data generating parameters:
+
+\itemize{
+\item{\code{g}}{ A binary vector of size \code{P} indicating the important regions.}
+\item{\code{Theta}}{ A symmetric matrix of size \code{P} by \code{P} corresponding to the
+Network coefficients of the main covariate.}
+\item{\code{B}}{ A matrix of size \code{mV} rows by \code{P} columns corresponding to the
+Voxel coefficients of the main covariate.}
+\item{\code{DA}}{ A matrix of size \code{P} rows by \code{H} columns corresponding to the
+bilinear structure of the coefficients of the additional covariates in
+the Network equations.}
+\item{\code{DG}}{ A matrix of size \code{P} rows by \code{H} columns corresponding to the
+structure of the coefficients of the covariates in the Voxels equations.}
+}
 }
 \description{
 Function to simulate data that can be used on the BMRR model by
 the \link{bmrr_sampler} function. The data simulated follows the simulation
 structure of the paper "Multi-Object Data Integration in the Study of
-Primary Progressive Aphasia."
+Primary Progressive Aphasia." The function includes defaults for every input,
+according to the "Small dimensional example with high sparsity" setting
+described in the paper.
 }

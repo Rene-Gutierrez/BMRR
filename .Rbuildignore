@@ -21,3 +21,9 @@
 ^02-posterior-computation\.Rmd$
 ^03-functions\.Rmd$
 ^test\.R$
+.*Rmd$
+.*yml$
+.*bib$
+.*tex$
+.*css$
+^test\.R$
