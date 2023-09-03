@@ -192,83 +192,11 @@ bmrr_data_sim <- function(P      = 20,
   A  <- A - array(data = mA %x% rep(1, N), dim = c(N, P,  P))
   G  <- G - array(data = mG %x% rep(1, N), dim = c(N, mV, P))
 
-  # Prediction
-  # Samples y
-  pre_y <- rnorm(n    = N,
-                 mean = 0,
-                 sd   = 1)
-  # Standardizes
-  pre_y <- (pre_y - mean(pre_y)) / sd(pre_y)
-
-  # Samples X
-  # Samples X
-  pre_X <- matrix(data = NA, nrow = N, ncol = H)
-  for(h in 1:H){
-    if(covInd[h]){
-      pre_X[, h] <- rbinom(n = N, size = 1, prob = 0.5)
-    } else {
-      pre_X[, h] <- rnorm(n = N, mean = 0, sd = 1)
-    }
-  }
-
-  # Standardizes
-  for(h in 1:H){
-    if(!covInd[h]){
-      pre_X[, h] <- (X[, h] - mean(X[, h])) / sd(X[, h])
-    }
-  }
-
-  # Samples A
-  pre_A <- array(data = Theta %x% pre_y,
-                 dim  = c(N, P, P))
-  for(m in 1:H){
-    pre_A <- pre_A + array(data = (DA[, m] %*% t(DA[, m])) %x% pre_X[, m],
-                           dim  = c(N, P, P))
-  }
-  pre_A <- pre_A + array(data = rnorm(n    = N * P * P,
-                                      mean = 0,
-                                      sd   = sqrt(s2A)),
-                         dim  = c(N, P, P))
-
-  for(n in 1:N){
-    pre_A[n,,][lower.tri(pre_A[n,,], diag = TRUE)] <- 0
-    pre_A[n,,]                                     <- pre_A[n,,] + t(pre_A[n,,])
-  }
-
-  # Samples G
-  pre_G <- array(data = B %x% pre_y,
-                 dim  = c(N, mV, P))
-  for(m in 1:H){
-    pre_G <- pre_G + array(data = (kronecker(X = rep(1, mV), Y = t(DG[, m]))) %x% pre_X[, m],
-                           dim  = c(N, mV, P))
-  }
-  pre_G <- pre_G + array(data = rnorm(n    = N * mV * P,
-                                      mean = 0,
-                                      sd   = sqrt(s2G)),
-                         dim  = c(N, mV, P))
-
-  # Centers
-  mA <- apply(X = pre_A, MARGIN = c(2, 3), FUN = mean)
-  mG <- apply(X = pre_G, MARGIN = c(2, 3), FUN = mean)
-  pre_A  <- pre_A - array(data = mA %x% rep(1, N), dim = c(N, P,  P))
-  pre_G  <- pre_G - array(data = mG %x% rep(1, N), dim = c(N, mV, P))
-
-  # Joint Object
-  pre_AG <- array(data = NA,
-                  dim  = c(N, P + mV, P))
-  for(n in 1:N){
-    pre_AG[n,,] <- rbind(pre_A[n,,], pre_G[n,,])
-  }
-
   # Returns Values
   return(list(A      = A,
               G      = G,
               y      = y,
               X      = X,
-              pre_y  = pre_y,
-              pre_A  = pre_A,
-              pre_G  = pre_G,
-              pre_AG = pre_AG,
               g      = g,
               Theta  = Theta,
               B      = B,
