@@ -413,21 +413,27 @@ The MCMC current state variables are:
 |`t2T`  |$\sigma_\theta^2$                  | Current MCMC iteration of the global shrinking parameter for the Horseshoe structure of the Network coefficients. It is a     |
 |       |                                   | scalar. `t2T`$={\sigma^2_\theta}$.                                                                                            |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`l2T`  |$\bgL$                             | Current MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is a      | |       |                                   | matrix of size $\times P \times P$. `l2T[p,q]`$=(\bgL)_{p,q} = \lambda_{p,q}$ for $p \neq q$ and `l2T[s,p,p]=NA`.             |
+|`l2T`  |$\bgL$                             | Current MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Network coefficients. It is a      |
+|       |                                   | matrix of size $\times P \times P$. `l2T[p,q]`$=(\bgL)_{p,q} = \lambda_{p,q}$ for $p \neq q$ and `l2T[s,p,p]=NA`.             |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 |`xiT`  |$\kappa_{\sigma_\theta^2}$         | Current MCMC iteration of the auxiliary variable of the global shrinking parameter for the Horseshoe structure of the Network |
 |       |                                   | coefficients. It is a scalar. `xiT`$=\kappa_{\sigma^2_\theta}$.                                                               |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`vT`   |$\kappa_{\lambda_{p,p'}}$          | Current MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network | |       |                                   | coefficients. It is a matrix of size $\times P \times P$. `vT[p,q]`$=(\bgL)_{p,q} = \kappa_{\lambda_{p,q}}$ for               |
+|`vT`   |$\kappa_{\lambda_{p,p'}}$          | Current MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Network |
+|       |                                   | coefficients. It is a matrix of size $\times P \times P$. `vT[p,q]`$=(\bgL)_{p,q} = \kappa_{\lambda_{p,q}}$ for               |
 |       |                                   | $p \neq q$ and `l2T[p,p] = NA`.                                                                                               |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`t2B`  |$\{\eta_p\}_{p=1}^P$               | Current MCMC iteration of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a      | |       |                                   | vector of size $P$. `t2B[p]`$={\eta_p}$.                                                                                      |
+|`t2B`  |$\{\eta_p\}_{p=1}^P$               | Current MCMC iteration of the global shrinking parameters for the Horseshoe structure of the Voxel coefficients. It is a      |
+|       |                                   | vector of size $P$. `t2B[p]`$={\eta_p}$.                                                                                      |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`l2B`  |$\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}$ | Current MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is a matrix | |       |                                   | of size $\times V \times P$. `l2B[v,p]`$=(\bgPh)_{v,p} = \phi_{v,p}$ for $v \leq V_p$ and `l2B[v,p]=NA` for $v>V_p$.          |
+|`l2B`  |$\{\phi_{v,p}\}_{v=1,p=1}^{V_p,P}$ | Current MCMC iteration of the local shrinking parameter for the Horseshoe structure of the Voxel coefficients. It is a matrix |
+|       |                                   | of size $\times V \times P$. `l2B[v,p]`$=(\bgPh)_{v,p} = \phi_{v,p}$ for $v \leq V_p$ and `l2B[v,p]=NA` for $v>V_p$.          |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`xiB`  |$\kappa_{\eta_p}$                  | Current MCMC iteration of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel  | |       |                                   | coefficients. It is a vector of size $P$. `xiT[p]`$=\kappa_{\eta_p}$.                                                         |
+|`xiB`  |$\kappa_{\eta_p}$                  | Current MCMC iteration of the auxiliary variables of the global shrinking parameter for the Horseshoe structure of the Voxel  |
+|       |                                   | coefficients. It is a vector of size $P$. `xiT[p]`$=\kappa_{\eta_p}$.                                                         |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
-|`vB`   |$\kappa_{\phi_{v,p}}$              | Current MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel   | |       |                                   | coefficients .It is a matrix of size $\times V \times P$. `vB[v,p]`$=\kappa_{\phi_{v,p}}$ for                                 |
+|`vB`   |$\kappa_{\phi_{v,p}}$              | Current MCMC iteration of the auxiliary variables of the local shrinking parameter for the Horseshoe structure of the Voxel   |
+|       |                                   | coefficients .It is a matrix of size $\times V \times P$. `vB[v,p]`$=\kappa_{\phi_{v,p}}$ for                                 |
 |       |                                   | $v \leq V_p$ and `vB[v,p] = NA` for $v> V_p$.                                                                                 |
 +-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
 
@@ -774,12 +780,241 @@ Updates $\bgth_{-p,p}$ and $\bgb_p$ depending on $\xi_p$.
 
 Returns the outputs.
 
+## `bmrr_data_sim`
 
+### Description {#data_sim_description}
 
+Function to simulate data that can be used on the BMRR model by
+the [bmrr::bmrr_sampler] function. The data simulated follows the simulation
+structure of the paper "Multi-Object Data Integration in the Study of
+Primary Progressive Aphasia." The function includes defaults for every input,
+according to the "Small dimensional example with high sparsity" setting
+described in the paper. The data simulation follows the next procedure:
 
+1. Set the dimensions of he data set:
+  * $P$   The number of regions.
+  * $\bV$ The number of voxels per region.
+  * $H$   The number of additional covariates.
+  * $n$   The number of observations.
+2. Generate indicator variables $\{\xi_p\}_{p=1}^P$ for every region that
+  indicate the influential regions.
+  $\xi_p \stackrel{i.i.d}{\sim}Bernoulli(\nu)$.
+3. Simulate the true Voxel Coefficients. For each region $p$:
+  * If $\xi_p=0$, then set all the voxel coefficients in that region to zero.
+    $\bgb_p=\bzero_{V_p}$.
+  * If $\xi_p=1$, then simulate a proportion $\upsilon_p$ of the voxels in the 
+    region from:
+    $\beta_{v,p} \stackrel{i.i.d.}{\sim}N(\mu_{\beta}, \sigma_\beta^2)$.
+    and set the rest of the voxels to 0. Where
+    $\mu_\beta \sim U(l_\beta,u_\beta)$.
+4. Simulate the true  Network coefficients. For network coefficient 
+  $\theta_{p,p'}$ sample:
+  * If $\xi_p=1$ and $\xi_{p'}=1$ simulate from:
+    $\theta_{p,p'} \stackrel{i.i.d.}{\sim}N(\mu_{\theta}, \sigma_\theta^2)$. 
+    Where
+    $\mu_\theta \sim U(l_\theta,u_\theta)$.
+  * If $\xi_p=0$ or $\xi_{p'}=0$ set
+    $\theta_{p,p'}=0$.
+5. Simulate the bilinear coefficient structure of the Network equation.
+    $\psi^a_{p,h} \stackrel{i.i.d.}{\sim}N(\mu_{\psi^a},\sigma_{\psi^a}^2)$
+    for $p=1,\ldots,P$ and $h=1,\ldots,H$.
+6. Simulate the covariate coefficients of the Voxel equation.
+    $\psi^g_{p,h} \stackrel{i.i.d.}{\sim}N(\mu_{\psi^g},\sigma_{\psi^g}^2)$
+    for $p=1,\ldots,P$ and $h=1,\ldots,H$.
+7. Simulate the covariate of interest.
+    $y_i \stackrel{i.i.d.}{\sim}N(0,\sigma_y^2)$
+    for $i=1,\ldots,n$.
+8. Simulate the additional covariates. For each covariate $h$:
+    * If the covariate is desired to be an indicator simulate from:
+    $x_{i,h} \stackrel{i.i.d.}{\sim}Bernoulli(\nu_{x_h})$
+    for $i=1,\ldots,n$.
+    * If the covariate is continuous simulate from:
+    $x_{i,h} \stackrel{i.i.d.}{\sim}N(0, \sigma^2_x)$
+    for $i=1,\ldots,n$.
+9. Simulate a Network object.
+    $a_{i,(p,p)} = \sum_{h=1}^H \psi^a_{p,h}\psi^a_{p',h} x_{i,h} + \theta_{p,p'}y_i + e_i^{(p,p') \quad p < p'}$
+    where $e_i^{p,p'} \stackrel{i.i.d.}{\sim}N(0, \tau^2_\theta)$ for $i=1,\ldots,n$.
+    The same as the Network equation in \@ref(eq:scalarNetworkEquation).
+10. Simulate a Voxel object.
+    $g_{i,(v,p)} = \sum_{h=1}^H \psi^g_{p,h} x_{i,h} + \beta_{v,p}y_i + w_i^{(p,p')} \quad {p\in{1<\ldots,P}, \quad v\in{1,\ldots,V_p}}$
+    where $w_i^{v,p} \stackrel{i.i.d.}{\sim}N(0, \tau^2_\beta)$ for $i=1,\ldots,n$.
+    The same as the Network equation in \@ref(eq:scalarVoxelEquation).
+11. Simulate an additional data set under the same true coefficients. Repeat
+    6 to 10.
+    
+### Inputs
 
+The function receives as inputs the dimension parameters and the simulation
+parameters for the variables.
 
+The dimension parameters are:
 
++-----:+:-------------------:+:--------------------------------------------------------------------------------------+
+|Code  | Model               | Description                                                                           |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`P`   | $P$                 | Number of regions.                                                                    |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`V`   | $\bV$               | A vector of size $P$, with he number of voxels per region.                            |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`N`   | $n$                 | Number of observations.                                                               |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`H`   | $H$                 | Number of additional covariates.                                                      |
++------+---------------------+---------------------------------------------------------------------------------------+
 
+The simulation parameters are:
 
++-----:+:-------------------:+:--------------------------------------------------------------------------------------+
+|Code  | Model               | Description                                                                           |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`nu`  | $\nu$               | Probability of a region being selected as influential.                                |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`u`   | $\upsilon$          | Proportion of non-zero voxels per influential region.                                 |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`cB`  | $l_\beta,u_\beta$   | Minimum and maximum of the Uniform distribution from which the mean of the voxel      | 
+|      |                     | coefficients is simulated.                                                            |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`cT`  |$l_\theta,u_\theta$  | Minimum and maximum of the Uniform distribution from which the mean of the Network    | 
+|      |                     | coefficients is simulated.                                                            |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`s2B` | $\sigma^2_{\beta}$  | Variance of the Normal from which the voxel coefficients are simulated.               |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`s2T` | $\sigma^2_{\theta}$ | Variance of the Normal from which the Network coefficients are simulated.             |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`cDA` | $\mu_{\psi^a}$      | Mean of the bilinear Network structure variables.                                     |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`cDG` | $\mu_{\psi^g}$      | Mean of the additional covariates voxel coefficients.                                 |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`c2DA`| $\sigma^2_{\psi^a}$ | Variance of the bilinear Network structure variables.                                 |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`s2DG`| $\sigma^2_{\psi^g}$ | Variance of the additional covariates voxel coefficients.                             |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`s2DG`| $\sigma^2_{\psi^g}$ | Variance of the additional covariates voxel coefficients.                             |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`s2A` | $\sigma^2_{\theta}$ | Variance of error of the Network equations.                                           |
++------+---------------------+---------------------------------------------------------------------------------------+
+|`s2G` | $\sigma^2_{\beta}$  | Variance of error of the Voxel equations.                                             |
++------+---------------------+---------------------------------------------------------------------------------------+
 
+Finally, an input for the type of additional covariates.
+
++---------:+:-------------------------------------------------------------------+
+|Code      | Description                                                        |
++----------+--------------------------------------------------------------------+
+|`p=covInd`| A Boolean vector of size `H` indicating if the covariate is an     |
+|          | indicator variable (`TRUE`) or not (`FALSE`).                      |
++----------+--------------------------------------------------------------------+
+
+### Output
+
+The function returns a data set for which BMRR can be used, as well as the 
+parameters from which it was simulated, that can be used to measure the 
+performance of BMRR.
+
+The data set output is as follows:
+
++---:+:-------------------:+:-------------------------------------------------------------------+
+|Code| Model               | Description                                                        |
++----+---------------------+--------------------------------------------------------------------+
+|`y` | $\by$               | The variable of interest. It is a vector of size `N`.              |
++----+---------------------+--------------------------------------------------------------------+
+|`A` | $\bA$               | The Network object. It is an array of                              |
+|    |                     | size $(n \times P \times P)$.                                      |
++----+---------------------+--------------------------------------------------------------------+
+|`G` | $\{\bg_p\}_{p=1}^P$ | The voxel object. It is an array                                   |
+|    |                     | of size $(n \times V \times P)$, where $V= \max(\{V_p\}_{p=1}^P)$. |
+|    |                     | If the regions are not the same size (i.e. there is a $p$ for      |
+|    |                     | which $V_p < V$), then the entry `G[i,p,]` is padded with `NA`.    |
++----+---------------------+--------------------------------------------------------------------+
+|`X` |$\bX$                | Additional covariates. It is                                       |
+|    |                     | a matrix of size $(n \times H)$. Each column `X[,h]` represents one| 
+|    |                     | covariate.                                                         |
++----+---------------------+--------------------------------------------------------------------+
+
+The data generating parameters are:
+
++------:+:---------------------------------:+:------------------------------------------------------------------------------------------------------------------------------+
+|Code   | Model                             | Description                                                                                                                   |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`g`    | $\bxi$                            | The region indicator variables. It is a binary                                                                                |
+|       |                                   | vector of size $P$. `g[p]` $={\xi_p}$.                                                                                        |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`Theta`| $\bgTh$                           | The Network coefficients. It is a matrix of size ($\times P \times P$).                                                       |
+|       |                                   | `Theta[p,q]`$=(\bgTh)_{p,q}=\theta_{p,q}$ for $p\neq q$ and `Theta[p,p]=NA`.                                                  |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`B`    | $\{\bg_p\}_{p=1}^P$               | The Voxel coefficients. It is a matrix of size ($\times V \times P$), where $V=\max\{V_p\}_{p=1}^P$.                          |
+|       |                                   | `B[v,p]`$=\beta_{v,p}$ for $v \leq V_p$, and `B[v,p]=NA` for $v > V_p$.                                                       |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`DA`   |$\{\bgps_{p,h}^a\}_{p=1,h=1}^{P,H}$| The bilinear structure of the Network equation coefficients of the covariates $X$. It is a matrix of                          |
+|       |                                   | size ($\times P \times H$). `DA[p,h]`$= {\psi_{p,h}^{a}}$.                                                                    |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|`DG`   |$\{\bgps_{p,h}^g\}_{p=1,h=1}^{P,H}$| The structure of the Voxel equation coefficients of the covariates $X$. It is a matrix of size                                |
+|       |                                   | ($\times P \times H$). `DA[p,h]`$= {\psi_{p,h}^{g}}$.                                                                         |
++-------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+
+### Walkthrough
+
+#### Maximum Number of Voxels
+
+Obtains the maximum number of voxels per region. This variable determines the 
+size of `G` and `B`.
+
+#### Computes Active Regions
+
+Selects the influential regions. `g`$\bgx$. Step 2 of 
+[Description of `bmrr_data_sim`](#data_sim_description).
+
+#### Computes Active Voxels
+
+Creates a variable `gB` that indicates which voxels are non-zero.
+
+#### Creates B
+
+The Voxels coefficients of the variable of interest. `B`$=\{\bg_p\}_{p=1}^P$$.
+Step 3 of [Description of `bmrr_data_sim`](#data_sim_description).
+
+#### Creates Theta
+
+The Network coefficients of the variable of interest. `Theta`$=\bgTh$.
+Step 4 of [Description of `bmrr_data_sim`](#data_sim_description).
+
+#### Creates DA
+
+The bilinear structure of the coefficients of the additional covariates of 
+the Network equations.
+`DA`$=\{\bgps_{p,h}^a\}_{p=1,h=1}^{P,H}$.
+Step 5 of [Description of `bmrr_data_sim`](#data_sim_description).
+
+#### Creates DG
+
+The structure of the coefficients of the additional covariates in the Voxel 
+equations. `DA`$=\{\bgps_{p,h}^g\}_{p=1,h=1}^{P,H}$.
+Step 6 of [Description of `bmrr_data_sim`](#data_sim_description).
+
+#### Samples y
+
+Simulates the variable of interest. `y`$=\by$. It is standardized.
+Step 7 of [Description of `bmrr_data_sim`](#data_sim_description).
+
+#### Samples X
+
+Simulates the additional covariates, according to the indicator `covInd`. If,
+applicable it is standardized. `X`$=\bX$.
+Step 8 of [Description of `bmrr_data_sim`](#data_sim_description).
+
+#### Samples A
+
+Samples the Network object. `A`$=\bA$.
+Step 9 of [Description of `bmrr_data_sim`](#data_sim_description).
+
+#### Samples G
+
+Samples the Voxel object. `G`$\{\bg_p\}_{p=1}^P$.
+Step 10 of [Description of `bmrr_data_sim`](#data_sim_description).
+
+#### Centers
+
+Centers the objects `A` and `G` by edge and voxel respectively.
+
+#### Returns Values
+
+Returns the data set and the simulation variables.

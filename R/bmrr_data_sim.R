@@ -88,19 +88,18 @@ bmrr_data_sim <- function(P      = 20,
                           u      = rep(0.5, P),
                           cB     = c(0, 0),
                           cT     = c(0, 0),
-                          cDA    = 0,
-                          cDG    = 0,
                           s2T    = 1,
                           s2B    = 1,
-                          s2A    = 1,
-                          s2G    = 1,
+                          cDA    = 0,
+                          cDG    = 0,
                           s2DA   = 1,
                           s2DG   = 1,
+                          s2A    = 1,
+                          s2G    = 1,
                           covInd = c(TRUE, rep(FALSE, H-1))){
   # Maximum Number of Voxels
   mV <- max(V)
 
-  # Variables
   # Computes Active Regions
   g <- rbinom(n = P, size = 1, prob = nu)
   # Computes Active Voxels
@@ -111,6 +110,13 @@ bmrr_data_sim <- function(P      = 20,
       gB[sample(x = 1:V[p], size = u[p] * V[p], replace = FALSE), p] <- 1
     }
   }
+  
+  # Creates B
+  mB               <- runif(n = 1, min = cB[1], max = cB[2])
+  B                <- matrix(data = NA, nrow = mV, ncol = P)
+  C                <- !is.na(gB)
+  B[C]             <- 0
+  B[C][gB[C] == 1] <- rnorm(n = sum(gB[C]), mean = mB, sd = sqrt(s2B))
 
   # Creates Theta
   gg          <- g %*% t(g)
@@ -123,25 +129,17 @@ bmrr_data_sim <- function(P      = 20,
   }
   diag(Theta) <- NA
 
-  # Creates B
-  mB               <- runif(n = 1, min = cB[1], max = cB[2])
-  B                <- matrix(data = NA, nrow = mV, ncol = P)
-  C                <- !is.na(gB)
-  B[C]             <- 0
-  B[C][gB[C] == 1] <- rnorm(n = sum(gB[C]), mean = mB, sd = sqrt(s2B))
-
   # Creates DA
   DA <- matrix(data = rnorm(n = P * H, mean = cDA, sd = s2DA), nrow = P, ncol = H)
 
-  # Creates DA
+  # Creates DG
   DG <- matrix(data = rnorm(n = P * H, mean = cDA, sd = s2DG), nrow = P, ncol = H)
 
-  # Data
   # Samples y
   y <- rnorm(n    = N,
              mean = 0,
              sd   = 1)
-  # Standardizes
+  ## Standardizes
   y <- (y - mean(y)) / sd(y)
 
   # Samples X
@@ -153,7 +151,6 @@ bmrr_data_sim <- function(P      = 20,
       X[, h] <- rnorm(n = N, mean = 0, sd = 1)
     }
   }
-
   # Standardizes
   for(h in 1:H){
       X[, h] <- (X[, h] - mean(X[, h])) / sd(X[, h])
