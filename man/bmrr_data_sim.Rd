@@ -13,14 +13,14 @@ bmrr_data_sim(
   u = rep(0.5, P),
   cB = c(0, 0),
   cT = c(0, 0),
-  cDA = 0,
-  cDG = 0,
   s2T = 1,
   s2B = 1,
-  s2A = 1,
-  s2G = 1,
+  cDA = 0,
+  cDG = 0,
   s2DA = 1,
   s2DG = 1,
+  s2A = 1,
+  s2G = 1,
   covInd = c(TRUE, rep(FALSE, H - 1))
 )
 }
@@ -43,25 +43,25 @@ coefficients.}
 \item{cT}{Range of the uniform distribution to draw the mean of the Network
 coefficients.}
 
+\item{s2T}{Variance of the non-zero Network coefficients.}
+
+\item{s2B}{Variance of the non-zero Voxel coefficients.}
+
 \item{cDA}{Mean of the parameters of the bilinear structure of the additional
 covariates of the Network equations.}
 
 \item{cDG}{Mean of the parameters of the structure of the additional
 covariates of the Voxel equations.}
 
-\item{s2T}{Variance of the non-zero Network coefficients.}
-
-\item{s2B}{Variance of the non-zero Voxel coefficients.}
-
-\item{s2A}{Variance of the error of the Network equations.}
-
-\item{s2G}{Variance of the error of the Voxel equations.}
-
 \item{s2DA}{Variance of the parameters of  the bilinear structure of the
 additional covariates of the Network equations.}
 
 \item{s2DG}{Variance of the parameters of the structure of the additional
 covariates of the Voxel equations.}
+
+\item{s2A}{Variance of the error of the Network equations.}
+
+\item{s2G}{Variance of the error of the Voxel equations.}
 
 \item{covInd}{Boolean vector of size \code{H} indicating if an additional
 covariate is a indicator covariate.}

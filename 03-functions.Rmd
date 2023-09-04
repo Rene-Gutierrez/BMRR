@@ -839,8 +839,6 @@ described in the paper. The data simulation follows the next procedure:
     $g_{i,(v,p)} = \sum_{h=1}^H \psi^g_{p,h} x_{i,h} + \beta_{v,p}y_i + w_i^{(p,p')} \quad {p\in{1<\ldots,P}, \quad v\in{1,\ldots,V_p}}$
     where $w_i^{v,p} \stackrel{i.i.d.}{\sim}N(0, \tau^2_\beta)$ for $i=1,\ldots,n$.
     The same as the Network equation in \@ref(eq:scalarVoxelEquation).
-11. Simulate an additional data set under the same true coefficients. Repeat
-    6 to 10.
     
 ### Inputs
 
@@ -884,9 +882,7 @@ The simulation parameters are:
 +------+---------------------+---------------------------------------------------------------------------------------+
 |`cDG` | $\mu_{\psi^g}$      | Mean of the additional covariates voxel coefficients.                                 |
 +------+---------------------+---------------------------------------------------------------------------------------+
-|`c2DA`| $\sigma^2_{\psi^a}$ | Variance of the bilinear Network structure variables.                                 |
-+------+---------------------+---------------------------------------------------------------------------------------+
-|`s2DG`| $\sigma^2_{\psi^g}$ | Variance of the additional covariates voxel coefficients.                             |
+|`s2DA`| $\sigma^2_{\psi^a}$ | Variance of the bilinear Network structure variables.                                 |
 +------+---------------------+---------------------------------------------------------------------------------------+
 |`s2DG`| $\sigma^2_{\psi^g}$ | Variance of the additional covariates voxel coefficients.                             |
 +------+---------------------+---------------------------------------------------------------------------------------+

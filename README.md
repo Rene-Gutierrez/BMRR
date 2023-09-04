@@ -1,13 +1,6 @@
 Welcome! 
 
-This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). 
+This is the package `bmrr` introduced in "Multi-object 
+Data Integration in the Study of Primary Progressive Aphasia".
 
-This template provides a skeleton file structure that you can edit to create your book. 
-
-The contents inside the .Rmd files provide some pointers to help you get started, but feel free to also delete the content in each file and start fresh.
-
-Additional resources:
-
-The **bookdown** book: https://bookdown.org/yihui/bookdown/
-
-The **bookdown** package reference site: https://pkgs.rstudio.com/bookdown
+To access a detiled dcomentation go to [BMRR](https://rene-gutierrez.github.io/bmrr/).
