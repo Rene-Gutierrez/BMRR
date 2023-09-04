@@ -135,7 +135,7 @@ bmrr_sampler <- function(y,
   C  <- !is.na(G[1,,])
   Zv <- matrix(data = NA, nrow = N, ncol = sum(C) + P * (P - 1) / 2)
   for(i in 1:N){
-    Zv[i, ] <- c(dat$A[i,,][upper.tri(dat$A[i,,])], dat$G[i,,][C])
+    Zv[i, ] <- c(A[i,,][upper.tri(A[i,,])], G[i,,][C])
   }
   XG  <- kronecker(X = rep(1, mV), Y = X)
 
