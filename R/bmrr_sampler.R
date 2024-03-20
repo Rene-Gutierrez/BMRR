@@ -123,7 +123,8 @@ bmrr_sampler <- function(y,
                          burnin     = 0,
                          thinning   = 1,
                          state      = list(),
-                         small_out  = TRUE){
+                         small_out  = TRUE,
+                         proBar     = TRUE){
 
   # Problem Dimensions
   N   <- dim(G)[1]
@@ -210,11 +211,13 @@ bmrr_sampler <- function(y,
   }
 
   # Progress Bar
-  pb <- txtProgressBar(min     = 0,
-                       max     = 1,
-                       initial = 0,
-                       style   = 3,
-                       width   = 72)
+  if(proBar){
+    pb <- txtProgressBar(min     = 0,
+                         max     = 1,
+                         initial = 0,
+                         style   = 3,
+                         width   = 72)
+  }
 
   # First Run
   out <- bmrr_iterator(G     = G,
@@ -315,8 +318,15 @@ bmrr_sampler <- function(y,
     }
 
     # Progress Bar Update
-    setTxtProgressBar(pb    = pb,
-                      value = s / (burnin + niter))
+    if(proBar){
+      setTxtProgressBar(pb    = pb,
+                        value = s / (burnin + niter))
+    }
+  }
+
+  # Closes the Progress Bar
+  if(proBar){
+    close(pb)
   }
 
   # Saves the Samples
