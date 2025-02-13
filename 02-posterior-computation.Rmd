@@ -138,7 +138,7 @@ Then the full conditionals for the Network Horseshoe parameters (including auxil
 
 \begin{equation}
 \lambda^2_{p,p'}| \sigma^2_\theta, \tau^2_\theta, \theta_{p,p'}, \xi_p, \xi_{p'} \stackrel{ind.}{\sim}
-IG \left(\frac{1}{2} + \frac{I_{\xi_p=1}I_{\xi_{p'}=1}}{2}, \frac{1}{\kappa_{\lambda_{p,p'}}}+I_{\xi_p=1}I_{\xi_{p'}=1}\frac{\theta^2_{p,p'}}{2 \sigma^2_\theta \tau^2_\theta}\right) \quad p<p'
+IG \left(\frac{1}{2} + \frac{\xi_p\xi_{p'}}{2}, \frac{1}{\kappa_{\lambda_{p,p'}}}+\frac{\xi_p\xi_{p'}\theta^2_{p,p'}}{2 \sigma^2_\theta \tau^2_\theta}\right) \quad p<p'
 (\#eq:horseshoeLambda)
 \end{equation}
 
@@ -158,14 +158,14 @@ where $Q=\sum_p^{P}\xi_p$.
 (\#eq:horseshoeKappaSigma)
 \end{equation}
 
-And the full conditionals for the Voxel Horseshoe parameters (including auxiliary variables) are given by
+And the full conditionals for the voxel Horseshoe parameters (including auxiliary variables) are given by
 
 \begin{equation}
 (\#eq:horseshoePhi)
 \end{equation}
 
 \begin{equation}
-\phi^2_{v,p}| \eta^2_p, \tau^2_\beta, \phi_{v,p}, \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2}+\frac{\xi_p}{2}, \frac{1}{\kappa_{\phi_{v,p}}}+I_{\xi_p=1}\frac{ \beta^2_{v,p}}{2 \eta^2_p \tau^2_\beta}\right) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\}
+\phi^2_{v,p}| \eta^2_p, \tau^2_\beta, \phi_{v,p}, \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2}+\frac{\xi_p}{2}, \frac{1}{\kappa_{\phi_{v,p}}}+\frac{ \xi_p \beta^2_{v,p}}{2 \eta^2_p \tau^2_\beta}\right) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\}
 (\#eq:horseshoePhi)
 \end{equation}
 
