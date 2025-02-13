@@ -666,10 +666,9 @@ IG \left(\frac{1}{2} + \frac{\xi_p\xi_{p'}}{2}, \frac{1}{\kappa_{\lambda_{p,p'}}
 \end{equation}
 
 \begin{equation}
-\sigma^2_\theta|  {\boldsymbol \Lambda} , \tau^2_\theta,  {\boldsymbol \Theta} , \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2} + \frac{Q}{2}, \frac{1}{\kappa_{\sigma^2_\theta}} + \frac{1}{2 \tau^2_\theta} \sum_{\substack{p<p' \\ \xi_p = 1 \\ \xi_{p'}=1}}\frac{\theta_{p,p'}^2}{\tau^2_{\theta}\lambda^2_{p,p'}} \right)
+\sigma^2_\theta|  {\boldsymbol \Lambda} , \tau^2_\theta,  {\boldsymbol \Theta} , \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2} + \frac{\sum_{p<p'}\xi_p\xi_{p'}}{2}, \frac{1}{\kappa_{\sigma^2_\theta}} + \frac{1}{2 \tau^2_\theta} \sum_{p<p'}\frac{\xi_p\xi_{p'}\theta_{p,p'}^2}{\lambda^2_{p,p'}} \right)
 \label{eq:horseshoeSigma}
 \end{equation}
-where \(Q=\sum_p^{P}\xi_p\).
 
 \begin{equation}
 \kappa_{\lambda_{p,p'}}|\lambda^2_{p,p'} \sim IG \left(1, 1 + \frac{1}{\lambda^2_{p,p'}}\right)
@@ -693,7 +692,7 @@ And the full conditionals for the voxel Horseshoe parameters (including auxiliar
 \end{equation}
 
 \begin{equation}
-\eta^2_p|  {\boldsymbol \Phi} , \tau^2_\beta,  {\boldsymbol B} , \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2} + \frac{I_{\xi_p=1}}{2}, \frac{1}{\kappa_{\eta_P}} + \frac{I_{\xi_p = 1}}{2 \tau^2_\beta} \sum_{\substack{v=1}}^{V_p}\frac{\beta_{v,p}^2}{\tau^2_{\theta}\lambda^2_{p,p'}} \right) \quad p \in \{1,\ldots,P\}
+\eta^2_p|  {\boldsymbol \Phi} , \tau^2_\beta,  {\boldsymbol B} , \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2} + \frac{V_p \xi_p}{2}, \frac{1}{\kappa_{\eta_P}} + \frac{\xi_p}{2 \tau^2_\beta} \sum_{\substack{v=1}}^{V_p}\frac{\beta_{v,p}^2}{\phi^2_{v,p}} \right) \quad p \in \{1,\ldots,P\}
 \label{eq:horseshoeEta}
 \end{equation}
 
