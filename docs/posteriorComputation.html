@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 Posterior Computation | Bayesian Multi-Object Response Regression</title>
   <meta name="description" content="Chapter 3 Posterior Computation | Bayesian Multi-Object Response Regression" />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 Posterior Computation | Bayesian Multi-Object Response Regression" />
   <meta property="og:type" content="book" />
@@ -56,7 +56,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -66,7 +66,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -128,6 +128,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -362,7 +363,7 @@ follows:</p>
 Then the full conditionals for the Network Horseshoe parameters (including auxiliary variables) are given by</p>
 <p><span class="math display" id="eq:horseshoeLambda">\[\begin{equation}
 \lambda^2_{p,p&#39;}| \sigma^2_\theta, \tau^2_\theta, \theta_{p,p&#39;}, \xi_p, \xi_{p&#39;} \stackrel{ind.}{\sim}
-IG \left(\frac{1}{2} + \frac{I_{\xi_p=1}I_{\xi_{p&#39;}=1}}{2}, \frac{1}{\kappa_{\lambda_{p,p&#39;}}}+I_{\xi_p=1}I_{\xi_{p&#39;}=1}\frac{\theta^2_{p,p&#39;}}{2 \sigma^2_\theta \tau^2_\theta}\right) \quad p&lt;p&#39;
+IG \left(\frac{1}{2} + \frac{\xi_p\xi_{p&#39;}}{2}, \frac{1}{\kappa_{\lambda_{p,p&#39;}}}+\frac{\xi_p\xi_{p&#39;}\theta^2_{p,p&#39;}}{2 \sigma^2_\theta \tau^2_\theta}\right) \quad p&lt;p&#39;
 \tag{3.1}
 \end{equation}\]</span></p>
 <p><span class="math display" id="eq:horseshoeSigma">\[\begin{equation}
@@ -378,12 +379,12 @@ where <span class="math inline">\(Q=\sum_p^{P}\xi_p\)</span>.</p>
 \kappa_{\sigma_\theta}|\sigma^2_\theta \sim IG \left(1, 1 + \frac{1}{\sigma^2_\theta}\right)
 \tag{3.4}
 \end{equation}\]</span></p>
-<p>And the full conditionals for the Voxel Horseshoe parameters (including auxiliary variables) are given by</p>
+<p>And the full conditionals for the voxel Horseshoe parameters (including auxiliary variables) are given by</p>
 <p><span class="math display" id="eq:horseshoePhi">\[\begin{equation}
 \tag{3.5}
 \end{equation}\]</span></p>
 <p><span class="math display" id="eq:horseshoePhi">\[\begin{equation}
-\phi^2_{v,p}| \eta^2_p, \tau^2_\beta, \phi_{v,p}, \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2}+\frac{\xi_p}{2}, \frac{1}{\kappa_{\phi_{v,p}}}+I_{\xi_p=1}\frac{ \beta^2_{v,p}}{2 \eta^2_p \tau^2_\beta}\right) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\}
+\phi^2_{v,p}| \eta^2_p, \tau^2_\beta, \phi_{v,p}, \xi_p \stackrel{ind.}{\sim} IG \left(\frac{1}{2}+\frac{\xi_p}{2}, \frac{1}{\kappa_{\phi_{v,p}}}+\frac{ \xi_p \beta^2_{v,p}}{2 \eta^2_p \tau^2_\beta}\right) \quad v \in \{1,\ldots,V_p\} \quad p \in \{1,\ldots,P\}
 \tag{3.5}
 \end{equation}\]</span></p>
 <p><span class="math display" id="eq:horseshoeEta">\[\begin{equation}
@@ -402,7 +403,7 @@ where <span class="math inline">\(Q=\sum_p^{P}\xi_p\)</span>.</p>
 </div>
 </div>
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-makalic_simple_2016" class="csl-entry">
 Makalic, Enes, and Daniel F. Schmidt. 2016. <span>“A <span>Simple</span> <span>Sampler</span> for the <span>Horseshoe</span> <span>Estimator</span>.”</span> <em>IEEE Signal Processing Letters</em> 23 (1). <a href="https://doi.org/10.1109/LSP.2015.2503725">https://doi.org/10.1109/LSP.2015.2503725</a>.
 </div>
